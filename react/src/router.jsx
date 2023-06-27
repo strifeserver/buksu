@@ -7,6 +7,7 @@ import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
 import Users from "./views/Users";
 import UserForm from "./views/UserForm";
+import Products from "./views/Products.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,8 +23,10 @@ const router = createBrowserRouter([
         element: <Dashboard/>
       },
       {
+        // path: '/users',
+        // element: <Users/>
         path: '/users',
-        element: <Users/>
+        element: <Products/>
       },
       {
         path: '/users/new',
