@@ -15,7 +15,7 @@ export default function Users() {
   const { setUser, notification } = useStateContext();
 
   useEffect(() => {
-    axiosClient.get("/user").then(({ data }) => {
+    axiosClient.get("/users").then(({ data }) => {
       setUser(data);
     });
   }, []);

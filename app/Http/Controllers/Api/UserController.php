@@ -19,9 +19,14 @@ class UserController extends Controller
     // {
     //     return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
     // }
-     public function index()
+    //  public function index()
+    // {
+    //     return UserResource::collection(User::query()->orderBy('id', 'asc')->paginate(5));
+    // }
+    public function allUsers()
     {
-        return UserResource::collection(User::query()->orderBy('id', 'asc')->paginate(5));
+        $user =User::query()->paginate(4);
+        return UserResource::collection($user);
     }
 
 
@@ -79,9 +84,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-
         return response("", 204);
     }
-
 
 }

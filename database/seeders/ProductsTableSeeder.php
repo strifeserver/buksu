@@ -21,7 +21,7 @@ class ProductsTableSeeder extends Seeder
 
         $sellerIds = DB::table('users')->pluck('id');
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 550; $i++) {
             $sellerId = $faker->randomElement($sellerIds);
 
             DB::table('products')->insert([

@@ -23,9 +23,9 @@ class ProductController extends Controller
     // {
     //     return ProductResource::collection(Product::query()->orderBy('id', 'asc'));
     // }
-    public function products()
+    public function allProducts()
     {
-        $products =Product::all();
+        $products =Product::all()->paginate(5);
         return ProductResource::collection($products);
     }
 
