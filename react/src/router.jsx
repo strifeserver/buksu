@@ -1,5 +1,5 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import Dashboard from "./Dashboard.jsx";
+import Dashboard from "./views/Farms.jsx";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Login";
@@ -23,10 +23,8 @@ const router = createBrowserRouter([
         element: <Dashboard/>
       },
       {
-        // path: '/users',
-        // element: <Users/>
         path: '/users',
-        element: <Products/>
+        element: <Users/>
       },
       {
         path: '/users/new',
@@ -35,7 +33,11 @@ const router = createBrowserRouter([
       {
         path: '/users/:id',
         element: <UserForm key="userUpdate" />
-      }
+      },
+      {
+        path: '/products',
+        element: <Products />
+      },
     ]
   },
   {

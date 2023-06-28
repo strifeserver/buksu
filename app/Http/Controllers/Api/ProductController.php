@@ -2,14 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
-    public function index()
+
+/**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    // public function index()
+    // {
+    //     return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
+    // }
+    // public function products()
+    // {
+    //     return ProductResource::collection(Product::query()->orderBy('id', 'asc'));
+    // }
+    public function products()
     {
-        return ProductResource::collection(Product::query()->orderBy('id', 'desc')->paginate(10));
+        $products =Product::all();
+        return ProductResource::collection($products);
     }
+
+
 }

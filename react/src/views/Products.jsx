@@ -46,10 +46,13 @@ export default function Products() {
           <thead>
           <tr>
             <th>ID</th>
-            {/* <th>Name</th>
-            <th>Email</th>
-            <th>Create Date</th> */}
-            <th>Actions</th>
+            <th>Product</th>
+            <th>Variety</th>
+            <th>Planted Date</th>
+            <th>Prospect Harvest Date</th>
+            <th>Location</th>
+            <th>Seller</th>
+
           </tr>
           </thead>
           {loading &&
@@ -66,9 +69,9 @@ export default function Products() {
             {products.map(u => (
               <tr key={u.id}>
                 <td>{u.id}</td>
-                {/* <td>{u.name}</td>
-                <td>{u.email}</td> */}
-                <td>{u.created_at}</td>
+                <td>{u.product_name}</td>
+                <td>{u.variety}</td>
+                <td>{u.kilograms}</td>
                 <td>
                   <Link className="btn-edit" to={'/products/' + u.id}>Edit</Link>
                   &nbsp;
