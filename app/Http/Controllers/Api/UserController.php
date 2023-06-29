@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -25,8 +27,15 @@ class UserController extends Controller
     // }
     public function allUsers()
     {
-        $user =User::query()->paginate(4);
+        $user =User::query()->paginate(15);
         return UserResource::collection($user);
+    }
+
+    public function allProducts()
+    {
+        // $user =User::query()->paginate(4);
+        $products =Product::query()->paginate(15);
+        return ProductResource::collection($products);
     }
 
 

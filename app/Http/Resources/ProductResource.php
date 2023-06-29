@@ -6,8 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
-    public static $wrap = false;
 
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *
@@ -21,13 +21,13 @@ class ProductResource extends JsonResource
             'product_name' => $this->product_name,
             'variety' => $this->variety,
             'kilograms' => $this->kilograms,
-            'planted_date' => $this->planted_date->format('Y-m-d'),
-            'prospect_harvest_date' => $this->prospect_harvest_date ? $this->prospect_harvest_date->format('Y-m-d') : null,
+            // 'planted_date' => $this->planted_date->format('Y-m-d'),
+            // 'prospect_harvest_date' => $this->prospect_harvest_date ? $this->prospect_harvest_date->format('Y-m-d') : null,
             'product_location' => $this->product_location,
             'is_verified' => $this->is_verified,
             'product_picture' => $this->product_picture,
             'product_seller' => $this->product_seller,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            // 'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

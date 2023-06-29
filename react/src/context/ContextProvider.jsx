@@ -5,17 +5,22 @@ const StateContext = createContext({
   token: null,
   notification: null,
    //THIS IS UNDER PRODUCTS
+   product:null,
 
 
 
   setUser: () => {},
   setToken: () => {},
-  setNotification: () => {}
+  setNotification: () => {},
+  setProduct: () => {},
+
 
 })
 
 export const ContextProvider = ({children}) => {
   const [user, setUser] = useState({});
+  const [product, setProduct] = useState({});
+
 
 
 
@@ -47,6 +52,8 @@ export const ContextProvider = ({children}) => {
       setToken,
       notification,
       setNotification,
+      product,
+      setProduct,
 
 
     }}>

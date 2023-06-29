@@ -6,7 +6,7 @@ import { useStateContext } from "../context/ContextProvider";
 import { Button, Navbar } from "flowbite-react";
 
 const NavBar = () => {
-  const { token, setUser, setToken } = useStateContext();
+  const { token, setUser, setToken, setProduct} = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;

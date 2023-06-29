@@ -32,7 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
     //PRODUCTS
-     Route::get('/products', [ProductController::class, 'allProducts']);
+     Route::get('/products', [UserController::class, 'allProducts']);
+    //  Route::get('/products', [ProductController::class, 'index']);
+
 
 
 

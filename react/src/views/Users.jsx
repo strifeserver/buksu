@@ -3,7 +3,7 @@ import axiosClient from "../axios-client.js";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider.jsx";
 
-import { Table, Button, Pagination } from "flowbite-react";
+import { Table, Button, Pagination, Spinner } from "flowbite-react";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -70,14 +70,15 @@ export default function Users() {
             <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Head>
           {loading && (
-            <Table.Body>
+            <tbody>
               <tr>
-                <td colSpan="5" className="text-center">
-                  Loading...
+                <td colSpan="6" class="text-center">
+                  <Spinner aria-label="Large spinner example" size="lg" />
                 </td>
               </tr>
-            </Table.Body>
+            </tbody>
           )}
+
           {!loading && (
             <Table.Body className="divide-y">
               {users.map((u) => (
@@ -121,16 +122,18 @@ export default function Users() {
           )}
         </Table>
 
-         {notification && <div className="notification">{notification}</div>}
+        {notification && <div className="notification">{notification}</div>}
 
         <div className="flex items-center justify-center text-center mt-3">
-        <Pagination
-      currentPage={currentPage}
-      onPageChange={page=>{setCurrentPage(page)}}
-      showIcons
-      totalPages={totalPages}
-    />
-  </div>
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+            showIcons
+            totalPages={totalPages}
+          />
+        </div>
       </div>
     </div>
   );
