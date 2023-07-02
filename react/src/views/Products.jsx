@@ -64,8 +64,10 @@ export default function Products() {
           <Table.Head>
             <Table.HeadCell>ID</Table.HeadCell>
             <Table.HeadCell>Product Name</Table.HeadCell>
-
-
+            <Table.HeadCell>Variety</Table.HeadCell>
+            <Table.HeadCell>Kilograms</Table.HeadCell>
+            <Table.HeadCell>product_location</Table.HeadCell>
+            <Table.HeadCell>product_seller</Table.HeadCell>
           </Table.Head>
           {loading && (
             <Table.Body>
@@ -89,7 +91,18 @@ export default function Products() {
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {u.product_name}
                   </Table.Cell>
-
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {u.variety}
+                  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {u.kilograms}
+                  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {u.product_location}
+                  </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {u.product_seller}
+                  </Table.Cell>
 
                 </Table.Row>
               ))}

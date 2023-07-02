@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class TransactionDetail extends Model
 {
     use HasFactory;
 
@@ -13,14 +13,9 @@ class Product extends Model
         'product_name',
         'variety',
         'planted_date',
-        'prospect_harvest_in_kg',
-        'prospect_harvest_date',
-        'actual_harvested_in_kg',
         'harvested_date',
-        'product_location',
-        'is_verified',
-        'price',
-        'product_picture',
-        'farm_belonged',
+        'total_price',
+        'kg_purchased',
+        'transaction_id',
     ];
 }

@@ -52,7 +52,8 @@ export default function Users() {
   };
 
   return (
-    <div>
+    <div className="row">
+      <div className="col">
       <div>
         <h1>Users</h1>
         <Link className="btn-add" to="/users/new">
@@ -109,12 +110,12 @@ export default function Users() {
                       Edit
                     </Link>
                     &nbsp;
-                    <a
+                    {/* <a
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                       onClick={(ev) => onDeleteClick(u)}
                     >
                       Delete
-                    </a>
+                    </a> */}
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -135,6 +136,7 @@ export default function Users() {
           />
         </div>
       </div>
+    </div>
     </div>
   );
 }

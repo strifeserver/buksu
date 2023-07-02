@@ -27,14 +27,14 @@ class UserController extends Controller
     // }
     public function allUsers()
     {
-        $user =User::query()->paginate(15);
+        $user =User::query()->paginate(10);
         return UserResource::collection($user);
     }
 
     public function allProducts()
     {
         // $user =User::query()->paginate(4);
-        $products =Product::query()->paginate(15);
+        $products =Product::query()->paginate(10);
         return ProductResource::collection($products);
     }
 

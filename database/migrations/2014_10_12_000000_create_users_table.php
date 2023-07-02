@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('mobile_number')->nullable();
             $table->string('email')->unique();
-            $table->tinyInteger('user_type')->default(0)->nullable();
+            $table->tinyInteger('user_type')->default(0); // 0 - Buyer , 1 - Seller, 2 - Admin
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_pic')->nullable();

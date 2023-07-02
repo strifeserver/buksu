@@ -24,7 +24,16 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_name'  => 'required|string|max:55',
+            'variety'  => 'required|string|max:55',
+            'kilograms'  => 'required|min:0|',
+            'pros'  => 'required|string|max:55',
+            'product_name'  => 'required|string|max:55',
+            'product_name'  => 'required|string|max:55',
+            'product_name'  => 'required|string|max:55',
+            'product_name'  => 'required|string|max:55',
+            'product_name'  => 'required|string|max:55',
+
         ];
     }
 }
