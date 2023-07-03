@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
         //  factory(Product::class, 20)->create();
          \App\Models\Product::factory(130)->create();
 
-
          // Seed transactions
         //  factory(Transaction::class, 15)->create();
         \App\Models\Transaction::factory(20)->create();
@@ -35,7 +34,6 @@ class DatabaseSeeder extends Seeder
          // Seed transaction details
         //  factory(TransactionDetail::class, 50)->create();
         \App\Models\TransactionDetail::factory(20)->create();
-
 
     }
 }

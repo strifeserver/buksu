@@ -26,6 +26,7 @@ class User extends Authenticatable
         'user_type',
         'profile_pic',
         'password',
+        'is_verified',
         'is_active'
     ];
 

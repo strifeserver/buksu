@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_pic')->nullable();
+            $table->boolean('is_verified')->default(false); //
             $table->tinyInteger('is_active')->nullable(); // 0 Not ONLINE  || 1 if online
             $table->rememberToken();
             $table->timestamps();

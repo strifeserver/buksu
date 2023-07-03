@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => $this->faker->optional()->dateTime,
             'password' => bcrypt('password'),
             'profile_pic' => $this->faker->imageUrl(),
+            'is_verified' => $this->faker->boolean,
             'is_active' => $this->faker->boolean,
             'remember_token' => Str::random(10),
         ];

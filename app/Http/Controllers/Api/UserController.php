@@ -38,6 +38,21 @@ class UserController extends Controller
         return ProductResource::collection($products);
     }
 
+    public function usercount()
+    {
+        $userAll =User::all()->count();
+        // return response()->json(['allUser' => $allUser]);
+
+        $pendingUser =User::where('user_type', '0')->count();
+        return response()->json([
+            'userAll' => $userAll,
+            'pendingUser' => $pendingUser,
+
+
+        ]);
+
+
+    }
 
 
     /**

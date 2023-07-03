@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ALL ABOUT USERS
     // Route::apiResource('/users', UserController::class);
+    Route::get('/usercount', [DashboardController::class, 'usercount']);
     Route::get('/users', [UserController::class, 'allUsers']);
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{user}', [UserController::class, 'show']);
