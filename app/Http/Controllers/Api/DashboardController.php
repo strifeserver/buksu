@@ -6,8 +6,11 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Models\SupportedBarangay;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DashboardResource;
+use App\Http\Resources\SupportedBarangayResource;
+use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
 
 class DashboardController extends Controller
 {
@@ -47,6 +50,14 @@ class DashboardController extends Controller
 
     }
 
+
+    // public function supportedBarangay()
+    // {
+    //     $supportedBarangay = SupportedBarangay::all();
+    //     return SupportedBarangayResource::collection($supportedBarangay);
+    // }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -58,6 +69,13 @@ class DashboardController extends Controller
         //
     }
 
+    public function addBarangay(StoreBarangayRequest $request)
+    {
+        $data = $request->validated();
+        $supportedBarangay= SupportedBarangay::create($data);
+
+        return response(new SupportedBarangayResource($supportedBarangay) , 201);
+    }
     /**
      * Display the specified resource.
      *

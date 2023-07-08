@@ -6,16 +6,26 @@ import { useStateContext } from "../context/ContextProvider.jsx";
 import { Table, Button, Pagination, Spinner } from "flowbite-react";
 
 export default function Users() {
-  const [users, setUsers] = useState([]);
+  const [users1, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const { setNotification } = useStateContext();
+  const { user } = useStateContext();
 
-  const { setUser, notification } = useStateContext();
+
+  if (user) {
+    // Output the value of the user
+    const name = user.name;
+    const email = user.email;
+    const id = user.id;
+  }
+
+  const id = "NULL";
+  // const { setUser, notification } = useStateContext();
 
   useEffect(() => {
-    axiosClient.get("/users").then(({ data }) => {
+    axiosClient.get("/allUsers").then(({ data }) => {
       setUser(data);
     });
   }, []);
@@ -36,7 +46,7 @@ export default function Users() {
   const getUsers = () => {
     setLoading(true);
     axiosClient
-      .get(`/users?page=${currentPage}`)
+      .get(`/allUsers?page=${currentPage}`)
       .then(({ data }) => {
         setLoading(false);
         setUsers(data.data);
@@ -59,9 +69,12 @@ export default function Users() {
         <Link className="btn-add" to="/users/new">
           Add new
         </Link>
+
+        <h1>--{id}--N -N</h1>
       </div>
       <div className="card animated fadeInDown">
-        <Table>
+
+        <Table className="table-auto">
           <Table.Head>
             <Table.HeadCell>ID</Table.HeadCell>
             <Table.HeadCell>Name</Table.HeadCell>
@@ -82,7 +95,7 @@ export default function Users() {
 
           {!loading && (
             <Table.Body className="divide-y">
-              {users.map((u) => (
+              {users1.map((u) => (
                 <Table.Row
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   key={u.id}
@@ -123,7 +136,7 @@ export default function Users() {
           )}
         </Table>
 
-        {notification && <div className="notification">{notification}</div>}
+        {/* {notification && <div className="notification">{notification}</div>} */}
 
         <div className="flex items-center justify-center text-center mt-3">
           <Pagination

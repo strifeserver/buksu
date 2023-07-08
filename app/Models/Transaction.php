@@ -19,4 +19,21 @@ class Transaction extends Model
         'buyers_name',
         'from_farm'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'buyers_name');
+    }
+
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class, 'from_farm');
+    }
+
+    public function TransactionDetail()
+    {
+        return $this->hasMany(TransactionDetail::class, 'transaction_id');
+    }
+
+
 }

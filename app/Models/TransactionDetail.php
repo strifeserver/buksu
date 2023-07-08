@@ -18,4 +18,14 @@ class TransactionDetail extends Model
         'kg_purchased',
         'transaction_id',
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

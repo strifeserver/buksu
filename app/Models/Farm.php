@@ -20,4 +20,14 @@ class Farm extends Model
         'is_verified',
         'farm_owner',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'farm_owner');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'farm_belonged');
+    }
 }

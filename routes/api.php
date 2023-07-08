@@ -3,7 +3,9 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SuperAdminController;
+use App\Models\SupportedBarangay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,16 +29,21 @@ Route::middleware('auth:sanctum')->group(function () {
     //ALL ABOUT USERS
     // Route::apiResource('/users', UserController::class);
     Route::get('/usercount', [DashboardController::class, 'usercount']);
-    Route::get('/users', [UserController::class, 'allUsers']);
+    Route::get('/allUsers', [UserController::class, 'allUsers']);
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
     //PRODUCTS
-     Route::get('/products', [UserController::class, 'allProducts']);
+     Route::get('/products', [ProductController::class, 'allProducts']);
     //  Route::get('/products', [ProductController::class, 'index']);
 
+
+    //SUPERADMIN PAGES
+    Route::get('/supportedBarangay', [SuperAdminController::class, 'supportedBarangay']);
+    Route::get('/barangays/{barangay}', [SuperAdminController::class, 'showBarangay']);
+    Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
 
 
 

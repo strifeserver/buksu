@@ -1,16 +1,33 @@
+
 import { Link, Navigate, Outlet, Routes, Route } from "react-router-dom";
+import NavBar from "./NavBar";
+import SidebarNav from "./SidebarNav";
+
+// import { Link, Navigate, Outlet, Routes, Route } from "react-router-dom";
 
 import axiosClient from "../axios-client.js";
 import { useStateContext } from "../context/ContextProvider";
 
-import { Button, Navbar } from "flowbite-react";
+import { Button, Navbar,Sidebar } from "flowbite-react";
 
-const NavBar = () => {
-  const { token, setUser, setToken, setProduct} = useStateContext();
+export default function DefaultLayout() {
+
+  const { name1, setName1,  user, token, setUser, setToken} = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;
   }
+
+
+  // if(user){
+  //   const id = user.id;
+
+  // }else{
+  //   const id = "NO CONTENT";
+  // }
+
+  const id = name1.id;
+
 
   const onLogout = (ev) => {
     ev.preventDefault();
@@ -20,8 +37,12 @@ const NavBar = () => {
       setToken(null);
     });
   };
+
   return (
-<div>
+    <div>
+      {/* <NavBar /> */}
+
+      <div>
 {/* <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
    <span class="sr-only">Open sidebar</span>
    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -33,25 +54,28 @@ const NavBar = () => {
    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
          <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+
+            <a href="/" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
-               <span class="ml-3">Dashbsssoard</span>
+               <span class="ml-3">Dashboard</span>
+
             </a>
          </li>
          <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            <a href="/users" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-               <span class="flex-1 ml-3 whitespace-nowrap">Kanban</span>
-               <span class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
+               <span class="flex-1 ml-3 whitespace-nowrap">Users</span>
+               {/* <span class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span> */}
             </a>
          </li>
          <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            <a href="/sample" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path><path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
-               <span class="flex-1 ml-3 whitespace-nowrap">Inbox</span>
+               <span class="flex-1 ml-3 whitespace-nowrap">Sample</span>
                <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
             </a>
          </li>
+
          <li>
             <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
@@ -106,6 +130,9 @@ const NavBar = () => {
    </div>
 </aside>
 
+
+
+<div class="p-0 sm:ml-64">
 <div className="bg-slate-100 min-w-screen">
 <Navbar fluid rounded className="bg-slate-200">
   <Navbar.Brand href="https://flowbite-react.com">
@@ -139,27 +166,24 @@ const NavBar = () => {
   </Navbar.Collapse>
 </Navbar>
 </div>
+   <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
 
 
-</div>
+      {/* <div class="grid grid-cols-3 gap-4 mb-4">
+         <div class="flex items-center justify-center h-24 rounded bg-gray-500 dark:bg-gray-800 "> */}
+            {/* <p class="text-2xl text-gray-400 dark:text-gray-500">1</p> */}
 
-  );
-};
 
-export default NavBar;
-{/* <div class="p-4 sm:ml-64">
-   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-      <div class="grid grid-cols-3 gap-4 mb-4">
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">1</p>
-         </div>
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+
+
+         {/* </div>
+         <div class="flex items-center justify-center h-24 rounded bg-gray-500 dark:bg-gray-800">
             <p class="text-2xl text-gray-400 dark:text-gray-500">2</p>
          </div>
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+         <div class="flex items-center justify-center h-24 rounded bg-gray-500 dark:bg-gray-800">
             <p class="text-2xl text-gray-400 dark:text-gray-500">3</p>
          </div>
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+         <div class="flex items-center justify-center h-24 rounded bg-gray-500 dark:bg-gray-800">
             <p class="text-2xl text-gray-400 dark:text-gray-500">4</p>
          </div> <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
             <p class="text-2xl text-gray-400 dark:text-gray-500">5</p>
@@ -210,39 +234,18 @@ export default NavBar;
          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
             <p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
          </div>
+      </div> */}
+
+
+      {/* <SidebarNav /> */}
+
+      <Outlet />
+
+
       </div>
-   </div>
-</div> */}
-{/* <div className="bg-slate-100 min-w-screen">
-<Navbar fluid rounded className="bg-slate-200">
-  <Navbar.Brand href="https://flowbite-react.com">
-    <img
-      alt="Flowbite React Logo"
-      className="mr-3 h-6 sm:h-9"
-      src="https://flowbite.com/images/technologies/tailwind.svg"
-    />
-    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-      E-tabo
-    </span>
-  </Navbar.Brand>
-  <div className="flex md:order-2">
-    <Link onClick={onLogout}>
-      <Button>Logout</Button>
-    </Link>
-    <Navbar.Toggle />
-  </div>
-  <Navbar.Collapse>
-    <Link to="/dashboard">
-      <Navbar.Link>Farms</Navbar.Link>
-    </Link>
-    <Link to="/users">
-      {" "}
-      <Navbar.Link>Sellers</Navbar.Link>
-    </Link>
-    <Link to="/products">
-      <Navbar.Link>Products</Navbar.Link>
-    </Link>
-    <Navbar.Link>About</Navbar.Link>
-  </Navbar.Collapse>
-</Navbar>
-</div> */}
+</div>
+
+      </div>
+    </div>
+  );
+}

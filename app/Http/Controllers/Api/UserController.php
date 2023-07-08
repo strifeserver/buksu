@@ -31,12 +31,6 @@ class UserController extends Controller
         return UserResource::collection($user);
     }
 
-    public function allProducts()
-    {
-        // $user =User::query()->paginate(4);
-        $products =Product::query()->paginate(10);
-        return ProductResource::collection($products);
-    }
 
     public function usercount()
     {
@@ -47,7 +41,6 @@ class UserController extends Controller
         return response()->json([
             'userAll' => $userAll,
             'pendingUser' => $pendingUser,
-
 
         ]);
 

@@ -11,6 +11,12 @@ import UserForm from "./views/UserForm";
 import Products from "./views/Products.jsx";
 import Sample from "./views/sample.jsx";
 
+import AddProduct from "./views/Seller/AddProduct.jsx";
+import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
+import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
+import UpdateBarangay from "./views/Admin/UpdateBarangay.jsx";
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -49,6 +55,24 @@ const router = createBrowserRouter([
         path: '/farms',
         element: <Farms />
       },
+      {
+        path: '/products/add',
+        element: <AddProduct />
+      },
+      //Super Admin Pages
+      {
+        path: '/admin/supported/barangay',
+        element: <BarangaySupported />
+      },
+      {
+        path: '/barangays/:id',
+        element: <UpdateBarangay />
+      },
+      {
+        path: '/admin/supported/products',
+        element: <ProductsSupported />
+      },
+
     ]
   },
   {

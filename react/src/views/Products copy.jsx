@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client.js";
 import { Link } from "react-router-dom";
-// import { useStateContext } from "../context/ContextProvider.jsx";
+import { useStateContext } from "../context/ContextProvider.jsx";
 import { Table, Pagination } from "flowbite-react";
 
 export default function Products() {

@@ -23,4 +23,14 @@ class Product extends Model
         'product_picture',
         'farm_belonged',
     ];
+
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class, 'farm_belonged');
+    }
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(TransactionDetail::class, 'product_id');
+    }
 }
