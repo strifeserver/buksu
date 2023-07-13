@@ -12,7 +12,7 @@ import { Button, Navbar,Sidebar } from "flowbite-react";
 
 export default function DefaultLayout() {
 
-  const { name1, setName1,  user, token, setUser, setToken} = useStateContext();
+  const { name1, setName1,  user, token, setUserID, setUser, setToken} = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;

@@ -7,7 +7,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 export default function Login() {
   const emailRef = createRef();
   const passwordRef = createRef();
-  const { setUser, setToken } = useStateContext();
+  const { setUser, setToken, setCurrentUserID } = useStateContext();
   const [message, setMessage] = useState(null);
 
   const onSubmit = (ev) => {
@@ -20,8 +20,9 @@ export default function Login() {
     axiosClient
       .post("/login", payload)
       .then(({ data }) => {
-        setUser(data.user);
         setToken(data.token);
+        setCurrentUserID(data.currentUserID);
+
       })
       .catch((err) => {
         const response = err.response;
@@ -30,6 +31,8 @@ export default function Login() {
         }
       });
   };
+
+
 
   return (
     <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">

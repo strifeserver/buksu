@@ -14,7 +14,7 @@ import Sample from "./views/sample.jsx";
 import AddProduct from "./views/Seller/AddProduct.jsx";
 import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
 import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
-import UpdateBarangay from "./views/Admin/UpdateBarangay.jsx";
+import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
 
 
 const router = createBrowserRouter([
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/barangays/:id',
-        element: <UpdateBarangay />
+        element: <BarangayUpdate />
       },
       {
         path: '/admin/supported/products',

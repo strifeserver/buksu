@@ -14,25 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         \App\Models\User::factory(30)->create();
 
-         // Seed users
-        //  factory(User::class, 10)->create();
+        \App\Models\SupportedBarangay::factory(12)->create();
 
-         // Seed farms
-        //  factory(Farm::class, 5)->create();
-         \App\Models\Farm::factory(10)->create();
+        \App\Models\SupportedProduct::factory(4)->create();
 
-         // Seed products
-        //  factory(Product::class, 20)->create();
-         \App\Models\Product::factory(130)->create();
+        \App\Models\User::factory(30)->create();
 
-         // Seed transactions
-        //  factory(Transaction::class, 15)->create();
+        \App\Models\Farm::factory(10)->create();
+
+        \App\Models\Product::factory(130)->create();
+
         \App\Models\Transaction::factory(20)->create();
 
-         // Seed transaction details
-        //  factory(TransactionDetail::class, 50)->create();
         \App\Models\TransactionDetail::factory(20)->create();
 
     }

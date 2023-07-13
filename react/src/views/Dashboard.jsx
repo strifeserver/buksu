@@ -2,7 +2,6 @@ import React, { useEffect, useState, } from 'react'
 import axiosClient from "../axios-client.js";
 // import { useStateContext } from "../context/ContextProvider.jsx";
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsers, faMoneyBillTransfer, faUsersViewfinder, faPersonCircleQuestion, faWeightScale, faMoneyBills } from '@fortawesome/free-solid-svg-icons'
 
@@ -46,7 +45,7 @@ export default function Dashboard() {
 
     ]} />
 
-
+    // const userIDsss = secureLocalStorage.getItem("userID");
   return (
     <div>
         <section>
@@ -54,7 +53,7 @@ export default function Dashboard() {
 
                 <div class="bg-gray-800 pt-3">
                     <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                        <h1 class="font-bold pl-2">Analytics</h1>
+                        <h1 class="font-bold pl-2">Analytics + {}</h1>
                     </div>
                 </div>
 

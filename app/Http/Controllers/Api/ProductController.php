@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Models\SupportedProduct;
 
 class ProductController extends Controller
 {
@@ -31,6 +32,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function getProductTypes()
+    {
+        $productType = SupportedProduct::all();
+        return response([
+            'productType' => $productType,
+            'yes' => 'Yes The best',
+        ]);
+
     }
 
     /**

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\SignupRequest;
 use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SignupRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthController extends Controller
 {
@@ -37,16 +38,16 @@ class AuthController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $name1 = [
-            'id' => 1,
-            'name2' => 'name2'
-        ];
+
+        $userID = $user->id;
+
         $token = $user->createToken('main')->plainTextToken;
-        return response([
-            'user' => $user,
+        return response()->json([
+            // 'user' => $user,
             'token' => $token,
-            'name1' => $name1,
+            'encryptedCurrentUserID' => Crypt::encryptString($userID),
         ]);
+
 
     }
 

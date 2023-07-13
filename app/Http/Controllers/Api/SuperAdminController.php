@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
+use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
 use App\Http\Resources\SupportedBarangayResource;
+use App\Http\Resources\SupportedProductResource;
 use App\Models\SupportedBarangay;
 use Illuminate\Http\Request;
 
@@ -42,11 +44,6 @@ class SuperAdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
-
 
     public function showBarangay(SupportedBarangay $barangay)
     {
@@ -61,10 +58,17 @@ class SuperAdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateBarangay(UpdateBarangayRequest $request, SupportedBarangay $barangay)
     {
-        //
+        $data = $request->validated();
+        $barangay->update($data);
+
+        // $supportedBarangays = SupportedBarangay::query()->orderBy('supported_barangay', 'asc')->paginate(8);
+        // return new SupportedBarangay($supportedBarangays);
+        return response(new SupportedBarangayResource($barangay) , 201);
+
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('product_name');
+            $table->string('product_type');
             $table->string('variety');
             $table->date('planted_date');
             $table->float('prospect_harvest_in_kg')->nullable();

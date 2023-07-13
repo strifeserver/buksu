@@ -18,8 +18,9 @@ import {
   HiViewBoards,
 } from "react-icons/hi";
 
+
 export default function DefaultLayout() {
-  const { name1, setName1, user, token, setUser, setToken } = useStateContext();
+  const {user , currentUserID, token, setUser, setToken, setCurrentUserID } = useStateContext();
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -35,9 +36,11 @@ export default function DefaultLayout() {
     axiosClient.post("/logout").then(() => {
       setUser({});
       setToken(null);
+      setCurrentUserID(null);
     });
   };
 
+  // localStorage.setItem('USER_ID', currentUserID);
   return (
     <div>
       {/* <NavBar /> */}
@@ -68,7 +71,10 @@ export default function DefaultLayout() {
                     href="/dashboard"
                     icon={HiChartPie}
                   >
+
                     <p>Dashboard</p>
+
+                    {/* <p>user - {user.id}-</p> */}
                   </Sidebar.Item>
 
                   <p> Products Section</p>
@@ -165,6 +171,11 @@ export default function DefaultLayout() {
             </Navbar>
           </div>
           <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+
+          ID: {currentUserID}
+                    <br>
+                    </br>
+                    TOKEN : {token}
             <Outlet />
           </div>
         </div>

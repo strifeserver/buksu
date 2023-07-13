@@ -37,12 +37,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //PRODUCTS
      Route::get('/products', [ProductController::class, 'allProducts']);
-    //  Route::get('/products', [ProductController::class, 'index']);
+     Route::get('/getProductTypes', [ProductController::class, 'getProductTypes']);
+     Route::post('/products', [ProductController::class, 'addProduct']);
 
 
     //SUPERADMIN PAGES
     Route::get('/supportedBarangay', [SuperAdminController::class, 'supportedBarangay']);
     Route::get('/barangays/{barangay}', [SuperAdminController::class, 'showBarangay']);
+    Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
 
 

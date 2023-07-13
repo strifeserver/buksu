@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         'product_name',
+        'product_type',
         'variety',
         'planted_date',
         'prospect_harvest_in_kg',

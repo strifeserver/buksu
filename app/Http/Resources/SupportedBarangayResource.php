@@ -18,6 +18,7 @@ class SupportedBarangayResource extends JsonResource
             'id' => $this->id,
             'supported_barangay' => $this->supported_barangay,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
 
         ];
     }

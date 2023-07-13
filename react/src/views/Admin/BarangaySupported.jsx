@@ -146,19 +146,13 @@ export default function BarangaySupported() {
                       {u.created_at}
                     </Table.Cell>
                     <Table.Cell>
-                      <Link
-                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    <Button color="warning"><Link
+
                         to={"/barangays/" + u.id}
                       >
                         Edit
-                      </Link>
-                      &nbsp;
-                      <a
-                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                        onClick={(ev) => onDeleteClick(u)}
-                      >
-                        Delete
-                      </a>
+                      </Link></Button>
+
                     </Table.Cell>
                   </Table.Row>
                 ))}

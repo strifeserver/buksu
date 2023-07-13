@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class ProductFactory extends Factory
     {
         return [
             'product_name' => $this->faker->word,
+            'product_type' => Arr::random(['Brocollis', 'Carrots', 'Cabbages', 'Tomatoes']),
             'variety' => $this->faker->word,
             'planted_date' => $this->faker->date,
             'prospect_harvest_in_kg' => $this->faker->randomFloat(2, 0, 1000),
