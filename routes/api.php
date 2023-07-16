@@ -37,8 +37,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //PRODUCTS
      Route::get('/products', [ProductController::class, 'allProducts']);
+     Route::post('/getFarmInfo', [ProductController::class, 'getFarmInfobyUser']);
      Route::get('/getProductTypes', [ProductController::class, 'getProductTypes']);
-     Route::post('/products', [ProductController::class, 'addProduct']);
+     Route::post('/addProductForm', [ProductController::class, 'addProduct']);
+
+    //ORDERS
+    Route::post('getOrderLists', [ProductController::class, 'getOrderLists']);
 
 
     //SUPERADMIN PAGES

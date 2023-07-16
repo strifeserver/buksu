@@ -38,7 +38,6 @@ class AuthController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-
         $userID = $user->id;
 
         $token = $user->createToken('main')->plainTextToken;
@@ -47,7 +46,6 @@ class AuthController extends Controller
             'token' => $token,
             'encryptedCurrentUserID' => Crypt::encryptString($userID),
         ]);
-
 
     }
 

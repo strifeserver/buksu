@@ -1,6 +1,6 @@
-import { Link, Navigate, Outlet, Routes, Route } from "react-router-dom";
-import NavBar from "./NavBar";
-import SidebarNav from "./SidebarNav";
+import { Link, Navigate, Outlet ,Routes, Route } from "react-router-dom";
+// import NavBar from "./NavBar";
+// import SidebarNav from "./SidebarNav";
 
 // import { Link, Navigate, Outlet, Routes, Route } from "react-router-dom";
 
@@ -29,7 +29,7 @@ export default function DefaultLayout() {
   // if(user.id){
   //   return <Navigate to="/login/NO USEr" />;
   // }
-
+  // const history = History();
   const onLogout = (ev) => {
     ev.preventDefault();
 
@@ -39,6 +39,8 @@ export default function DefaultLayout() {
       setCurrentUserID(null);
     });
   };
+
+
 
   // localStorage.setItem('USER_ID', currentUserID);
   return (
@@ -79,20 +81,21 @@ export default function DefaultLayout() {
 
                   <p> Products Section</p>
                   <hr class=" h-1 bg-gray-900 border-0  dark:bg-gray-700"></hr>
-                  <Sidebar.Item href="products/add">Add Product</Sidebar.Item>
-
+                  <Link to="/products/add"><Sidebar.Item >
+                    Add Product
+                  </Sidebar.Item></Link>
                   <Sidebar.Collapse
                     className="mt-3"
                     icon={HiShoppingBag}
                     label="Products Lists"
                   >
-                    <Sidebar.Item href="products/brocolli">
+                    <Link to="products/brocolli"><Sidebar.Item>
                       Brocolli
-                    </Sidebar.Item>
+                    </Sidebar.Item></Link>
                     <Sidebar.Item href="products/carrot">Carrots</Sidebar.Item>
-                    <Sidebar.Item href="products/cabbage">
+                    <Link to="products/cabbage">
                       Cabbages
-                    </Sidebar.Item>
+                   </Link>
                     <Sidebar.Item href="products/tomato">Tomatoes</Sidebar.Item>
                   </Sidebar.Collapse>
                   <Sidebar.Item href="/farms" icon={HiInbox}>
@@ -105,13 +108,12 @@ export default function DefaultLayout() {
                   <p>Transactions Section</p>
                   <hr class=" h-1 bg-gray-900 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
 
-                  <Sidebar.Item
+                  <Link to="/orders/list"><Sidebar.Item
                     className="mb-6 mt-3"
-                    href="#"
                     icon={HiShoppingBag}
                   >
                     <p>Orders Page</p>
-                  </Sidebar.Item>
+                  </Sidebar.Item></Link>
 
                   <p> App Settings</p>
                   <hr class=" h-1 bg-gray-900 border-0  dark:bg-gray-700"></hr>
@@ -124,12 +126,12 @@ export default function DefaultLayout() {
 
                   <p>Account Section</p>
                   <hr class=" h-1 bg-gray-900 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
-                  <Sidebar.Item href="#" icon={HiArrowSmRight}>
-                    <p>Sign In</p>
+                  <Sidebar.Item icon={HiUser}>
+                    <p>Profile</p>
                   </Sidebar.Item>
-                  <Sidebar.Item href="#" icon={HiTable}>
-                    <p>Sign Up</p>
-                  </Sidebar.Item>
+                  <Link onClick={onLogout}><Sidebar.Item icon={HiArrowSmRight}>
+                    <p>Logout</p>
+                  </Sidebar.Item></Link>
                 </Sidebar.ItemGroup>
               </Sidebar.Items>
             </Sidebar>
@@ -172,10 +174,10 @@ export default function DefaultLayout() {
           </div>
           <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
 
-          ID: {currentUserID}
-                    <br>
-                    </br>
-                    TOKEN : {token}
+          {/* ID: {currentUserID} */}
+                    {/* <br>
+                    </br> */}
+                    {/* TOKEN : {token} */}
             <Outlet />
           </div>
         </div>

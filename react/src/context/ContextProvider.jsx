@@ -1,6 +1,5 @@
 import {createContext, useContext, useState, useEffect} from "react";
 
-
 const StateContext = createContext({
   token: null,
   notification: null,
@@ -25,7 +24,6 @@ export const ContextProvider = ({children}) => {
     _setToken(token)
     if (token) {
       localStorage.setItem('ACCESS_TOKEN', token);
-
     } else {
       localStorage.removeItem('ACCESS_TOKEN');
       localStorage.removeItem('USER_ID');
@@ -35,9 +33,6 @@ export const ContextProvider = ({children}) => {
 
   if(currentUserID){
     localStorage.setItem('USER_ID', currentUserID);
-
-
-
   }
 
   const setNotification = message => {

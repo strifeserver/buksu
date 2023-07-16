@@ -21,7 +21,7 @@ export default function Login() {
       .post("/login", payload)
       .then(({ data }) => {
         setToken(data.token);
-        setCurrentUserID(data.currentUserID);
+        setCurrentUserID(data.encryptedCurrentUserID);
 
       })
       .catch((err) => {
@@ -31,8 +31,6 @@ export default function Login() {
         }
       });
   };
-
-
 
   return (
     <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">

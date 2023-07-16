@@ -15,6 +15,7 @@ import AddProduct from "./views/Seller/AddProduct.jsx";
 import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
 import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
 import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
+import OrdersLists from "./views/Seller/OrdersLists.jsx";
 
 
 const router = createBrowserRouter([
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/products/add',
         element: <AddProduct />
+      },
+      {
+        path: '/orders/list',
+        element: <OrdersLists />
       },
       //Super Admin Pages
       {

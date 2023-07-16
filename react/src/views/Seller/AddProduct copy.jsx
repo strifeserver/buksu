@@ -18,6 +18,7 @@ export default function AddProduct() {
     product_picture: "",
     farm_belonged: "",
   });
+  const {currentUserID, setCurrentUserID } = useStateContext();
 
   const [productType, setProductType] = useState();
 

@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 
 export default function AddProduct() {
+  const { currentUserID } = useStateContext();
+
+  const payload = {
+    user_ID: currentUserID,
+  };
+
   const [formData, setFormData] = useState({
     product_name: "",
     product_type: "",
+    farm_belonged: "",
     variety: "",
     planted_date: "",
     prospect_harvest_in_kg: "",
@@ -16,10 +22,12 @@ export default function AddProduct() {
     product_location: "",
     price: "",
     product_picture: "",
-    farm_belonged: "",
+    user_ID: currentUserID,
   });
 
   const [productType, setProductType] = useState([]);
+  const [farmsOwned, setfarmsOwned] = useState([]);
+  var counter = 1;
 
   useEffect(() => {
     axiosClient
@@ -32,10 +40,21 @@ export default function AddProduct() {
       });
   }, []);
 
+  useEffect(() => {
+    axiosClient
+      .post("/getFarmInfo", payload)
+      .then((response) => {
+        setfarmsOwned(response.data.farmsOwned);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const addProductForm = (e) => {
     e.preventDefault();
     axiosClient
-      .post("/api/addProductForm", formData)
+      .post("/addProductForm", formData)
       .then((response) => {
         // Handle successful form submission
         console.log(response.data);
@@ -44,6 +63,7 @@ export default function AddProduct() {
         setFormData({
           product_name: "",
           product_type: "",
+          farm_belonged: "",
           variety: "",
           planted_date: "",
           prospect_harvest_in_kg: "",
@@ -53,7 +73,7 @@ export default function AddProduct() {
           product_location: "",
           price: "",
           product_picture: "",
-          farm_belonged: "",
+          user_ID: "",
         });
       })
       .catch((error) => {
@@ -71,9 +91,9 @@ export default function AddProduct() {
 
   return (
     <div>
-      <div class="m-12 outline outline-2  outline-offset-2">
-        <div class="p-4 mb-5 bg-gray-200 dark:bg-gray-900 ">
-          <p class="text-center text-lg mt-2 p-2">Add Product Form</p>
+      <div className="m-12 outline outline-2  outline-offset-2">
+        <div className="p-4 mb-5 bg-gray-200 dark:bg-gray-900 ">
+          <p className="text-center text-lg mt-2 p-2">Add Product Form</p>
           <form onSubmit={addProductForm}>
             {/* START */}
             <div
@@ -97,7 +117,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -133,7 +153,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -142,17 +162,71 @@ export default function AddProduct() {
                         />
                       </svg>
                     </div>
-                    <select id="product_type" name="product_type" value={formData.product_type}
-                    onChange={handleChange} required className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow">
-                    <option value="" selected>Select Product Type</option>
+                    <select
+                      id="product_type"
+                      name="product_type"
+                      value={formData.product_type}
+                      onChange={handleChange}
+                      required
+                      className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
+                    >
+                      <option value="0" selected>
+                        Select Product Type
+                      </option>
                       {productType.map((product) => (
-                    <option value={product.supported_product}>{product.supported_product}</option>
+                        <option value={product.supported_product}>
+                          {product.supported_product}
+                        </option>
                       ))}
                     </select>
                   </div>
                 </div>
                 {/* Code block ends */}
+                {/* Code block starts */}
+                <div className="flex flex-col md:mr-16 md:py-0 py-4">
+                  <label
+                    htmlFor="farm_belonged"
+                    className="text-gray-800 dark:text-gray-100 text-sm font-bold leading-tight tracking-normal mb-2"
+                  >
+                    Farm Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute text-gray-600 dark:text-gray-400 flex items-center px-4 border-r dark:border-gray-700 h-full cursor-pointer">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+                        />
+                      </svg>
+                    </div>
+                    <select
+                      id="farm_belonged"
+                      name="farm_belonged"
+                      value={formData.farm_belonged}
+                      onChange={handleChange}
+                      required
+                      className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
+                    >
+                      <option value="0">Select Product Type</option>
+                      {farmsOwned.map((farm, index) => (
+                        // <option value={farm.supported_product}>{farm.supported_product}</option>,
+                        <option key={farm.id} value={farm.id}>
+                          {counter++} . {farm.farm_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
+                {/* Code block ends */}
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
@@ -169,7 +243,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -189,7 +263,16 @@ export default function AddProduct() {
                   </div>
                 </div>
                 {/* Code block ends */}
+              </div>
+            </div>
 
+            {/* SECOND PART */}
+
+            <div
+              className="bg-gray-200 dark:bg-gray-900 flex items-center justify-center"
+              style={{ fontFamily: '"Lato", sans-serif' }}
+            >
+              <div className="flex md:flex-row flex-col items-center pt-1 pb-8 px-4">
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
@@ -206,7 +289,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -226,16 +309,6 @@ export default function AddProduct() {
                   </div>
                 </div>
                 {/* Code block ends */}
-              </div>
-            </div>
-
-            {/* SECOND PART */}
-
-            <div
-              className="bg-gray-200 dark:bg-gray-900 flex items-center justify-center"
-              style={{ fontFamily: '"Lato", sans-serif' }}
-            >
-              <div className="flex md:flex-row flex-col items-center pt-1 pb-8 px-4">
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
@@ -252,7 +325,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -289,7 +362,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -313,43 +386,6 @@ export default function AddProduct() {
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
-                    htmlFor="actual_harvested_in_kg"
-                    className="text-gray-800 dark:text-gray-100 text-sm font-bold leading-tight tracking-normal mb-2"
-                  >
-                    Actual Harvested in Kg
-                  </label>
-                  <div className="relative">
-                    <div className="absolute text-gray-600 dark:text-gray-400 flex items-center pl-4 h-full cursor-pointer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type="number"
-                      id="actual_harvested_in_kg"
-                      name="actual_harvested_in_kg"
-                      value={formData.actual_harvested_in_kg}
-                      onChange={handleChange}
-                      className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
-                    />
-                  </div>
-                </div>
-                {/* Code block ends */}
-
-                {/* Code block starts */}
-                <div className="flex flex-col md:mr-16">
-                  <label
                     htmlFor="harvested_date"
                     className="text-gray-800 dark:text-gray-100 text-sm font-bold leading-tight tracking-normal mb-2"
                   >
@@ -363,7 +399,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -396,6 +432,42 @@ export default function AddProduct() {
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
+                    htmlFor="actual_harvested_in_kg"
+                    className="text-gray-800 dark:text-gray-100 text-sm font-bold leading-tight tracking-normal mb-2"
+                  >
+                    Actual Harvested in Kg
+                  </label>
+                  <div className="relative">
+                    <div className="absolute text-gray-600 dark:text-gray-400 flex items-center pl-4 h-full cursor-pointer">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="number"
+                      id="actual_harvested_in_kg"
+                      name="actual_harvested_in_kg"
+                      value={formData.actual_harvested_in_kg}
+                      onChange={handleChange}
+                      className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
+                    />
+                  </div>
+                </div>
+                {/* Code block ends */}
+                {/* Code block starts */}
+                <div className="flex flex-col md:mr-16">
+                  <label
                     htmlFor="product_location"
                     className="text-gray-800 dark:text-gray-100 text-sm font-bold leading-tight tracking-normal mb-2"
                   >
@@ -409,7 +481,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -445,7 +517,7 @@ export default function AddProduct() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        className="w-6 h-6"
                       >
                         <path
                           stroke-linecap="round"
@@ -499,6 +571,14 @@ export default function AddProduct() {
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <div className="relative">
+                    <input
+                    disabled hidden
+                      type="text"
+                      name="user_ID"
+                      id="user_ID"
+                      onChange={handleChange}
+                      value={formData.user_ID}
+                    />
                     <button
                       type=""
                       className="mx-2 my-2 bg-slate-700 transition duration-150 ease-in-out hover:bg-slate-600 rounded text-white px-6 py-2 text-md w-full block"
