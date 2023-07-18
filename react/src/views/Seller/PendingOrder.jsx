@@ -10,9 +10,9 @@ export default function OrdersLists() {
 
   const [data, setData] = useState([]);
   useEffect(() => {
-    // Make the POST request to your API endpoint here
+
     axiosClient
-      .post("getOrderLists", payload)
+      .post("getPendingOrders", payload)
       .then((response) => {
         setData(response.data.farmsOwnedByUser);
       })
@@ -20,8 +20,10 @@ export default function OrdersLists() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
   return (
     <div className="bg-slate-400">
+      <p>Pending Orders</p>
       {data.map((farm) => (
         <React.Fragment key={farm.farm.id}>
           {farm.transactions.map((transaction) => (

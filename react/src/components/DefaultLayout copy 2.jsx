@@ -108,15 +108,11 @@ export default function DefaultLayout() {
                   <p>Transactions Section</p>
                   <hr class=" h-1 bg-gray-900 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
 
-                  <Link to="/orders/pending"><Sidebar.Item
-                    className="mb-3 mt-3"
-                    icon={HiShoppingBag}>
-                    <p>Pending Orders</p>
-                  </Sidebar.Item></Link>
-                  <Link to="/orders/fulfilled"><Sidebar.Item
-                    className="mb-3 mt-3"
-                    icon={HiShoppingBag}>
-                    <p>Fulfilled Orders</p>
+                  <Link to="/orders/list"><Sidebar.Item
+                    className="mb-6 mt-3"
+                    icon={HiShoppingBag}
+                  >
+                    <p>Orders Page</p>
                   </Sidebar.Item></Link>
 
                   <p> App Settings</p>

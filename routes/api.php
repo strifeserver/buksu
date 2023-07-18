@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ORDERS
     Route::post('getOrderLists', [ProductController::class, 'getOrderLists']);
+    Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
+
 
 
     //SUPERADMIN PAGES

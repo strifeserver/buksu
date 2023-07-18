@@ -1,42 +1,31 @@
 export default function NotFound() {
-    return (
-      <div className=" bg-gray-900">
-
-
-      <section className=" py-[120px]">
-        <div className="container">
-          <div className="flex -mx-4">
-            <div className="w-full px-4">
-              <div className="mx-auto max-w-[400px] text-center">
-                <h2 className="mb-2 text-[50px] font-bold leading-none text-white sm:text-[80px] md:text-[100px]">
-                  404
-                </h2>
-                <h4 className="mb-3 text-[22px] font-semibold leading-tight text-white">
-                  Oops! That page can't be found
-                </h4>
-                <p className="mb-8 text-lg text-white">
-                  The page you are looking for it maybe deleted
-                </p>
-                <a
-                  href="/#"
-                  className="inline-block px-8 py-3 text-base font-semibold text-center text-white transition border border-white rounded-lg hover:bg-white hover:text-primary"
-                >
-                  Go to Home
-                </a>
-              </div>
-            </div>
+  return (
+    <div className="bg-gray-800 h-screen">
+      <div className="flex items-center justify-center py-12">
+        <div className="bg-white border rounded-md flex items-center justify-center mx-4 md:w-2/3 ">
+          <div className="flex flex-col items-center py-16 ">
+            <img
+              className="px-4 hidden md:block"
+              src="https://i.ibb.co/9Vs73RF/undraw-page-not-found-su7k-1-3.png"
+              alt=""
+            />
+            <img
+              className="md:hidden"
+              src="https://i.ibb.co/RgYQvV7/undraw-page-not-found-su7k-1.png"
+              alt=""
+            />
+            <h1 className="px-4 pt-8 pb-4 text-center text-5xl font-bold leading-10 text-gray-800">
+              OOPS!{" "}
+            </h1>
+            <p className="px-4 pb-10 text-base leading-none text-center text-gray-600">
+              No signal here! we cannot find the page you are looking for{" "}
+            </p>
+            <button className="mx-4 h-10 w-44 border rounded-md text-white text-base bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-indigo-800">
+              Go Back
+            </button>
           </div>
         </div>
-        <div className="absolute top-0 left-0 flex items-center justify-between w-full h-full space-x-5 -z-10 md:space-x-8 lg:space-x-14">
-          <div className="h-full w-1/3 bg-gradient-to-t from-[#FFFFFF14] to-[#C4C4C400]" />
-          <div className="flex w-1/3 h-full">
-            <div className="h-full w-1/2 bg-gradient-to-b from-[#FFFFFF14] to-[#C4C4C400]" />
-            <div className="h-full w-1/2 bg-gradient-to-t from-[#FFFFFF14] to-[#C4C4C400]" />
-          </div>
-          <div className="h-full w-1/3 bg-gradient-to-b from-[#FFFFFF14] to-[#C4C4C400]" />
-        </div>
-      </section>
       </div>
-
-    )
+    </div>
+  );
 }

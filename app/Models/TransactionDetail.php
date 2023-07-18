@@ -14,6 +14,8 @@ class TransactionDetail extends Model
         'variety',
         'planted_date',
         'harvested_date',
+        'price_per_kilo',
+        'price_of_goods',
         'total_price',
         'kg_purchased',
         'transaction_id',

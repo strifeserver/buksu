@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import axiosClient from "../axios-client.js";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider.jsx";
-import { Pagination, } from "flowbite-react";
+import { Pagination, Button, Spinner, Alert } from "flowbite-react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-
+import { HiInformationCircle } from "react-icons/hi";
 export default function Products() {
   const [products, setProducts] = useState([]);
 
@@ -27,16 +25,6 @@ export default function Products() {
     getProducts();
   }, [currentPage]);
 
-  // const onDeleteClick = (user) => {
-  //   if (!window.confirm("Are you sure you want to delete this user?")) {
-  //     return;
-  //   }
-  //   axiosClient.delete(`/users/${user.id}`).then(() => {
-  //     setNotification("User was successfully deleted");
-  //     getUsers();
-  //   });
-  // };
-
   const getProducts = () => {
     setLoading(true);
     axiosClient
@@ -51,82 +39,88 @@ export default function Products() {
       });
   };
 
+  const [showAlert, setShowAlert] = useState(true);
+
+  // Auto close the alert after 3 seconds (adjust the duration as needed)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 4000); //
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <div>
-      <body class="antialiased bg-gray-200 text-gray-900 font-sans p-6">
-        <div class="container mx-auto">
-          <div class="flex flex-wrap -mx-4">
-
-            <form>
-            {loading && <p>Loading</p>}
-            {!loading && (
-              <div class="flex flex-wrap -mx-4">
-                {products.map((u) => (
-                  <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/4 p-4">
-                    <a
-                      href=""
-                      class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden"
-                    >
-                      <div class="relative pb-48 overflow-hidden">
-                        <img
-                          class="absolute inset-0 h-full w-full object-cover"
-                          src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-                          alt=""
-                        />
-                      </div>
-                      <div class="p-4">
-                        <FontAwesomeIcon icon={faLocationDot} />
-                        &nbsp;
-                        <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
-                          {/* {u.product_location} */} same
-                        </span>
-                        <h2 class="mt-2 mb-2">{u.product_name}</h2>
-                        <p class="text-sm text-justify">
-                          Available: {u.prospect_harvest_in_kg} &nbsp; Kilo/s{" "}
-                          <br></br>
-                        </p>
-                        <div class="mt-3 flex items-center">
-                          <span class="text-sm font-semibold">Php.</span>&nbsp;
-                          <span class="font-bold text-xl">{u.price}</span>&nbsp;
-                          <span class="text-sm font-semibold">/ Kl</span>
-                        </div>
-                      </div>
-                      <div class="p-2 border-t border-b text-xs text-gray-700">
-                        <span class="flex items-center mb-1">
-                          <p>Planted:</p>
-                          <i class="far fa-clock fa-fw mr-2 text-gray-900"></i>
-                          {u.planted_date}
-                        </span>
-                        <span class="flex items-center">
-                          <p>Harvesting:</p>
-                          <i class="far fa-address-card fa-fw text-gray-900 mr-2"></i>{" "}
-                          {u.prospect_harvest_date}
-                        </span>
-                      </div>
-                      </a>
-                      <div class="p-2 flex items-center text-sm text-gray-600">
-                        <label htmlFor="quantity">
-                        <FontAwesomeIcon icon={faCartShopping} size="2x" />
-                        </label>
-                        <input
-                          type="number"
-                          name="product_id[]"
-                          id="quantity"
-                          class=" ml-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          min="1" max={u.prospect_harvest_in_kg} ></input>
-                      </div>
-
-                  </div>
-                ))}
-              </div>
-            )}
-             </form>
+    <div className=" 2xl:container 2xl:mx-auto">
+      <div className=" py-6 lg:px-20 md:px-6 px-4">
+        <p className=" font-normal text-sm leading-3 text-gray-600 ">
+          Available Vegetables
+        </p>
+        <hr className=" w-full bg-gray-200 my-6" />
+        {loading && (
+          <div className="flex items-center justify-center">
+            <Button color="gray">
+              <Spinner aria-label="Alternate spinner button example" />
+              <span className="pl-3 items-center">Getting Products ...</span>
+            </Button>
           </div>
+        )}
+        {showAlert && (
+          <Alert color="success" icon={HiInformationCircle} rounded>
+            <span>
+              <p>
+                <span className="font-medium">Info alert!</span>
+                Change a few things up and try submitting again.
+              </p>
+            </span>
+          </Alert>
+        )}
 
-        </div>
+        {!loading && (
+          <div className=" grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-y-12 lg:gap-x-8 sm:gap-y-10 sm:gap-x-6 gap-y-6 lg:mt-12 mt-10">
+            {products.map((u, count, index) => (
+              <div className="relative">
+                <div className=" absolute top-0 left-0 py-2 px-4 bg-white bg-opacity-50 "></div>
+                <div className=" relative group">
+                  <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full"></div>
+                  <img
+                    className=" w-96 h-96"
+                    src="https://s-media-cache-ak0.pinimg.com/736x/ba/ef/c1/baefc1bbbc0aa057a4682e045ef9a10d--gymnastics-girls-handstand.jpg"
+                    alt="A girl Posing Img"
+                  />
+                </div>
 
-        <div className="flex items-center justify-center text-center mt-3">
-          <Pagination
+                <p className=" font-normal text-xl leading-5 text-gray-800 md:mt-5 mt-3">
+                  {u.product_name.toUpperCase()}
+                </p>
+                <p className=" font-semibold text-xl leading-5 text-gray-800 mt-4">
+                  ₱ {u.price} / Kl
+                </p>
+                <div className="flex flex-row justify-between mt-4">
+                  <p className=" font-medium text-base leading-4 text-gray-600"></p>
+                  <div className="flex">
+                    <p>Select Kilo &nbsp;</p>
+                    <input name="product_ID" value={u.id} hidden/>
+                    <input
+                      id="counter"
+                      type="number"
+                      min={0}
+                      aria-label="input"
+                      name="kilos[]"
+                      className="border border-gray-300 h-full text-center w-14 pb-1"
+                    />
+                  </div>
+                </div>
+                <button className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2">
+                  Add to Cart
+                </button>
+              </div>
+            ))}
+            {/* <div className="flex justify-center items-center p-8">
+            <Pagination
+            className="ml-9"
             currentPage={currentPage}
             onPageChange={(page) => {
               setCurrentPage(page);
@@ -134,9 +128,23 @@ export default function Products() {
             showIcons
             totalPages={totalPages}
           />
-        </div>
-
-      </body>
+            </div> */}
+            <div className="lg:ml-60 md:ml-60 flex items-center justify-center text-center mx-8">
+              <Pagination
+                currentPage={currentPage}
+                layout="pagination"
+                nextLabel="Next"
+                onPageChange={(page) => {
+                  setCurrentPage(page);
+                }}
+                previousLabel="Back"
+                showIcons
+                totalPages={totalPages}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

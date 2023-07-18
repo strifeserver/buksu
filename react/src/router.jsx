@@ -1,6 +1,5 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import Dashboard from "./views/Dashboard.jsx";
-import Farms from "./views/Farms.jsx";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Login";
@@ -11,11 +10,13 @@ import UserForm from "./views/UserForm";
 import Products from "./views/Products.jsx";
 import Sample from "./views/sample.jsx";
 
+import Farms from "./views/Seller/Farms.jsx";
 import AddProduct from "./views/Seller/AddProduct.jsx";
 import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
 import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
 import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
-import OrdersLists from "./views/Seller/OrdersLists.jsx";
+import PendingOrder from "./views/Seller/PendingOrder.jsx";
+import FulfilledOrder from "./views/Seller/FulfilledOrder.jsx";
 
 
 const router = createBrowserRouter([
@@ -61,9 +62,16 @@ const router = createBrowserRouter([
         element: <AddProduct />
       },
       {
-        path: '/orders/list',
-        element: <OrdersLists />
+        path: '/orders/pending',
+        element: <PendingOrder />
       },
+      {
+        path: '/orders/fulfilled',
+        element: <FulfilledOrder />
+      },
+
+
+
       //Super Admin Pages
       {
         path: '/admin/supported/barangay',

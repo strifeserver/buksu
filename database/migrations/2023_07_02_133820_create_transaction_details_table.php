@@ -19,8 +19,9 @@ return new class extends Migration
              $table->string('variety');
              $table->date('planted_date');
              $table->date('harvested_date')->nullable();
-             $table->double('total_price')->default(0);
              $table->float('kg_purchased')->nullable();
+             $table->double('price_per_kilo')->default(0);
+             $table->double('total_price')->default(0);
              //Foreign ID
              $table->unsignedBigInteger('transaction_id');
              $table->foreign('transaction_id')->references('id')->on('transactions');

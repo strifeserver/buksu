@@ -47,52 +47,48 @@ class ProductController extends Controller
     }
 
 
-    public function getOrderLists(Request $request)
+    public function getPendingOrders(Request $request)
     {
-        //     $user_ID = Crypt::decryptString($request->user_ID);
-
-        //     $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
-        //     foreach($farmsOwnedByUser as $farmOwnedByUser){
-        //         $i=0;
-        //         $transactions = Transaction::where("from_farm", $farmOwnedByUser->id)->get();
-        //         foreach ($transactions as $transaction){
-        //             $transactionDetails[] = TransactionDetail::where("transaction_id", $transaction->id)->get();
-        //         }
-        //     }
-        //    return response([
-        //     'farmsOwned' => $farmsOwnedByUser,
-        //     'transactions' => $transactions,
-        //     'transaction_Details' => $transactionDetails,
-        //    ]);
-        // $user_ID = Crypt::decryptString($request->user_ID);
-        // $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
-        // $farmData = [];
-        // foreach ($farmsOwnedByUser as $farm) {
-        //     $farmTransactions = Transaction::where("from_farm", $farm->id)->get();
-        //     $transactionsData = [];
-        //     foreach ($farmTransactions as $transaction) {
-        //         $transactionDetails = TransactionDetail::where("transaction_id", $transaction->id)->get();
-        //         $transactionsData[] = [
-        //             'transaction' => $transaction,
-        //             'transaction_details' => $transactionDetails,
-        //         ];
-        //     }
-        //     $farmData[] = [
-        //         'farm' => $farm,
-        //         'transactions' => $transactionsData,
-        //     ];
-        // }
-
-        // return response()->json([
-        //     'farmsOwnedByUser' => $farmData,
-        //     'userID' => $user_ID,
-        // ]);
         $user_ID = Crypt::decryptString($request->user_ID);
         $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
         $farmData = [];
 
         foreach ($farmsOwnedByUser as $farm) {
-            $farmTransactions = Transaction::where("from_farm", $farm->id)->get();
+            $farmTransactions = Transaction::where("from_farm", $farm->id)->where("price_payed" ,'=',  0)->get();
+            $transactionsData = [];
+
+            foreach ($farmTransactions as $transaction) {
+                // Access the user_id from the buyers_name in the transaction
+                $buyerUser = User::find($transaction->buyers_name);
+
+                $transactionDetails = TransactionDetail::where("transaction_id", $transaction->id)->get();
+                $transactionsData[] = [
+                    'transaction' => $transaction,
+                    'buyer_user' => $buyerUser,
+                    'transaction_details' => $transactionDetails,
+                ];
+            }
+
+            $farmData[] = [
+                'farm' => $farm,
+                'transactions' => $transactionsData,
+            ];
+        }
+
+        return response()->json([
+            'farmsOwnedByUser' => $farmData,
+        ]);
+    }
+
+
+    public function getOrderLists(Request $request)
+    {
+        $user_ID = Crypt::decryptString($request->user_ID);
+        $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
+        $farmData = [];
+
+        foreach ($farmsOwnedByUser as $farm) {
+            $farmTransactions = Transaction::where("from_farm", $farm->id)->where("price_payed" ,'>',  0)->get();
             $transactionsData = [];
 
             foreach ($farmTransactions as $transaction) {

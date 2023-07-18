@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('seller_prospect_date_todeliver')->nullable();
             $table->date('buyers_prospect_date_toget')->nullable();
             $table->date('agreed_date_of_exchange')->nullable();
+            $table->double('price_of_goods');
             $table->double('price_payed')->default(0);
              //foreign ID
              $table->unsignedBigInteger('buyers_name');
