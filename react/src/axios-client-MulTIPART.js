@@ -1,8 +1,11 @@
 import axios from "axios";
 import {useStateContext} from "./context/ContextProvider.jsx";
 
-const axiosClient = axios.create({
+const axiosClientMultipart = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
+  headers: {
+    "Content-Type": "multipart/form-data", // Add this line to handle file uploads
+  },
 })
 
 axiosClient.interceptors.request.use((config) => {
@@ -25,4 +28,4 @@ axiosClient.interceptors.response.use((response) => {
   throw error;
 })
 
-export default axiosClient
+export default axiosClientMultipart

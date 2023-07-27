@@ -31,7 +31,6 @@ class ProductFactory extends Factory
             'actual_harvested_in_kg' => $this->faker->randomFloat(2, 0, 1000),
             'harvested_date' => $this->faker->optional()->date,
             'product_location' => $this->faker->address,
-            'is_verified' => $this->faker->boolean,
             'price' => $this->faker->randomFloat(2, 0, 100),
             'product_picture' => $this->faker->imageUrl(),
             'farm_belonged' => $this->faker->randomElement(\App\Models\Farm::pluck('id')->toArray()),

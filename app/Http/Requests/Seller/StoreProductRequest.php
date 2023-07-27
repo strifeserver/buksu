@@ -24,7 +24,16 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_name' => 'required|string|min:5|max:25',
+            'product_type' => 'required|string',
+            'farm_belonged' => 'required|integer',
+            'variety' => 'required|string|min:4|max:25',
+            'planted_date' => 'required|date',
+            'prospect_harvest_in_kg' => 'required|integer',
+            'prospect_harvest_date' => 'required|date',
+            'product_location' => 'required|string',
+            'price' => 'required|integer',
+            'product_picture' => 'required|image',
         ];
     }
 }

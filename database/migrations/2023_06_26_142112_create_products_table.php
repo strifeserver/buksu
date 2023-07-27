@@ -24,7 +24,6 @@ return new class extends Migration
             $table->float('actual_harvested_in_kg')->nullable();
             $table->date('harvested_date')->nullable();
             $table->string('product_location');
-            $table->tinyInteger('is_verified')->default(0);
             $table->double('price')->default(0);
             $table->string('product_picture');
            //foreign ID

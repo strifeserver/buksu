@@ -15,38 +15,69 @@ class AuthController extends Controller
 {
     public function signup(SignupRequest $request)
     {
-        $data = $request->validated();
-        /** @var \App\Models\User $user */
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        if ($data = $request->validated()) {
+            /** @var \App\Models\User $user */
 
-        $token = $user->createToken('main')->plainTextToken;
-        return response(compact('user', 'token'));
+            if ($request->hasFile('id_pic')) {
+                $photo = $request->file('id_pic');
+                $fileName = $photo->getClientOriginalName();
+                // Store the file in the public storage inside the 'product_images' folder
+                $photo->storeAs('public/Users/', $fileName);
+                $data['id_pic'] = $fileName;
+            }
+
+            User::create([
+                'name' => $data['name'],
+                'birthday' => $data['birthday'],
+                'mobile_number' => $data['mobile_number'],
+                'address' => $data['address'],
+                'user_type' => $data['user_type'],
+                'is_verified' => -1,
+                'is_active' => 0,
+                'email' => $data['email'],
+                'password' => bcrypt('password'),
+                'id_pic' => $data['id_pic'],
+            ]);
+            //   $token = $user->createToken('main')->plainTextToken;
+        } else {
+            return response('error', 404);
+        } // $token = $user->createToken('main')->plainTextToken; // return response(compact('user', 'token'));
+        return response([
+            'success' => 'Your Personal data has been recorded. Please wait for the admin to confirm your identity. Also, take note that the default password for your account is "password". Thank You.'
+        ], 200);
     }
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
-        if (!Auth::attempt($credentials)) {
+        if ($credentials = $request->validated()) {
+
+            if (!Auth::attempt($credentials)) {
+                return response([
+                    'message' => 'Provided mobile number or password is incorrect'
+                ], 422);
+            }
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            if ($user->is_verified === -1) {
+                return response([
+                    'message' => 'Please Wait for your Account to be Activated'
+                ], 422);
+            } else {
+                $userID = $user->id;
+                $token = $user->createToken('main')->plainTextToken;
+                return response()->json([
+                    // 'user' => $user,
+                    'token' => $token,
+                    'userType' => $user->user_type,
+                    'encryptedCurrentUserID' => Crypt::encryptString($userID),
+                ]);
+            }
+        } else {
             return response([
-                'message' => 'Provided email or password is incorrect'
+                'message' => 'Please Check the mobile number or password'
             ], 422);
         }
-
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $userID = $user->id;
-
-        $token = $user->createToken('main')->plainTextToken;
-        return response()->json([
-            // 'user' => $user,
-            'token' => $token,
-            'encryptedCurrentUserID' => Crypt::encryptString($userID),
-        ]);
-
     }
 
     public function logout(Request $request)

@@ -5,7 +5,7 @@ import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Login";
 import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
-import Users from "./views/Users";
+import Users from "./views/Admin/Users.jsx";
 import UserForm from "./views/UserForm";
 import Products from "./views/Products.jsx";
 import Sample from "./views/sample.jsx";
@@ -17,6 +17,8 @@ import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
 import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
 import PendingOrder from "./views/Seller/PendingOrder.jsx";
 import FulfilledOrder from "./views/Seller/FulfilledOrder.jsx";
+import CropRecords from "./views/Admin/CropRecords.jsx";
+// import AddProd from "./views/Seller/AddProd.jsx";
 
 
 const router = createBrowserRouter([
@@ -26,14 +28,14 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/dashboard"/>
+        element: <Navigate to="admin/dashboard"/>
       },
       {
-        path: '/dashboard',
+        path: 'admin/dashboard',
         element: <Dashboard/>
       },
       {
-        path: '/users',
+        path: 'admin/users',
         element: <Users/>
       },
       {
@@ -69,9 +71,10 @@ const router = createBrowserRouter([
         path: '/orders/fulfilled',
         element: <FulfilledOrder />
       },
-
-
-
+      {
+        path: 'admin/croprecords',
+        element: <CropRecords />
+      },
       //Super Admin Pages
       {
         path: '/admin/supported/barangay',

@@ -2,42 +2,45 @@ import { createRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client.js";
 import { useStateContext } from "../context/ContextProvider.jsx";
-import { Button, Label, TextInput } from "flowbite-react";
 
 export default function Login() {
-  const emailRef = createRef();
+  const mobile_numberRef = createRef();
   const passwordRef = createRef();
-  const { setUser, setToken, setCurrentUserID } = useStateContext();
-  const [message, setMessage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUser, setToken, setCurrentUserID, setUserType } = useStateContext();
+  const [errors, setErrors] = useState(null);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
 
     const payload = {
-      email: emailRef.current.value,
+      mobile_number: mobile_numberRef.current.value,
       password: passwordRef.current.value,
     };
     axiosClient
       .post("/login", payload)
       .then(({ data }) => {
+        setIsSubmitting(false);
         setToken(data.token);
+        setUserType(data.userType);
         setCurrentUserID(data.encryptedCurrentUserID);
-
       })
       .catch((err) => {
         const response = err.response;
         if (response && response.status === 422) {
-          setMessage(response.data.message);
+          const errorMessage = response.data.message; // Get the error message from the response
+        setErrors({ message: errorMessage }); // Set the error state with the error message
         }
+        setIsSubmitting(false);
       });
   };
 
   return (
-    <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
+    <section className="bg-white py-20 lg:py-[120px]">
       <div className="container mx-auto">
         <div className="w-full px-4">
-          <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white py-16 px-10 text-center sm:px-12 md:px-[60px]">
-            <div className="mb-10 text-center md:mb-16">
+          <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-slate-200 py-16 px-10 text-center sm:px-12 md:px-[60px]">
+            <div className="mb-10  md:mb-16">
               <a href="/#" className="mx-auto inline-block max-w-[160px]">
                 <img
                   src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo.svg"
@@ -45,16 +48,31 @@ export default function Login() {
                 />
               </a>
             </div>
+            {errors && errors.message && (
+  <div className="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+    <strong>Error:</strong> {errors.message}
+  </div>
+)}
+
             <form onSubmit={onSubmit}>
+              <label htmlFor="mobile_number" className="text-lg">
+                Mobile Number
+              </label>
               <input
-                ref={emailRef}
-                type="email"
-                name="email"
-                placeholder="Email"
+                ref={mobile_numberRef}
+                type="text"
+                id="mobile_number"
+                name="mobile_number"
+                placeholder="Mobile Number"
                 className="mt-2 mb-3 border-[#E9EDF4] w-full rounded-md border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:border-primary focus-visible:shadow-none"
               />
+              <br />
+               <label htmlFor="password" className="text-lg">
+                Password
+              </label>
               <input
                 ref={passwordRef}
+                id="password"
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -63,20 +81,17 @@ export default function Login() {
 
               <div className="mb-10">
                 <button
-                  className="mt-2 mb-3 border-primary w-full cursor-pointer rounded-md border bg-blue-500 py-3 px-5 text-base text-white transition hover:bg-opacity-90"
                   type="submit"
+                  className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isSubmitting}
                 >
-                  Sign In
+                  Signin
                 </button>
               </div>
             </form>
 
-            {/* <a
-              href="/#"
-              className="mb-2 inline-block text-base text-[#adadad] hover:text-primary hover:underline"
-            >
-              Forget Password?
-            </a> */}
             <p className="text-base text-[#adadad]">
               Not an Etabo-user yet ?
               <a href="/signup" className="text-primary hover:underline">
@@ -307,50 +322,3 @@ export default function Login() {
     </section>
   );
 }
-
-
-// <section className="bg-gray-500 dark:bg-gray-900">
-//   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-//   <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-//     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-//       <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center">
-//         Sign in to your account{" "}
-//       </h1>
-//       <form onSubmit={onSubmit}>
-//         {/* ALERT */}
-//         {message && (
-//           <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-//           <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-//           <span class="sr-only"></span>
-//           <div>
-//             <span class="font-medium"></span> {message}
-//           </div>
-//         </div>
-//         )}
-
-//         <Label htmlFor="email1" value=" Email"/>
-//         <TextInput
-//           ref={emailRef}
-//           type="email"
-//           id="email"
-//           placeholder="Email"
-//           className="mb-2"/>
-//         <Label htmlFor="password" value=" Password" />
-//         <TextInput
-//           ref={passwordRef} ref={emailRef}
-//           type="password"
-//           id="password"
-//           placeholder="Password"
-//           className="mb-2"/>
-//         <Button type="submit"
-//           className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-0.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mb-3">
-//             Login
-//           </Button>
-//         <p className="message">
-//           Not registered? <Link to="/signup">Create an account</Link>
-//         </p>
-//       </form>
-//     </div>
-//     </div>
-//   </div>
-// </section>

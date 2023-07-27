@@ -19,7 +19,6 @@ class Product extends Model
         'actual_harvested_in_kg',
         'harvested_date',
         'product_location',
-        'is_verified',
         'price',
         'product_picture',
         'farm_belonged',

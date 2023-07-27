@@ -27,7 +27,6 @@ class FarmFactory extends Factory
             'prospect_harvest_date' => $this->faker->optional()->date,
             'farm_info' => $this->faker->text,
             'farm_pictures' => $this->faker->imageUrl(),
-            'is_verified' => $this->faker->boolean,
             'farm_owner' => $this->faker->randomElement(\App\Models\User::pluck('id')->toArray()),
         ];
     }

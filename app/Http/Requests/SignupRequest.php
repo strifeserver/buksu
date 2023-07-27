@@ -26,15 +26,12 @@ class SignupRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string','unique:users,name'],
+            'birthday' => ['required', 'date'],
+            'address' => ['required', 'string'],
+            'mobile_number' => ['required', 'unique:users,mobile_number'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)
-                    ->letters()
-                    ->symbols()
-                    ->numbers()
-            ]
+            'user_type' => ['required'],
+            'id_pic' => ['required', 'image'],
         ];
     }
 }

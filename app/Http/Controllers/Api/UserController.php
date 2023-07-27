@@ -25,9 +25,9 @@ class UserController extends Controller
     // {
     //     return UserResource::collection(User::query()->orderBy('id', 'asc')->paginate(5));
     // }
-    public function allUsers()
+    public function allUsersPending()
     {
-        $user =User::query()->paginate(10);
+        $user =User::where('is_verified', '=' , -1)->paginate(10);
         return UserResource::collection($user);
     }
 

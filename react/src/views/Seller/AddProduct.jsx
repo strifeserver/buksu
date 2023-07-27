@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
+// import { useHistory  } from "react-router-dom";
 
 export default function AddProduct() {
   const { currentUserID } = useStateContext();
@@ -8,22 +9,6 @@ export default function AddProduct() {
   const payload = {
     user_ID: currentUserID,
   };
-
-  const [formData, setFormData] = useState({
-    product_name: "",
-    product_type: "",
-    farm_belonged: "",
-    variety: "",
-    planted_date: "",
-    prospect_harvest_in_kg: "",
-    prospect_harvest_date: "",
-    actual_harvested_in_kg: "",
-    harvested_date: "",
-    product_location: "",
-    price: "",
-    product_picture: "",
-    user_ID: currentUserID,
-  });
 
   const [productType, setProductType] = useState([]);
   const [farmsOwned, setfarmsOwned] = useState([]);
@@ -51,13 +36,46 @@ export default function AddProduct() {
       });
   }, []);
 
+  //ADDING PRODUCTS
+
+  const [formData, setFormData] = useState({
+    product_name: "",
+    product_type: "",
+    farm_belonged: "",
+    variety: "",
+    planted_date: "",
+    prospect_harvest_in_kg: "",
+    prospect_harvest_date: "",
+    actual_harvested_in_kg: "",
+    harvested_date: "",
+    product_location: "",
+    price: "",
+    user_ID: currentUserID,
+    product_picture: null, // Moved product_picture here
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+    const newValue = type === "file" ? files[0] : value;
+
+    setFormData({
+      ...formData,
+      [name]: newValue,
+    });
+  };
+
   const addProductForm = (e) => {
     e.preventDefault();
+
+    const productData = new FormData();
+    for (const key in formData) {
+      productData.append(key, formData[key]);
+    }
     axiosClient
-      .post("/addProductForm", formData)
+      .post("/addProductForm", productData)
       .then((response) => {
         // Handle successful form submission
-        console.log(response.data);
+        // console.log(response.data);
 
         // Reset the form after submission
         setFormData({
@@ -72,21 +90,13 @@ export default function AddProduct() {
           harvested_date: "",
           product_location: "",
           price: "",
-          product_picture: "",
-          user_ID: "",
+          product_picture: null, // Reset product_picture too
         });
       })
       .catch((error) => {
         // Handle form submission error
         console.error(error);
       });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -492,7 +502,7 @@ export default function AddProduct() {
                     </div>
                     <input
                       id="product_location"
-                      type="number"
+                      type="text"
                       name="product_location"
                       value={formData.product_location}
                       onChange={handleChange}
@@ -551,7 +561,7 @@ export default function AddProduct() {
                       type="file"
                       id="product_picture"
                       name="product_picture"
-                      value={formData.product_picture}
+                      // value={formData.handleFileChange}
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     />
@@ -571,14 +581,6 @@ export default function AddProduct() {
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <div className="relative">
-                    <input
-                    disabled hidden
-                      type="text"
-                      name="user_ID"
-                      id="user_ID"
-                      onChange={handleChange}
-                      value={formData.user_ID}
-                    />
                     <button
                       type=""
                       className="mx-2 my-2 bg-slate-700 transition duration-150 ease-in-out hover:bg-slate-600 rounded text-white px-6 py-2 text-md w-full block"
@@ -593,6 +595,7 @@ export default function AddProduct() {
                   <div className="relative">
                     <button
                       type="submit"
+                      // onClick={addP roductForm}
                       className="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md w-full block"
                     >
                       Save

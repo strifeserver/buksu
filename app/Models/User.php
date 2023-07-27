@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'user_type',
         'profile_pic',
+        'id_pic',
         'password',
         'is_verified',
         'is_active'

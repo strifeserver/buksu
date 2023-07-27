@@ -1,109 +1,203 @@
-import {Link} from "react-router-dom";
-import {createRef, useState} from "react";
+import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
-import {useStateContext} from "../context/ContextProvider.jsx";
+import { useStateContext } from "../context/ContextProvider.jsx";
+import Modal from "../components/Modal.jsx";
 
 export default function Signup() {
-  const nameRef = createRef()
-  const emailRef = createRef()
-  const passwordRef = createRef()
-  const passwordConfirmationRef = createRef()
-  const {setUser, setToken} = useStateContext()
-  const [errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
 
-  const onSubmit = ev => {
-    ev.preventDefault()
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    birthday: "",
+    mobile_number: "",
+    address: "",
+    user_type: "", // Add an initial value here
+    id_pic: null, // Change to null to handle file uploads
+  });
 
-    const payload = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      password_confirmation: passwordConfirmationRef.current.value,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files[0],
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors(null); // Reset errors before form submission
+
+    const userData = new FormData();
+    for (const key in formData) {
+      userData.append(key, formData[key]);
     }
-    axiosClient.post('/signup', payload)
-      .then(({data}) => {
-        setUser(data.user)
-        setToken(data.token);
+
+    axiosClient
+      .post("/signup", userData)
+      .then((response) => {
+        setIsSubmitting(false);
+        if (response && response.status === 200) {
+          const successMessage = response.data.success;
+          if (successMessage) {
+            setIsModalOpen(true);
+            setModalMessage(successMessage);
+          }
+        }
+
+        // Optionally, you can redirect to another page here
       })
-      .catch(err => {
+      .catch((err) => {
         const response = err.response;
         if (response && response.status === 422) {
-          setErrors(response.data.errors)
+          setErrors(response.data.errors);
         }
-      })
-  }
+        setIsSubmitting(false);
+      });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
+
 
   return (
-    // <div className="login-signup-form animated fadeInDown">
-    //   <div className="form">
-    //     <form onSubmit={onSubmit}>
-    //       <h1 className="title">Signup for Free</h1>
-    //       {errors &&
-    //         <div className="alert">
-    //           {Object.keys(errors).map(key => (
-    //             <p key={key}>{errors[key][0]}</p>
-    //           ))}
-    //         </div>
-    //       }
-    //       <input ref={nameRef} type="text" placeholder="Full Name"/>
-    //       <input ref={emailRef} type="email" placeholder="Email Address"/>
-    //       <input ref={passwordRef} type="password" placeholder="Password"/>
-    //       <input ref={passwordConfirmationRef} type="password" placeholder="Repeat Password"/>
-    //       <button className="btn btn-block">Signup</button>
-    //       <p className="message">Already registered? <Link to="/login">Sign In</Link></p>
-    //     </form>
-    //   </div>
-    // </div>
     <div className="bg-gray-800 min-h-screen flex flex-col">
-    <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+      <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
         <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-            <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-            <input
-                type="text"
-                className="block border border-grey-light w-full p-3 rounded mb-4"
-                name="fullname"
-                placeholder="Full Name" />
-
-            <input
-                type="text"
-                className="block border border-grey-light w-full p-3 rounded mb-4"
-                name="email"
-                placeholder="Email" />
-
-            <input
-                type="password"
-                className="block border border-grey-light w-full p-3 rounded mb-4"
-                name="password"
-                placeholder="Password" />
-            <input
-                type="password"
-                className="block border border-grey-light w-full p-3 rounded mb-4"
-                name="confirm_password"
-                placeholder="Confirm Password" />
-
-            <button
-                type="submit"
-                className="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1"
-            >Create Account</button>
-
-            <div className="text-center text-sm text-grey-dark mt-4">
-                By signing up, you agree to the
-                <a className="no-underline border-b border-grey-dark text-grey-dark" href="#">
-                    Terms of Service
-                </a> and
-                <a className="no-underline border-b border-grey-dark text-grey-dark" href="#">
-                    Privacy Policy
-                </a>
+          <h1 className="mb-8 text-3xl text-center">Signup</h1>
+          {errors && Object.keys(errors).length > 0 && (
+            <div className="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+              <strong>Error:</strong> {errors.message}
+              <ul>
+                {Object.keys(errors).map((field) =>
+                  errors[field].map((message, index) => (
+                    <li key={index}>{message}</li>
+                  ))
+                )}
+              </ul>
             </div>
-        </div>
+          )}
+          {isModalOpen && (
+            <Modal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              message={modalMessage}
+            />
+          )}
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <input
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
 
-        <div className="text-grey-dark mt-6">
+            <input
+              type="email"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="mobile_number"
+              placeholder="Mobile Number"
+              value={formData.mobile_number}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="date"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="address"
+              placeholder="Address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+            />
+
+            <select
+              id="user_type"
+              name="user_type"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              value={formData.user_type}
+              onChange={handleChange}
+              required
+            >
+               <option>
+               Buyer ,Seller ? Please select
+              </option>
+              <option value={0}>
+                Buyer
+              </option>
+              <option value={1}>Seller</option>
+            </select>
+
+            <label
+              className="block  w-full text-slate-200 bg-slate-500 rounded mb-2"
+              htmlFor="id_pic"
+            >
+              {" "}
+              Upload a Valid ID for Confirmation
+            </label>
+
+               <input
+              id="id_pic"
+              type="file"
+              name="id_pic"
+              onChange={handleFileChange} // Handle file input separately
+            />
+
+             <button
+              type="submit"
+              className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none mt-4 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              Create Account
+            </button>
+          </form>
+          <div className="text-grey-dark mt-5">
             Already have an account?
-            <a className="no-underline border-b border-blue text-blue" href="../login/">
-                Log in
-            </a>.
+            <a
+              className="no-underline border-b border-blue text-blue"
+              href="/login"
+            >
+              &nbsp; Log in
+            </a>
+            .
+          </div>
         </div>
+      </div>
     </div>
-</div>
-  )
+  );
 }

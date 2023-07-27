@@ -61,7 +61,7 @@ export default function Products() {
               <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full"></div>
               <img
                 className=" w-full"
-                src="https://i.ibb.co/HqmJYgW/gs-Kd-Pc-Iye-Gg.png"
+                src="https://th.bing.com/th/id/R.d70445b09e176b91070c30063c2764e8?rik=1FAWJ3hbWBqZCA&riu=http%3a%2f%2fwww.rivieraproduce.eu%2fwp-content%2fuploads%2f2011%2f08%2fimage_riviera_green_cabbage.jpg&ehk=i8JumawRerUf%2b1IjzmBGV9oNIAXbxzJBOoZB9X9KVRs%3d&risl=&pid=ImgRaw&r=0"
                 alt="A girl Posing Img"
               />
               <div className=" absolute bottom-0 p-8 w-full opacity-0 group-hover:opacity-100">

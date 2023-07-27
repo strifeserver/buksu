@@ -1,3 +1,7 @@
+import React from "react";
+
+import { Link } from "react-router-dom";
+
 export default function NotFound() {
   return (
     <div className="bg-gray-800 h-screen">
@@ -18,11 +22,13 @@ export default function NotFound() {
               OOPS!{" "}
             </h1>
             <p className="px-4 pb-10 text-base leading-none text-center text-gray-600">
-              No signal here! we cannot find the page you are looking for{" "}
+              We cannot find the page you are looking for{" "}
             </p>
+            <Link to="/">
             <button className="mx-4 h-10 w-44 border rounded-md text-white text-base bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-indigo-800">
               Go Back
             </button>
+            </Link>
           </div>
         </div>
       </div>

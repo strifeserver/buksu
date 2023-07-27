@@ -105,7 +105,7 @@ export default function Dashboard() {
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">Today's Sales</h2>
-                                    <p class="font-bold text-3xl">152 days</p>
+                                    <p class="font-bold text-3xl"> ...</p>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@ export default function Dashboard() {
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">Kilogram's Sold</h2>
-                                    <p class="font-bold text-3xl">7 tasks</p>
+                                    <p class="font-bold text-3xl"> ... </p>
                                 </div>
                             </div>
                         </div>

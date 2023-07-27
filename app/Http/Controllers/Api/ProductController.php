@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\SupportedProduct;
 use App\Models\TransactionDetail;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Seller\StoreProductRequest;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Resources\ProductResource;
 
@@ -23,7 +24,7 @@ class ProductController extends Controller
     public function allProducts()
     {
         // $user =User::query()->paginate(4);
-        $products = Product::query()->paginate(8);
+        $products = Product::where('actual_harvested_in_kg', '>', 0)->orderBy('product_name', 'asc')->paginate(8);
         return ProductResource::collection($products);
     }
 
@@ -34,18 +35,24 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function addToCart(Request $request)
+    {
+        $user_ID = Crypt::decryptString($request->user_ID);
+        $product = $request->products;
+        echo( $user_ID .  $product);
+
+    }
+
+
     public function getFarmInfobyUser(Request $request)
     {
-
         $user_ID = Crypt::decryptString($request->user_ID);
-
         $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
         return response([
             'farmsOwned' => $farmsOwnedByUser,
             'userID' => $user_ID,
         ]);
     }
-
 
     public function getPendingOrders(Request $request)
     {
@@ -114,14 +121,21 @@ class ProductController extends Controller
         ]);
     }
 
-    public function addProduct(Request $request)
+    public function addProduct(StoreProductRequest $request )
     {
-        $data = $request->user_ID;
+        $data = $request->validated();
 
-        $user_ID = Crypt::decryptString($data);;
-        // echo $data;
-        // echo $user_ID ;
-        // echo "sjkahsjagsjhaghj";
+        if ($request->hasFile('product_picture')) {
+            $photo = $request->file('product_picture');
+            $fileName = $photo->getClientOriginalName();
+                // Store the file in the public storage inside the 'product_images' folder
+            $photo->storeAs('public/Farms/'.$request->farm_belonged, $fileName);
+            $data['product_picture'] = $fileName;
+
+        }
+        $product = Product::create($data);
+
+        return response()->json(['message' => 'Photo uploaded successfully']);
     }
 
 

@@ -14,10 +14,7 @@ class Farm extends Model
         'farm_location',
         'farm_hectares',
         'google_maps_pin',
-        'prospect_harvest_date',
         'farm_info',
-        'farm_pictures',
-        'is_verified',
         'farm_owner',
     ];
 
