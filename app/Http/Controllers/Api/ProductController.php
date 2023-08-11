@@ -43,7 +43,6 @@ class ProductController extends Controller
 
     }
 
-
     public function getFarmInfobyUser(Request $request)
     {
         $user_ID = Crypt::decryptString($request->user_ID);
@@ -86,7 +85,6 @@ class ProductController extends Controller
             'farmsOwnedByUser' => $farmData,
         ]);
     }
-
 
     public function getOrderLists(Request $request)
     {

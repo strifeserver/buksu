@@ -54,6 +54,9 @@ export default function Products() {
     };
   }, []);
 
+
+
+
   const [formData, setFormData] = useState({
     productID_: "",
     kg_: "",
@@ -61,24 +64,18 @@ export default function Products() {
     variety: "",
     user_ID: currentUserID,
   });
-
-
-  const submitToCart = (event, productId, id) => {
+  // console.log("sent");
+  const submitToCart = (event) => {
     event.preventDefault();
-
-    // Set the product ID and ID of the current item in the formData
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      productID_: productId,
-      ID_: id,
-    }));
-
     axiosClient
-      .post('/addToCart', formData)
+      .post('/addToCart', formData) // Replace '/api/submit' with your Laravel API endpoint
       .then((response) => {
         // Handle successful response if needed
-        console.log("Form submitted successfully!");
+        // console.log(response.data);
+        console.log("sent");
         console.log(formData);
+
+
       })
       .catch((error) => {
         // Handle error if needed
@@ -117,6 +114,7 @@ export default function Products() {
           </Alert>
         )}
 
+        <h1>000-{prodID.id}</h1>
         {!loading && (
           <div className=" grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-y-12 lg:gap-x-8 sm:gap-y-10 sm:gap-x-6 gap-y-6 lg:mt-12 mt-10">
             {products.map((u) => (
@@ -131,7 +129,7 @@ export default function Products() {
                   <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full"></div>
                   <img
                     className=" w-96 h-96"
-                    src="https://snaped.fns.usda.gov/sites/default/files/styles/crop_ratio_7_5/public/seasonal-produce/2018-05/cabbage.jpg?h=ea25e381&itok=c6jva3pn"
+                    src="https://s-media-cache-ak0.pinimg.com/736x/ba/ef/c1/baefc1bbbc0aa057a4682e045ef9a10d--gymnastics-girls-handstand.jpg"
                     alt="A girl Posing Img"
                   />
                 </div>
@@ -148,11 +146,16 @@ export default function Products() {
                     <p>Select Kilo &nbsp;</p>
 
                     <input type="text"
+                    // name={`product_${u.id}`}
+                    //  value={formData[`inputField_${data.id}`] || ''}
+                    // value={u.id}
+
                     name={`productID_${u.id}`}
                     value={formData[`productID_${u.id}`] || ''}
                     onChange={handleChange}
-                    hidden/>
 
+                    />
+<br />
                     <input type="text"
                     name={`ID_${u.id}`}
                     value=""
@@ -169,7 +172,7 @@ export default function Products() {
                       type="number"
 
                       name={`kg_${u.id}`}
-                      value={formData[`kg_${u.id}`] || ''}
+                      value={formData[`kg_${u.id}`] || u.id}
                       onChange={handleChange}
 
                       min={0}

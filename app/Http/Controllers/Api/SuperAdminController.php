@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CropRecord;
+use Illuminate\Http\Request;
+use App\Models\SupportedBarangay;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CropRecordResource;
+use App\Http\Resources\SupportedProductResource;
+use App\Http\Resources\SupportedBarangayResource;
 use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
 use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
-use App\Http\Resources\CropRecordResource;
-use App\Http\Resources\SupportedBarangayResource;
-use App\Http\Resources\SupportedProductResource;
-use App\Models\CropRecord;
-use App\Models\SupportedBarangay;
-use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
 {
@@ -55,65 +56,52 @@ class SuperAdminController extends Controller
         $kibangayYield = 0;
         $basacYield = 0;
 
-        $monthYear = $request->months.$request->year;
+        $monthYear = $request->months . $request->year;
         $commodity = $request->commodity;
 
         $records = CropRecord::where('record_date', '=', $monthYear)
-                                ->where( 'commodity', '=', $commodity)
-                                ->get();
+            ->where('commodity', '=', $commodity)
+            ->get();
         foreach ($records as $record) {
             if ($record->barangay == 'CAPITAN JUAN') {
                 $capitanjuanArea = $capitanjuanArea + $record->area;
                 $capitanjuanYield = $capitanjuanYield + $record->yield;
-
             } else if ($record->barangay == 'BUGCAON') {
                 $bugcaonArea = $bugcaonArea + $record->area;
                 $bugcaonYield = $bugcaonYield + $record->yield;
-
             } else if ($record->barangay == 'KULASIHAN') {
                 $kulasihanArea = $kulasihanArea + $record->area;
                 $kulasihanYield = $kulasihanYield + $record->yield;
-
             } else if ($record->barangay == 'BANTUANON') {
                 $bantuanonArea = $bantuanonArea + $record->area;
                 $bantuanonYield = $bantuanonYield + $record->yield;
-
             } else if ($record->barangay == 'POBLACION') {
                 $poblacionArea = $poblacionArea + $record->area;
                 $poblacionYield = $poblacionYield + $record->yield;
-
             } else if ($record->barangay == 'BALILA') {
                 $balilaArea = $balilaArea + $record->area;
                 $balilaYield = $balilaYield + $record->yield;
-
             } else if ($record->barangay == 'BACLAYON') {
                 $baclayonArea = $baclayonArea + $record->area;
                 $baclayonYield = $baclayonYield + $record->yield;
-
             } else if ($record->barangay == 'KAATUAN') {
                 $kaatuanArea = $kaatuanArea + $record->area;
                 $kaatuanYield = $kaatuanYield + $record->yield;
-
             } else if ($record->barangay == 'ALANIB') {
                 $alanibArea = $alanibArea + $record->area;
                 $alanibYield = $alanibYield + $record->yield;
-
             } else if ($record->barangay == 'SONGCO') {
                 $songcoArea = $songcoArea + $record->area;
                 $songcoYield = $songcoYield + $record->yield;
-
             } else if ($record->barangay == 'CAWAYAN') {
                 $cawayanArea = $cawayanArea + $record->area;
                 $cawayanYield = $cawayanYield + $record->yield;
-
             } else if ($record->barangay == 'VICTORY') {
                 $victoryArea = $bugcaonArea + $record->area;
                 $victoryYield = $victoryYield + $record->yield;
-
             } else if ($record->barangay == 'KIBANGAY') {
                 $kibangayArea = $kibangayArea + $record->area;
                 $kibangayYield = $kibangayYield + $record->yield;
-
             } else if ($record->barangay == 'BASAC') {
                 $basacArea = $basacArea + $record->area;
                 $basacYield = $basacYield + $record->yield;
@@ -184,6 +172,23 @@ class SuperAdminController extends Controller
         $data = $request->validated();
         $supportedBarangay = SupportedBarangay::create($data);
         return response(new SupportedBarangayResource($supportedBarangay), 201);
+    }
+
+
+    public function getIDimage($filename)
+    {
+        $photo = Photo::find($id);
+
+        if (!$photo) {
+            return response()->json(['message' => 'Photo not found'], 404);
+        }
+
+        $photoPath = public_path('photos/' . $photo->filename);
+
+        return response()->json([
+            'filename' => $photo->filename,
+            'photo_url' => asset('photos/' . $photo->filename),
+        ]);
     }
 
     /**

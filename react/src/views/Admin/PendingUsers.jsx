@@ -69,24 +69,22 @@ export default function Users() {
     setCurrentPage(page);
   };
 
+
+
   return (
-    <div className="row mt-8">
+    <div className="row mt-1">
       <div className="card animated fadeInDown">
-        <h1 class="text-xl font-bold text-center mb-5 bg-slate-400">
-         Pending Users Lists
-        </h1>
         <Tabs.Group aria-label="Tabs with underline" style="underline">
-          <Tabs.Item active icon={HiUserCircle} title="Pending">
-            <button className="float-right bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring mr-1 mb-3">
-              Add User
-            </button>
+          <Tabs.Item active icon={HiUserCircle} title="Pending Users">
+
             <Table className="table-auto">
               <Table.Head>
                 <Table.HeadCell>ID</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
                 <Table.HeadCell>Birthday</Table.HeadCell>
                 <Table.HeadCell>Phone Number</Table.HeadCell>
-                <Table.HeadCell>Status</Table.HeadCell>
+                <Table.HeadCell>Address</Table.HeadCell>
+
                 <Table.HeadCell>Actions</Table.HeadCell>
               </Table.Head>
               {loading && (
@@ -118,17 +116,16 @@ export default function Users() {
                       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {u.mobile_number}
                       </Table.Cell>
+
                       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        <Badge color="warning" size="sm">
-                          <p className="text-center">unverified</p>
-                        </Badge>
+                        {u.address}
                       </Table.Cell>
                       <Table.Cell>
                         <Link
                           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                           to={"/users/" + u.id}
                         >
-                          Edit
+                          view
                         </Link>
                         &nbsp;
                         {/* <a
@@ -153,11 +150,6 @@ export default function Users() {
                 totalPages={totalPages}
               />
             </div>
-          </Tabs.Item>
-          <Tabs.Item active icon={HiUserCircle} title="All Users">
-          <h1 class="text-xl font-bold text-center mb-5">
-        Showing soon. Working ....
-        </h1>
           </Tabs.Item>
         </Tabs.Group>
       </div>

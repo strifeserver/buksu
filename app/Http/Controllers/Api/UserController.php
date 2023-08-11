@@ -31,6 +31,13 @@ class UserController extends Controller
         return UserResource::collection($user);
     }
 
+    public function allUsers()
+    {
+        $user = User::orderByDesc('updated_at')->paginate(10);
+        return UserResource::collection($user);
+    }
+
+
 
     public function usercount()
     {
@@ -84,9 +91,11 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
+        // if (isset($data['password'])) {
+        //     $data['password'] = bcrypt($data['password']);
+        // }
+        $data['is_verified'] = 1;
+        $data['updated_at'] = date('Y/m/d H:i:s');
         $user->update($data);
 
         return new UserResource($user);

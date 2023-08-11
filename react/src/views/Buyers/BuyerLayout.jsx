@@ -1,38 +1,26 @@
 import { Link, Navigate, Outlet, Routes, Route } from "react-router-dom";
 
-import axiosClient from "../axios-client.js";
-import { useStateContext } from "../context/ContextProvider";
+
 
 import { Button, Navbar } from "flowbite-react";
-
+// import { useStateContext } from "./BuyerContextProvider";
 export default function DefaultLayout() {
-  const {
-    currentUserID,
-    token,
-    userType,
-    setUserType,
-    setToken,
-    setCurrentUserID,
-  } = useStateContext();
+  // const {
+  //   currentUserID,
+  //   token,
+  //   userType,
+  //   setUserType,
+  //   setToken,
+  //   setCurrentUserID,
+  // } = useStateContext();
 
-  if (!token || userType === 0) {
-    // localStorage.removeItem('ACCESS_TOKEN');
-    // setToken(null);
-    alert("kjshdgh");
-    return <Navigate to="/login0" />;
-  } else if (!token || userType === 1) {
-    // localStorage.removeItem('ACCESS_TOKEN');
-    // setToken(null);
-    return <Navigate to="/login1" />;
-  } else if (!token || userType === 2) {
-    // localStorage.removeItem('ACCESS_TOKEN');
-    // setToken(null);
-    return <Navigate to="/login2" />;
-  } else if (!token || userType === 3) {
-    // localStorage.removeItem('ACCESS_TOKEN');
-    // setToken(null);
-    return <Navigate to="/login3" />;
-  }
+  // if (!token) {
+  //   return <Navigate to="/login" />;
+  // }
+  // const [page, setPage] = useState(''); // Initialize with the appropriate value
+  // if (userType === 0){
+  //   return <Navigate to="/login/kk" />;
+  // }
 
   const onLogout = (ev) => {
     ev.preventDefault();
@@ -54,7 +42,7 @@ export default function DefaultLayout() {
         {/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
         <div className="w-52 absolute sm:relative bg-green-500 shadow md:h-full flex-col justify-between flex">
           <div>
-            <div className="flex items-center mt-10 mb-0 px-8">
+          <div className="flex items-center mt-10 mb-0 px-8">
               <div className="w-10 h-10 bg-cover rounded-md mr-3">
                 <img
                   src="https://tuk-cdn.s3.amazonaws.com/assets/components/avatars/a_5.png"
@@ -64,7 +52,7 @@ export default function DefaultLayout() {
               </div>
               <div>
                 <p className="text-gray-600 text-sm font-medium">Steve Doe</p>
-                <p className="text-gray-600 text-xs">Admin</p>
+                <p className="text-gray-600 text-xs">BUYER</p>
               </div>
             </div>
             <ul className="mt-6">
@@ -198,45 +186,44 @@ export default function DefaultLayout() {
                   <span className="text-sm  ml-2">Inventory</span>
                 </div>
               </li>
-              <a href="/admin/supported/barangay">
-                <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-settings"
-                      width={18}
-                      height={18}
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" />
-                      <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <circle cx={12} cy={12} r={3} />
-                    </svg>
-                    <span className="text-sm  ml-2">Barangays</span>
-                  </div>
-                </li>
+      <a href="/admin/supported/barangay">
+              <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-settings"
+                    width={18}
+                    height={18}
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" />
+                    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <circle cx={12} cy={12} r={3} />
+                  </svg>
+                  <span className="text-sm  ml-2">Barangays</span>
+                </div>
+              </li>
               </a>
               <a href="/admin/users/pending">
-                <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
-                  <div className="flex items-center">
-                    <svg
-                      viewBox="0 0 1024 1024"
-                      fill="currentColor"
-                      height="1em"
-                      width="1em"
-                    >
-                      <path d="M888 784H664c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h224c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM373.5 510.4c-.9-8.7-1.4-17.5-1.4-26.4 0-15.9 1.5-31.4 4.3-46.5.7-3.6-1.2-7.3-4.5-8.8-13.6-6.1-26.1-14.5-36.9-25.1a127.54 127.54 0 01-38.7-95.4c.9-32.1 13.8-62.6 36.3-85.6 24.7-25.3 57.9-39.1 93.2-38.7 31.9.3 62.7 12.6 86 34.4 7.9 7.4 14.7 15.6 20.4 24.4 2 3.1 5.9 4.4 9.3 3.2 17.6-6.1 36.2-10.4 55.3-12.4 5.6-.6 8.8-6.6 6.3-11.6-32.5-64.3-98.9-108.7-175.7-109.9-110.9-1.7-203.3 89.2-203.3 199.9 0 62.8 28.9 118.8 74.2 155.5-31.8 14.7-61.1 35-86.5 60.4-54.8 54.7-85.8 126.9-87.8 204a8 8 0 008 8.2h56.1c4.3 0 7.9-3.4 8-7.7 1.9-58 25.4-112.3 66.7-153.5 29.4-29.4 65.4-49.8 104.7-59.7 3.9-1 6.5-4.7 6-8.7zM824 484c0-109.4-87.9-198.3-196.9-200C516.3 282.3 424 373.2 424 484c0 62.8 29 118.8 74.2 155.5a300.95 300.95 0 00-86.4 60.4C357 754.6 326 826.8 324 903.8a8 8 0 008 8.2h56c4.3 0 7.9-3.4 8-7.7 1.9-58 25.4-112.3 66.7-153.5C505.8 707.7 563 684 624 684c110.4 0 200-89.5 200-200zm-109.5 90.5C690.3 598.7 658.2 612 624 612s-66.3-13.3-90.5-37.5a127.26 127.26 0 01-37.5-91.8c.3-32.8 13.4-64.5 36.3-88 24-24.6 56.1-38.3 90.4-38.7 33.9-.3 66.8 12.9 91 36.6 24.8 24.3 38.4 56.8 38.4 91.4-.1 34.2-13.4 66.3-37.6 90.5z" />
-                    </svg>
-                    <span className="text-sm  ml-2"> &nbsp;Pending</span>
-                  </div>
-                </li>
+              <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
+                <div className="flex items-center">
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    fill="currentColor"
+                    height="1em"
+                    width="1em"
+                  >
+                    <path d="M888 784H664c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h224c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM373.5 510.4c-.9-8.7-1.4-17.5-1.4-26.4 0-15.9 1.5-31.4 4.3-46.5.7-3.6-1.2-7.3-4.5-8.8-13.6-6.1-26.1-14.5-36.9-25.1a127.54 127.54 0 01-38.7-95.4c.9-32.1 13.8-62.6 36.3-85.6 24.7-25.3 57.9-39.1 93.2-38.7 31.9.3 62.7 12.6 86 34.4 7.9 7.4 14.7 15.6 20.4 24.4 2 3.1 5.9 4.4 9.3 3.2 17.6-6.1 36.2-10.4 55.3-12.4 5.6-.6 8.8-6.6 6.3-11.6-32.5-64.3-98.9-108.7-175.7-109.9-110.9-1.7-203.3 89.2-203.3 199.9 0 62.8 28.9 118.8 74.2 155.5-31.8 14.7-61.1 35-86.5 60.4-54.8 54.7-85.8 126.9-87.8 204a8 8 0 008 8.2h56.1c4.3 0 7.9-3.4 8-7.7 1.9-58 25.4-112.3 66.7-153.5 29.4-29.4 65.4-49.8 104.7-59.7 3.9-1 6.5-4.7 6-8.7zM824 484c0-109.4-87.9-198.3-196.9-200C516.3 282.3 424 373.2 424 484c0 62.8 29 118.8 74.2 155.5a300.95 300.95 0 00-86.4 60.4C357 754.6 326 826.8 324 903.8a8 8 0 008 8.2h56c4.3 0 7.9-3.4 8-7.7 1.9-58 25.4-112.3 66.7-153.5C505.8 707.7 563 684 624 684c110.4 0 200-89.5 200-200zm-109.5 90.5C690.3 598.7 658.2 612 624 612s-66.3-13.3-90.5-37.5a127.26 127.26 0 01-37.5-91.8c.3-32.8 13.4-64.5 36.3-88 24-24.6 56.1-38.3 90.4-38.7 33.9-.3 66.8 12.9 91 36.6 24.8 24.3 38.4 56.8 38.4 91.4-.1 34.2-13.4 66.3-37.6 90.5z" />
+                  </svg>
+                  <span className="text-sm  ml-2"> &nbsp;Pending</span>
+                </div>
+              </li>
               </a>
-              <a href="/admin/users/verified">
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -250,23 +237,23 @@ export default function DefaultLayout() {
                   <span className="text-sm  ml-2"> &nbsp;Verified</span>
                 </div>
               </li>
-              </a >
               <a href="/admin/users/all">
-                <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
-                  <div className="flex items-center">
-                    <svg
-                      viewBox="0 0 1000 1000"
-                      fill="currentColor"
-                      height="1em"
-                      width="1em"
-                    >
-                      <path d="M1000 940H776V790c0-36-10-63-30-81s-71.333-47.667-154-89c26.667-20 40-48 40-84 0-10.667-4.333-21.667-13-33-8.667-11.333-15-28.333-19-51-1.333-5.333-6-10.667-14-16s-12.667-19.333-14-42c0-16 4-26 12-30-4-22.667-6.667-42.667-8-60-2.667-25.333 5-51.333 23-78s49.667-40 95-40 77.333 13.333 96 40 26.667 52.667 24 78l-8 60c8 4 12 14 12 30-1.333 22.667-6 36.667-14 42-8 5.333-12.667 10.667-14 16-4 22.667-10.333 39.667-19 51-8.667 11.333-13 22.333-13 33 0 28 7 50 21 66s39.667 32 77 48c74.667 30.667 118 57.333 130 80 4 5.333 7 25.667 9 61s3.667 69 5 101v48M512 678c121.333 52 182 93.333 182 124v138H0V756c0-29.333 28-55.333 84-78 50.667-21.333 85.333-42.667 104-64s28-50.667 28-88c0-13.333-6.333-28-19-44s-21-38.667-25-68c-1.333-6.667-7.333-14-18-22s-17.333-26.667-20-56c0-9.333 1-17 3-23s4.333-10.333 7-13l4-2c-4-30.667-7.333-58-10-82-2.667-33.333 8.333-67.667 33-103s67-53 127-53 102.333 17.667 127 53 35.667 69.667 33 103l-10 82c9.333 5.333 14 18 14 38-2.667 29.333-9.333 48-20 56s-16.667 15.333-18 22c-4 29.333-12.333 52-25 68s-19 30.667-19 44c0 37.333 9.333 66.667 28 88s53.333 42.667 104 64" />
-                    </svg>
-                    <span className="text-sm  ml-2"> &nbsp;All Users</span>
-                  </div>
-                </li>
+              <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
+                <div className="flex items-center">
+                  <svg
+                    viewBox="0 0 1000 1000"
+                    fill="currentColor"
+                    height="1em"
+                    width="1em"
+                  >
+                    <path d="M1000 940H776V790c0-36-10-63-30-81s-71.333-47.667-154-89c26.667-20 40-48 40-84 0-10.667-4.333-21.667-13-33-8.667-11.333-15-28.333-19-51-1.333-5.333-6-10.667-14-16s-12.667-19.333-14-42c0-16 4-26 12-30-4-22.667-6.667-42.667-8-60-2.667-25.333 5-51.333 23-78s49.667-40 95-40 77.333 13.333 96 40 26.667 52.667 24 78l-8 60c8 4 12 14 12 30-1.333 22.667-6 36.667-14 42-8 5.333-12.667 10.667-14 16-4 22.667-10.333 39.667-19 51-8.667 11.333-13 22.333-13 33 0 28 7 50 21 66s39.667 32 77 48c74.667 30.667 118 57.333 130 80 4 5.333 7 25.667 9 61s3.667 69 5 101v48M512 678c121.333 52 182 93.333 182 124v138H0V756c0-29.333 28-55.333 84-78 50.667-21.333 85.333-42.667 104-64s28-50.667 28-88c0-13.333-6.333-28-19-44s-21-38.667-25-68c-1.333-6.667-7.333-14-18-22s-17.333-26.667-20-56c0-9.333 1-17 3-23s4.333-10.333 7-13l4-2c-4-30.667-7.333-58-10-82-2.667-33.333 8.333-67.667 33-103s67-53 127-53 102.333 17.667 127 53 35.667 69.667 33 103l-10 82c9.333 5.333 14 18 14 38-2.667 29.333-9.333 48-20 56s-16.667 15.333-18 22c-4 29.333-12.333 52-25 68s-19 30.667-19 44c0 37.333 9.333 66.667 28 88s53.333 42.667 104 64" />
+                  </svg>
+                  <span className="text-sm  ml-2"> &nbsp;All Users</span>
+                </div>
+              </li>
               </a>
             </ul>
+
           </div>
           <div className="px-8 bg-indigo-800">
             <ul className="w-full flex items-center justify-between ">

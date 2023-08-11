@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::apiResource('/users', UserController::class);
     Route::get('/usercount', [DashboardController::class, 'usercount']);
     Route::get('/allUsers/pending', [UserController::class, 'allUsersPending']);
+    Route::get('/allUsers/allUsers', [UserController::class, 'allUsers']);
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
@@ -47,14 +48,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('getOrderLists', [ProductController::class, 'getOrderLists']);
     Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
 
-
-
     //SUPERADMIN PAGES
     Route::get('/supportedBarangay', [SuperAdminController::class, 'supportedBarangay']);
     Route::post('/getCropRecords', [SuperAdminController::class, 'getCropRecords']);
     Route::get('/barangays/{barangay}', [SuperAdminController::class, 'showBarangay']);
     Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
+    Route::get('/ids/{filename}', [SuperAdminController::class, 'getIDimage']);
 
 });
 
