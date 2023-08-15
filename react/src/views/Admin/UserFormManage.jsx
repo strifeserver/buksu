@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 
-export default function UserForm() {
+export default function UserFormManage() {
   const navigate = useNavigate();
   let { id } = useParams();
   const [user, setUser] = useState({
@@ -86,6 +86,22 @@ export default function UserForm() {
           <form onSubmit={onSubmit}>
             {/* ====== Profile Section Start */}
             <div className="overflow-hidden rounded-sm border border-stroke bg-gray-200 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="mt-1">
+                <h4 className="mb-3.5  bg-blue-200 mt-12 font-medium text-black text-center dark:text-white">
+                  Account Status:
+                </h4>
+                <div className="flex items-center justify-center gap-3.5">
+                  <p className="bg-green-500  text-white font-semibold py-2 px-4 rounded ">
+                    Activated Account
+                  </p>
+                  <a
+                    href="/admin/users/all"
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
+                  >
+                    Back
+                  </a>
+                </div>
+              </div>
               <div className="relative z-20 h-35 md:h-65">
                 <img
                   src="https://i.pinimg.com/originals/df/5f/5b/df5f5b1b174a2b4b6026cc6c8f9395c1.jpg"
@@ -99,28 +115,25 @@ export default function UserForm() {
                     marginTop: "21px",
                     zIndex: 0, // Default z-index for the second image
                     borderRadius: "50%",
-                    border:
-                      "1px solid #000" /* Change the border color and width as needed */,
-                    overflow: "hidden",
+  border: "1px solid #000", /* Change the border color and width as needed */
+  overflow: "hidden"
                   }}
                 />
 
                 {imageUrl && (
-                  <a target="_blank" href={imageUrl}>
-                    {" "}
-                    <img
-                      src={imageUrl}
-                      alt="profile"
-                      style={{
-                        width: "500px",
-                        height: "300px",
-                        display: "block",
-                        margin: "0 auto",
-                        marginTop: "21px",
-                        zIndex: 0, // Default z-index for the second image
-                      }}
-                    />{" "}
-                  </a>
+                 <a  target="_blank" href={imageUrl}> <img
+                    src={imageUrl}
+                    alt="profile"
+                    style={{
+                      width: "500px",
+                      height: "300px",
+                      display: "block",
+                      margin: "0 auto",
+                      marginTop: "21px",
+                      zIndex: 0, // Default z-index for the second image
+
+                    }}
+                  /> </a>
                 )}
               </div>
               <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
@@ -231,9 +244,9 @@ export default function UserForm() {
                     <div className="flex items-center justify-center gap-3.5">
                       <a
                         onClick={() => setShow(!show)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer"
+                        className="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded cursor-pointer"
                       >
-                        Confirm
+                        Update Changes
                       </a>
                       <a
                         href="/admin/users/all"
@@ -277,12 +290,11 @@ export default function UserForm() {
                               className="text-base font-semibold leading-6 text-gray-900"
                               id="modal-title"
                             >
-                              Activate Account ?
+                              Save Changes?
                             </h3>
                             <div className="mt-2">
                               <p className="text-sm text-gray-500">
-                                Are you sure you have reviewed the
-                                identity of the user?
+                                Are you sure you want to Update User Info?
                               </p>
                             </div>
                           </div>
@@ -293,7 +305,7 @@ export default function UserForm() {
                           type="submit"
                           className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                         >
-                          Activate
+                          Save Changes
                         </button>
                         <button
                           onClick={() => setShow(false)}

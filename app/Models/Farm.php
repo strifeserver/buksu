@@ -13,8 +13,11 @@ class Farm extends Model
         'farm_name',
         'farm_location',
         'farm_hectares',
-        'google_maps_pin',
+        'longitude',
+        'latitude',
         'farm_info',
+        'is_verified',
+        'farm_pictures',
         'farm_owner',
     ];
 

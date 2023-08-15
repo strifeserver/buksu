@@ -21,7 +21,8 @@ return new class extends Migration
             $table->date('planted_date');
             $table->float('prospect_harvest_in_kg')->nullable();
             $table->date('prospect_harvest_date')->nullable();
-            $table->float('actual_harvested_in_kg')->nullable();
+            $table->float('actual_harvested_in_kg')->default(0);
+            $table->float('actual_sold_kg')->default(0);
             $table->date('harvested_date')->nullable();
             $table->string('product_location');
             $table->double('price')->default(0);

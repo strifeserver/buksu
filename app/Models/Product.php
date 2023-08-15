@@ -17,6 +17,7 @@ class Product extends Model
         'prospect_harvest_in_kg',
         'prospect_harvest_date',
         'actual_harvested_in_kg',
+        'actual_sold_kg',
         'harvested_date',
         'product_location',
         'price',

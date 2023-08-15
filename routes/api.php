@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\FarmController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SuperAdminController;
@@ -43,7 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('/addProductForm', [ProductController::class, 'addProduct']);
 
     //ORDERS
-
     Route::post('addToCart',[ProductController::class, 'addToCart']);
     Route::post('getOrderLists', [ProductController::class, 'getOrderLists']);
     Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
@@ -55,6 +55,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
     Route::get('/ids/{filename}', [SuperAdminController::class, 'getIDimage']);
+
+   //Farms
+    Route::post('/farms', [FarmController::class, 'getFarms']);
+    Route::get('/farm/{farm}', [FarmController::class, 'getFarm']);
+    Route::put('/farm/{farm}', [FarmController::class, 'farmUpdate']);
+    Route::get('farmWithProducts/{farm}', [FarmController::class, 'farmWProducts']);
 
 });
 

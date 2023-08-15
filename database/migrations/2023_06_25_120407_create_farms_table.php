@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('farm_name');
             $table->string('farm_location');
             $table->float('farm_hectares');
-            $table->string('google_maps_pin');
-            $table->date('prospect_harvest_date')->nullable();
             $table->text('farm_info');
+            $table->text('longitude');
+            $table->text('latitude');
             $table->string('farm_pictures');
             $table->tinyInteger('is_verified')->default(0);
            //foreign ID

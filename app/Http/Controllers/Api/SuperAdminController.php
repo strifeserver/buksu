@@ -177,18 +177,12 @@ class SuperAdminController extends Controller
 
     public function getIDimage($filename)
     {
-        $photo = Photo::find($id);
-
-        if (!$photo) {
-            return response()->json(['message' => 'Photo not found'], 404);
+        $path = "public/Users/{$filename}";
+        if (!Storage::exists($path)) {
+            abort(404);
         }
 
-        $photoPath = public_path('photos/' . $photo->filename);
-
-        return response()->json([
-            'filename' => $photo->filename,
-            'photo_url' => asset('photos/' . $photo->filename),
-        ]);
+        return response()->file(storage_path("app/{$path}"));
     }
 
     /**

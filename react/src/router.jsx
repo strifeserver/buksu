@@ -1,21 +1,27 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import Dashboard from "./views/Dashboard.jsx";
+import Dashboard from "./views/Admin/Dashboard.jsx";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Signin";
 import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
-import PendingUsers from "./views/Admin/PendingUsers.jsx";
+import PendingUsers from "./views/Admin/UsersPending.jsx";
 import AllUsers from "./views/Admin/AllUsers.jsx";
 import UsersVerified from "./views/Admin/UsersVerified.jsx";
+import UserViewVerified from "./views/Admin/UserViewVerified.jsx";
 
 
 
 import UserForm from "./views/Admin/UserForm";
+import UserFormManage from "./views/Admin/UserFormManage.jsx";
 import Products from "./views/Products.jsx";
 import Sample from "./views/sample.jsx";
 
-import Farms from "./views/Seller/Farms.jsx";
+import FarmsPending from "./views/Admin/FarmsPending.jsx";
+import FarmsApproved from "./views/Admin/FarmsApproved.jsx";
+import FarmFormManage from "./views/Admin/FarmFormManage.jsx";
+import FarmViewProducts from "./views/Admin/FarmViewProducts.jsx";
+
 import AddProduct from "./views/Seller/AddProduct.jsx";
 import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
 import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
@@ -29,6 +35,7 @@ import CropRecords from "./views/Admin/CropRecords.jsx";
 //BUYER LAYOUT
 import BuyerLayout from "./views/Buyers/BuyerLayout.jsx";
 import BuyerDashboard from "./views/Buyers/BuyerDashboard.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -44,7 +51,7 @@ const router = createBrowserRouter([
         path: 'admin/dashboard',
         element: <Dashboard />
       },
-      {
+      {                               //USERS
         path: 'admin/users/pending',
         element: <PendingUsers />
       },
@@ -61,8 +68,33 @@ const router = createBrowserRouter([
         element: <UserForm key="userCreate" />
       },
       {
-        path: '/users/:id',
+        path: '/admin/users/view/:id',
+        element: <UserViewVerified />
+      },
+      {
+        path: '/admin/users/manage/:id',
+        element: <UserFormManage />
+      },
+
+      {
+        path: '/admin/pending/user/:id',
         element: <UserForm key="userUpdate" />
+      },
+      {                             //FARMS
+        path: '/admin/farms/pending',
+        element: <FarmsPending />
+      },
+      {
+        path: '/admin/farms/approved',
+        element: <FarmsApproved />
+      },
+      {
+        path: '/admin/farms/pending/:id',
+        element: <FarmFormManage />
+      },
+      {
+        path: 'admin/farms/approved/:id',
+        element: <FarmViewProducts />
       },
       {
         path: '/products',
@@ -72,10 +104,7 @@ const router = createBrowserRouter([
         path: '/sample',
         element: <Sample />
       },
-      {
-        path: '/farms',
-        element: <Farms />
-      },
+
       {
         path: '/products/add',
         element: <AddProduct />
@@ -108,6 +137,8 @@ const router = createBrowserRouter([
 
     ]
   }, //BUYERS
+
+
   {
     path: '/',
     element: <BuyerLayout />,
@@ -123,6 +154,8 @@ const router = createBrowserRouter([
 
     ]
   },
+
+
   {
     path: '/',
     element: <GuestLayout/>,

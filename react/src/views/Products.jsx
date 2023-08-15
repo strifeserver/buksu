@@ -46,16 +46,13 @@ export default function Products() {
   // Auto close the alert after 3 seconds (adjust the duration as needed)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowAlert(false);
+      setShowAlert(true);
     }, 4000); //
 
     return () => {
       clearTimeout(timer);
     };
   }, []);
-
-
-
 
   const [formData, setFormData] = useState({
     productID_: "",
@@ -74,7 +71,6 @@ export default function Products() {
         // console.log(response.data);
         console.log("sent");
         console.log(formData);
-
 
       })
       .catch((error) => {

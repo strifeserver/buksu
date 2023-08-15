@@ -124,7 +124,7 @@ export default function Users() {
                       <Table.Cell>
                         <Link
                           className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                          to={"/users/" + u.id}
+                          to={"/admin/users/manage/" + u.id}
                         >
                           <svg
                             viewBox="0 0 512 512"

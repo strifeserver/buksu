@@ -68,7 +68,7 @@ export default function DefaultLayout() {
               </div>
             </div>
             <ul className="mt-6">
-              <a href="admin/users/all">
+              <a href="/admin/dashboard">
                 <li className="flex w-full justify-between text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center py-3 px-8">
                   <div className="flex items-center">
                     <svg
@@ -93,6 +93,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
+              <a href="">
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -113,6 +114,7 @@ export default function DefaultLayout() {
                   <span className="text-sm  ml-2">Products</span>
                 </div>
               </li>
+              </a>
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -134,6 +136,7 @@ export default function DefaultLayout() {
                   <span className="text-sm  ml-2">Performance</span>
                 </div>
               </li>
+              <a href="/admin/farms/pending">
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -153,9 +156,34 @@ export default function DefaultLayout() {
                     <polyline points="17 8 21 12 17 16" />
                     <line x1={14} y1={4} x2={10} y2={20} />
                   </svg>
-                  <span className="text-sm  ml-2">Deliverables</span>
+                  <span className="text-sm  ml-2">Pending Farms</span>
                 </div>
               </li>
+              </a>
+              <a href="/admin/farms/approved">
+              <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-code"
+                    width={20}
+                    height={20}
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" />
+                    <polyline points="7 8 3 12 7 16" />
+                    <polyline points="17 8 21 12 17 16" />
+                    <line x1={14} y1={4} x2={10} y2={20} />
+                  </svg>
+                  <span className="text-sm  ml-2">Approved Farms</span>
+                </div>
+              </li>
+              </a>
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center  px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -176,6 +204,7 @@ export default function DefaultLayout() {
                   <span className="text-sm  ml-2">Invoices</span>
                 </div>
               </li>
+              <a href="/admin/croprecords">
               <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                 <div className="flex items-center">
                   <svg
@@ -195,9 +224,10 @@ export default function DefaultLayout() {
                     <polyline points="4 12 12 16 20 12" />
                     <polyline points="4 16 12 20 20 16" />
                   </svg>
-                  <span className="text-sm  ml-2">Inventory</span>
+                  <span className="text-sm  ml-2">Crop Record</span>
                 </div>
               </li>
+              </a>
               <a href="/admin/supported/barangay">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
@@ -341,6 +371,7 @@ export default function DefaultLayout() {
 
       <div class="p-0 sm:ml-64">
         <div class="p-2  border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+
           <Outlet />
         </div>
       </div>

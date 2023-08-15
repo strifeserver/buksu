@@ -30,14 +30,6 @@ class UpdateUserRequest extends FormRequest
             'user_type' => 'required',
             'address'=> 'required',
             'is_verified'=> 'required',
-
-
-            // 'password' => [
-            //     'confirmed',
-            //     Password::min(8)
-            //         ->letters()
-            //         ->symbols()
-            // ]
         ];
     }
 }
