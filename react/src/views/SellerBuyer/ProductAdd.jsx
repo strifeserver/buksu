@@ -3,7 +3,11 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 // import { useHistory  } from "react-router-dom";
 
-export default function AddProduct() {
+import Swal from 'sweetalert2';
+
+export default function ProductAdd() {
+
+
   const { currentUserID } = useStateContext();
 
   const payload = {
@@ -37,7 +41,6 @@ export default function AddProduct() {
   }, []);
 
   //ADDING PRODUCTS
-
   const [formData, setFormData] = useState({
     product_name: "",
     product_type: "",
@@ -74,10 +77,7 @@ export default function AddProduct() {
     axiosClient
       .post("/addProductForm", productData)
       .then((response) => {
-        // Handle successful form submission
-        // console.log(response.data);
-
-        // Reset the form after submission
+        showSuccessAlert();
         setFormData({
           product_name: "",
           product_type: "",
@@ -92,15 +92,34 @@ export default function AddProduct() {
           price: "",
           product_picture: null, // Reset product_picture too
         });
+
       })
       .catch((error) => {
-        // Handle form submission error
+       showInfoAlert();
         console.error(error);
       });
   };
 
+
+  const showSuccessAlert = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Product Added Successfully',
+    });
+  };
+
+  const showInfoAlert = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Error!',
+      text: "Please check all required fields are not empty",
+    });
+  };
+
   return (
     <div>
+
       <div className="m-12 outline outline-2  outline-offset-2">
         <div className="p-4 mb-5 bg-gray-200 dark:bg-gray-900 ">
           <p className="text-center text-lg mt-2 p-2">Add Product Form</p>
@@ -111,6 +130,7 @@ export default function AddProduct() {
               style={{ fontFamily: '"Lato", sans-serif' }}
             >
               <div className="flex md:flex-row flex-col items-center py-8 px-4">
+
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
@@ -142,6 +162,7 @@ export default function AddProduct() {
                       value={formData.product_name}
                       onChange={handleChange}
                       id="product_name"
+                      required
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     />
                   </div>
@@ -180,7 +201,7 @@ export default function AddProduct() {
                       required
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     >
-                      <option value="0" selected>
+                      <option value="0" selected disabled >
                         Select Product Type
                       </option>
                       {productType.map((product) => (
@@ -225,7 +246,7 @@ export default function AddProduct() {
                       required
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     >
-                      <option value="0">Select Product Type</option>
+                      <option value="0">Select Farm</option>
                       {farmsOwned.map((farm, index) => (
                         // <option value={farm.supported_product}>{farm.supported_product}</option>,
                         <option key={farm.id} value={farm.id}>
@@ -266,6 +287,7 @@ export default function AddProduct() {
                       type="text"
                       id="variety"
                       name="variety"
+                      required
                       value={formData.variety}
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
@@ -313,6 +335,7 @@ export default function AddProduct() {
                       id="planted_date"
                       name="planted_date"
                       value={formData.planted_date}
+                      required
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     />
@@ -346,6 +369,7 @@ export default function AddProduct() {
                     </div>
                     <input
                       min={1}
+                      required
                       id="prospect_harvest_in_kg"
                       type="number"
                       name="prospect_harvest_in_kg"
@@ -385,6 +409,7 @@ export default function AddProduct() {
                       type="date"
                       id="prospect_harvest_date"
                       name="prospect_harvest_date"
+                      required
                       value={formData.prospect_harvest_date}
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-16 text-sm border-gray-300 rounded border shadow"
@@ -506,6 +531,7 @@ export default function AddProduct() {
                       name="product_location"
                       value={formData.product_location}
                       onChange={handleChange}
+                      required
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     />
                   </div>
@@ -540,6 +566,7 @@ export default function AddProduct() {
                       type="number"
                       id="price"
                       name="price"
+                      required
                       value={formData.price}
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-16 text-sm border-gray-300 rounded border shadow"
@@ -561,6 +588,7 @@ export default function AddProduct() {
                       type="file"
                       id="product_picture"
                       name="product_picture"
+                      required
                       // value={formData.handleFileChange}
                       onChange={handleChange}
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
@@ -581,12 +609,12 @@ export default function AddProduct() {
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <div className="relative">
-                    <button
+                    <a
                       type=""
                       className="mx-2 my-2 bg-slate-700 transition duration-150 ease-in-out hover:bg-slate-600 rounded text-white px-6 py-2 text-md w-full block"
                     >
                       Back
-                    </button>
+                    </a>
                   </div>
                 </div>
                 {/* Code block ends */}

@@ -32,7 +32,7 @@ class AuthController extends Controller
                 'mobile_number' => $data['mobile_number'],
                 'address' => $data['address'],
                 'user_type' => $data['user_type'],
-                'is_verified' => -1,
+                'is_verified' => 0,
                 'is_active' => 0,
                 'email' => $data['email'],
                 'password' => bcrypt('password'),
@@ -59,17 +59,22 @@ class AuthController extends Controller
 
             /** @var \App\Models\User $user */
             $user = Auth::user();
-            if ($user->is_verified === -1) {
+            if ($user->is_verified === 0) {
                 return response([
                     'message' => 'Please Wait for your Account to be Activated'
                 ], 422);
             } else {
+
+                $user->update([
+                    'is_active' => 1,
+                ]);
                 $userID = $user->id;
                 $token = $user->createToken('main')->plainTextToken;
                 return response()->json([
                     // 'user' => $user,
                     'token' => $token,
                     'userType' => $user->user_type,
+                    'userName' => $user->name,
                     'encryptedCurrentUserID' => Crypt::encryptString($userID),
                 ]);
             }
@@ -84,6 +89,9 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
+        $user->update([
+            'is_active' => 0,
+        ]);
         $user->currentAccessToken()->delete();
         return response('', 204);
     }

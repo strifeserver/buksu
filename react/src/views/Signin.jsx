@@ -7,7 +7,7 @@ export default function Login() {
   const mobile_numberRef = createRef();
   const passwordRef = createRef();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setUser, setToken, setCurrentUserID, setUserType } =
+  const { setUserName, setToken, setCurrentUserID, setUserType } =
     useStateContext();
   const [errors, setErrors] = useState(null);
 
@@ -24,10 +24,8 @@ export default function Login() {
         setIsSubmitting(false);
         setToken(data.token);
         setUserType(data.userType);
+        setUserName(data.userName);
         setCurrentUserID(data.encryptedCurrentUserID);
-        // if(data.userType === 0){
-        //   window.l ocation.href = "/login/jhsajhs";
-        // }
 
       })
       .catch((err) => {

@@ -16,17 +16,14 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->date('ordered_on');
-            $table->date('payed_on')->nullable();
             $table->date('seller_prospect_date_todeliver')->nullable();
-            $table->date('buyers_prospect_date_toget')->nullable();
-            $table->date('agreed_date_of_exchange')->nullable();
-            $table->double('price_of_goods')->default(0);
-            $table->double('price_payed')->default(0);
+            $table->date('date_delivered')->nullable();
+            $table->double('price_of_goods')->nullable();
+            $table->double('price_payed')->nullable();
+            $table->date('payed_on')->nullable();
              //foreign ID
-             $table->unsignedBigInteger('buyers_name');
-             $table->foreign('buyers_name')->references('id')->on('users');
-             $table->unsignedBigInteger('from_farm');
-             $table->foreign('from_farm')->references('id')->on('farms');
+            $table->unsignedBigInteger('buyers_name');
+            $table->foreign('buyers_name')->references('id')->on('users');
             $table->timestamps();
         });
     }

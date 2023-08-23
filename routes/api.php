@@ -1,14 +1,15 @@
 <?php
 
+use Illuminate\Http\Request;
+use App\Models\SupportedBarangay;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\FarmController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SellerBuyerController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SuperAdminController;
-use App\Models\SupportedBarangay;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,14 +44,22 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::get('/getProductTypes', [ProductController::class, 'getProductTypes']);
      Route::post('/addProductForm', [ProductController::class, 'addProduct']);
 
-    //ORDERS
-    Route::post('addToCart',[ProductController::class, 'addToCart']);
-    Route::post('getOrderLists', [ProductController::class, 'getOrderLists']);
-    Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
+    //FARMERS
+    Route::get('/admin/farmers/profile', [SuperAdminController::class, 'getFarmers']);
+
+    //ADMIN FOR PRODUCTS
+    Route::get('/admin/products/pending', [SuperAdminController::class, 'pendingProducts']);
+    Route::get('/admin/product/{product}', [SuperAdminController::class, 'pendingProduct']);
+    Route::put('/admin/product/{product}', [SuperAdminController::class, 'pendingProductUpdate']);
+    Route::get('/admin/products/approved', [SuperAdminController::class, 'approvedProducts']);
+
+
 
     //SUPERADMIN PAGES
     Route::get('/supportedBarangay', [SuperAdminController::class, 'supportedBarangay']);
-    Route::post('/getCropRecords', [SuperAdminController::class, 'getCropRecords']);
+
+    Route::post('/getCropPredictiveAnalysis', [SuperAdminController::class, 'getCropRecords']);
+
     Route::get('/barangays/{barangay}', [SuperAdminController::class, 'showBarangay']);
     Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
@@ -60,7 +69,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/farms', [FarmController::class, 'getFarms']);
     Route::get('/farm/{farm}', [FarmController::class, 'getFarm']);
     Route::put('/farm/{farm}', [FarmController::class, 'farmUpdate']);
-    Route::get('farmWithProducts/{farm}', [FarmController::class, 'farmWProducts']);
+    Route::get('/farmWithProducts/{farm}', [FarmController::class, 'farmWProducts']);
+
+
+    //SELLER BUYER
+    Route::post('/farmWithProducts', [SellerBuyerController::class, 'farmWProducts']);
+    Route::get('/getProductToOrder/{product}', [SellerBuyerController::class, 'getProductToOrder']);
+    Route::post('addToCart',[SellerBuyerController::class, 'addToCart']);
+    Route::post('getPendingOrders', [SellerBuyerController::class, 'getPendingOrders']);   //ORDERS
+    // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
+
+
 
 });
 

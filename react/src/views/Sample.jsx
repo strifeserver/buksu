@@ -1,4 +1,3 @@
-// @import "../assets/farm.css";
 import React from "react";
 
 

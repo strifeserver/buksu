@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { Textarea, Table } from "flowbite-react";
 
-export default function FarmViewProducts() {
+export default function FarmersProfileInfo() {
   const [loading, setLoading] = useState(false);
   const { user } = useStateContext();
   const [farmID, setFarmID] = useState([]);
@@ -55,7 +55,7 @@ export default function FarmViewProducts() {
                       </g>
                     </svg>
                     <h1 className="inline text-2xl font-semibold leading-none">
-                      Farm Info
+                      Farmers - Farm Info
                     </h1>
                   </div>
                 </div>
@@ -114,6 +114,7 @@ export default function FarmViewProducts() {
                         className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                       />
                     </div>
+
                   </div>
                 </div>
 
@@ -141,16 +142,16 @@ export default function FarmViewProducts() {
                       </g>
                     </svg>
                     <h1 className="inline text-2xl font-semibold leading-none">
-                      Farm Description
+                      Farmers - Personal Info
                     </h1>
                   </div>
                   <div className="flex-none pt-2.5 pr-2.5 pl-1" />
                 </div>
                 <div className="px-5 pb-5">
-                  <Textarea
-                    value={farm.farm_info}
+                  <input
+                    value={farm.user.address}
                     onChange={(ev) =>
-                      setFarm({ ...farm, farm_info: ev.target.value })
+                      setFarm({ ...farm, address: ev.target.value })
                     }
                     required
                     readOnly
@@ -175,7 +176,7 @@ export default function FarmViewProducts() {
                   />
                   <div className="flex">
                     <div className="flex-grow w-1/4 pr-2">
-                      <label htmlFor="farm_hectares">Hectares</label>
+                      <label htmlFor="farm_hectares">Hectarage of farm Owned</label>
                       <input
                         value={farm.farm_hectares}
                         onChange={(ev) =>
@@ -191,7 +192,9 @@ export default function FarmViewProducts() {
                     </div>
                   </div>
                 </div>
-                <hr className="mt-4" />
+                <hr className="mt-1" />
+                <p className="text-md ml-5">Email &nbsp; <span className="text-blue-500"> {farm.user.email}</span></p>
+                <p className="text-md ml-5">Mobile Number  &nbsp;  <span className="text-blue-500"> {farm.user.mobile_number}</span></p>
               </div>
             </div>
           ))}
@@ -215,10 +218,10 @@ export default function FarmViewProducts() {
                   {product.product_name}
                 </Table.Cell>
                 <Table.Cell>{product.actual_harvested_in_kg}</Table.Cell>
-                <Table.Cell>{product.product_name}</Table.Cell>
+                <Table.Cell>{product.actual_sold_kg}</Table.Cell>
                 <Table.Cell>&#8369; {product.price}</Table.Cell>
                 <Table.Cell>
-                {product.price * 2}
+                {product.price * product.actual_sold_kg}
                 </Table.Cell>
               </Table.Row>
               ))}

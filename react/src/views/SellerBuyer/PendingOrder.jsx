@@ -6,12 +6,10 @@ export default function OrdersLists() {
   const { currentUserID } = useStateContext();
   const payload = {
     user_ID: currentUserID,
-    
   };
 
   const [data, setData] = useState([]);
   useEffect(() => {
-
     axiosClient
       .post("getPendingOrders", payload)
       .then((response) => {
@@ -23,8 +21,8 @@ export default function OrdersLists() {
   }, []);
 
   return (
-    <div className="bg-slate-400">
-      <p>Pending Orders</p>
+    <div className="bg-slate-100">
+
       {data.map((farm) => (
         <React.Fragment key={farm.farm.id}>
           {farm.transactions.map((transaction) => (

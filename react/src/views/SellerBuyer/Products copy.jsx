@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../axios-client.js";
+import axiosClient from "../../axios-client.js";
 import { Link } from "react-router-dom";
-import { useStateContext } from "../context/ContextProvider.jsx";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 import { Pagination, Button, Spinner, Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 
 export default function Products() {
-
   const { currentUserID } = useStateContext();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,7 +33,6 @@ export default function Products() {
         setProducts(data.data);
         setProdID(data.data);
         setTotalPages(data.meta.last_page);
-
       })
       .catch(() => {
         setLoading(false);
@@ -65,17 +63,16 @@ export default function Products() {
   const submitToCart = (event) => {
     event.preventDefault();
     axiosClient
-      .post('/addToCart', formData) // Replace '/api/submit' with your Laravel API endpoint
+      .post("/addToCart", formData) // Replace '/api/submit' with your Laravel API endpoint
       .then((response) => {
         // Handle successful response if needed
         // console.log(response.data);
         console.log("sent");
         console.log(formData);
-
       })
       .catch((error) => {
         // Handle error if needed
-        console.error('Error submitting form:', error);
+        console.error("Error submitting form:", error);
       });
   };
 
@@ -114,11 +111,6 @@ export default function Products() {
         {!loading && (
           <div className=" grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-y-12 lg:gap-x-8 sm:gap-y-10 sm:gap-x-6 gap-y-6 lg:mt-12 mt-10">
             {products.map((u) => (
-
-            // {prodID.map((v) => (
-
-
-
               <div className="relative">
                 <div className=" absolute top-0 left-0 py-2 px-4 bg-white bg-opacity-50 "></div>
                 <div className=" relative group">
@@ -129,61 +121,43 @@ export default function Products() {
                     alt="A girl Posing Img"
                   />
                 </div>
-                <form  key={u.id} onSubmit={submitToCart}>
-                <p className=" font-normal text-xl leading-5 text-gray-800 md:mt-5 mt-3">
-                  {u.product_name.toUpperCase()}
-                </p>
-                <p className=" font-semibold text-xl leading-5 text-gray-800 mt-4">
-                  ₱ {u.price} / Kl
-                </p>
-                <div className="flex flex-row justify-between mt-4">
-                  <p className=" font-medium text-base leading-4 text-gray-600"></p>
-                  <div className="flex">
-                    <p>Select Kilo &nbsp;</p>
+                <form key={u.id} onSubmit={submitToCart}>
+                  <p className=" font-normal text-xl leading-5 text-gray-800 md:mt-5 mt-3">
+                    {u.product_name.toUpperCase()}
+                  </p>
+                  <p className=" font-semibold text-xl leading-5 text-gray-800 mt-4">
+                    ₱ {u.price} / Kl
+                  </p>
+                  <div className="flex flex-row justify-between mt-4">
+                    <p className=" font-medium text-base leading-4 text-gray-600"></p>
+                    <div className="flex">
+                      <p>Select Kilo &nbsp;</p>
+                      <br />
+                      <input type="text" name={`ID_${u.id}`} value="" hidden />
 
-                    <input type="text"
-                    // name={`product_${u.id}`}
-                    //  value={formData[`inputField_${data.id}`] || ''}
-                    // value={u.id}
-
-                    name={`productID_${u.id}`}
-                    value={formData[`productID_${u.id}`] || ''}
-                    onChange={handleChange}
-
-                    />
-<br />
-                    <input type="text"
-                    name={`ID_${u.id}`}
-                    value=""
-
-                    hidden
-                    />
-
-
-                    <input
-                      id="counter"
-
-
-                      // name={`kg_${u.id}`}
-                      type="number"
-
-                      name={`kg_${u.id}`}
-                      value={formData[`kg_${u.id}`] || u.id}
-                      onChange={handleChange}
-
-                      min={0}
-                      aria-label="input"
-                      className="border border-gray-300 h-full text-center w-14 pb-1"
-                      required
-                    />
+                      <input
+                        id="counter"
+                        // name={`kg_${u.id}`}
+                        type="number"
+                        name={`kg_${u.id}`}
+                        value={formData[`kg_${u.id}`] || u.id}
+                        onChange={handleChange}
+                        min={0}
+                        aria-label="input"
+                        className="border border-gray-300 h-full text-center w-14 pb-1"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <button type="submit" className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2">
-                  Add to Cart
-                </button>
+                  <button
+                    type="submit"
+                    className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2"
+                  >
+                  Details
+                  </button>
                 </form>
               </div>
-          // ))}
+              // ))}
             ))}
 
             <div className="lg:ml-60 md:ml-60 flex items-center justify-center text-center mx-8">
@@ -201,7 +175,6 @@ export default function Products() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

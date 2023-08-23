@@ -16,9 +16,10 @@ class TransactionDetail extends Model
         'harvested_date',
         'price_per_kilo',
         'price_of_goods',
-        'total_price',
         'kg_purchased',
         'transaction_id',
+        'product_id',
+        'from_farm',
     ];
 
     public function transaction()
@@ -26,8 +27,14 @@ class TransactionDetail extends Model
         return $this->belongsTo(Transaction::class, 'transaction_id');
     }
 
-    public function product()
+    public function productOrdered()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class, 'from_farm');
+    }
+
 }

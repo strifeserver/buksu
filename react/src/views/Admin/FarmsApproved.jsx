@@ -47,11 +47,10 @@ function FarmsPending() {
             (
               <div className="flex flex-wrap items-center lg:justify-between justify-center">
               {farms.map( farm => (
-               <Link to={`/admin/farms/approved/${farm.id}`} key={farm.id}>
               <div className="mx-2 w-72 lg:mb-0 mb-8">
                 <div>
                   <img
-                    src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png"
+                    src={`http://127.0.0.1:8000/storage/Farms/${farm.farm_pictures}`}
                     className="w-full h-44"
                   />
                 </div>
@@ -102,7 +101,6 @@ function FarmsPending() {
                   </div>
                 </div>
               </div>
-              </Link>
               ))}
               </div>
             )}

@@ -26,7 +26,8 @@ return new class extends Migration
             $table->date('harvested_date')->nullable();
             $table->string('product_location');
             $table->double('price')->default(0);
-            $table->string('product_picture');
+            $table->string('product_picture')->nullable();
+            $table->tinyInteger('is_approved')->default(0);
            //foreign ID
             $table->unsignedBigInteger('farm_belonged');
             $table->foreign('farm_belonged')->references('id')->on('farms');

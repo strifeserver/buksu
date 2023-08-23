@@ -81,8 +81,9 @@ export default function Dashboard() {
                         </div>
 
                     </div>
-                    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
 
+                    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+                    <a href="/admin/users/pending">
                         <div class="bg-gradient-to-b from-yellow-200 to-yellow-100 border-b-4 border-yellow-600 rounded-lg shadow-xl p-5">
                             <div class="flex flex-row items-center">
                                 <div class="flex-shrink pr-4">
@@ -94,23 +95,25 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        {/*  */}
+                        </a>
                     </div>
+
                     <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-                        {/* <!--Metric Card--> */}
+                    <a href="/admin/products/pending">
                         <div class="bg-gradient-to-b from-blue-200 to-blue-100 border-b-4 border-blue-500 rounded-lg shadow-xl p-5">
                             <div class="flex flex-row items-center">
                                 <div class="flex-shrink pr-4">
                                     <div class="rounded-full p-5 bg-blue-600"><FontAwesomeIcon icon={faMoneyBillTransfer} size='lg' inverse /></div>
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
-                                    <h2 class="font-bold uppercase text-gray-600">Today's Sales</h2>
+                                    <h2 class="font-bold uppercase text-gray-600">Pending Products</h2>
                                     <p class="font-bold text-3xl"> ...</p>
                                 </div>
                             </div>
                         </div>
-                        {/*  */}
+                        </a>
                     </div>
+
                     <div class="w-full md:w-1/2 xl:w-1/3 p-6">
                         {/* <!--Metric Card--> */}
                         <div class="bg-gradient-to-b from-indigo-200 to-indigo-100 border-b-4 border-indigo-500 rounded-lg shadow-xl p-5">

@@ -30,6 +30,8 @@ export default function FarmViewProducts() {
         setLoading(false);
       });
   };
+
+
   return (
     <div>
       <div className="flex">
@@ -55,7 +57,7 @@ export default function FarmViewProducts() {
                       </g>
                     </svg>
                     <h1 className="inline text-2xl font-semibold leading-none">
-                      Farm Info
+                      Farm That You Owned
                     </h1>
                   </div>
                 </div>
@@ -215,10 +217,10 @@ export default function FarmViewProducts() {
                   {product.product_name}
                 </Table.Cell>
                 <Table.Cell>{product.actual_harvested_in_kg}</Table.Cell>
-                <Table.Cell>{product.product_name}</Table.Cell>
+                <Table.Cell>{product.actual_sold_kg}</Table.Cell>
                 <Table.Cell>&#8369; {product.price}</Table.Cell>
                 <Table.Cell>
-                {product.price * 2}
+                {product.price * product.actual_sold_kg}
                 </Table.Cell>
               </Table.Row>
               ))}

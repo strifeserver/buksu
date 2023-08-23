@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Farm;
+use App\Models\User;
+use App\Models\Product;
 use App\Models\CropRecord;
 use Illuminate\Http\Request;
 use App\Models\SupportedBarangay;
@@ -15,10 +18,7 @@ use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
 
 class SuperAdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     */
+
     public function supportedBarangay()
     {
         $supportedBarangay = SupportedBarangay::query()->orderBy('supported_barangay', 'asc')->paginate(8);
@@ -27,20 +27,22 @@ class SuperAdminController extends Controller
 
     public function getCropRecords(Request $request)
     {
-        $capitanjuanArea = 0;
-        $bugcaonArea = 0;
-        $kulasihanArea = 0;
-        $bantuanonArea = 0;
-        $poblacionArea = 0;
-        $balilaArea = 0;
-        $baclayonArea = 0;
-        $kaatuanArea = 0;
-        $alanibArea = 0;
-        $songcoArea = 0;
-        $cawayanArea = 0;
-        $victoryArea = 0;
-        $kibangayArea = 0;
-        $basacArea = 0;
+        $capitanJuanSold = 0;
+        $bugcaonSold = 0;
+        $kulasihanSold = 0;
+        $bantuanonSold = 0;
+        $poblacionSold = 0;
+        $balilaSold = 0;
+        $baclayonSold = 0;
+        $kaatuanSold = 0;
+        $alanibSold = 0;
+        $songcoSold = 0;
+        $cawayanSold = 0;
+        $victorySold = 0;
+        $kibangaySold = 0;
+        $basacSold = 0;
+
+        //YIELD
         $capitanjuanYield = 0;
         $bugcaonYield = 0;
         $kulasihanYield = 0;
@@ -56,110 +58,139 @@ class SuperAdminController extends Controller
         $kibangayYield = 0;
         $basacYield = 0;
 
-        $monthYear = $request->months . $request->year;
-        $commodity = $request->commodity;
-
-        $records = CropRecord::where('record_date', '=', $monthYear)
-            ->where('commodity', '=', $commodity)
+        // $records = Product::where('harvested_date', $request->start_date)
+        //     ->where('product_type', '=', $request->commodity)
+        //     ->get();
+        $records = Product::
+        // whereBetween('harvested_date', [$request->start_date, $request->end_date])
+            where('product_type', $request->commodity)
             ->get();
-        foreach ($records as $record) {
-            if ($record->barangay == 'CAPITAN JUAN') {
-                $capitanjuanArea = $capitanjuanArea + $record->area;
-                $capitanjuanYield = $capitanjuanYield + $record->yield;
-            } else if ($record->barangay == 'BUGCAON') {
-                $bugcaonArea = $bugcaonArea + $record->area;
-                $bugcaonYield = $bugcaonYield + $record->yield;
-            } else if ($record->barangay == 'KULASIHAN') {
-                $kulasihanArea = $kulasihanArea + $record->area;
-                $kulasihanYield = $kulasihanYield + $record->yield;
-            } else if ($record->barangay == 'BANTUANON') {
-                $bantuanonArea = $bantuanonArea + $record->area;
-                $bantuanonYield = $bantuanonYield + $record->yield;
-            } else if ($record->barangay == 'POBLACION') {
-                $poblacionArea = $poblacionArea + $record->area;
-                $poblacionYield = $poblacionYield + $record->yield;
-            } else if ($record->barangay == 'BALILA') {
-                $balilaArea = $balilaArea + $record->area;
-                $balilaYield = $balilaYield + $record->yield;
-            } else if ($record->barangay == 'BACLAYON') {
-                $baclayonArea = $baclayonArea + $record->area;
-                $baclayonYield = $baclayonYield + $record->yield;
-            } else if ($record->barangay == 'KAATUAN') {
-                $kaatuanArea = $kaatuanArea + $record->area;
-                $kaatuanYield = $kaatuanYield + $record->yield;
-            } else if ($record->barangay == 'ALANIB') {
-                $alanibArea = $alanibArea + $record->area;
-                $alanibYield = $alanibYield + $record->yield;
-            } else if ($record->barangay == 'SONGCO') {
-                $songcoArea = $songcoArea + $record->area;
-                $songcoYield = $songcoYield + $record->yield;
-            } else if ($record->barangay == 'CAWAYAN') {
-                $cawayanArea = $cawayanArea + $record->area;
-                $cawayanYield = $cawayanYield + $record->yield;
-            } else if ($record->barangay == 'VICTORY') {
-                $victoryArea = $bugcaonArea + $record->area;
-                $victoryYield = $victoryYield + $record->yield;
-            } else if ($record->barangay == 'KIBANGAY') {
-                $kibangayArea = $kibangayArea + $record->area;
-                $kibangayYield = $kibangayYield + $record->yield;
-            } else if ($record->barangay == 'BASAC') {
-                $basacArea = $basacArea + $record->area;
-                $basacYield = $basacYield + $record->yield;
+
+
+        if(!$records){
+            return response()->json('none');
+        }else{
+            // return response()->json('There is');
+            foreach ($records as $record) {
+                if ($record->product_location == 'CAPITAN JUAN') {
+                    $capitanJuanSold = $capitanJuanSold + $record->actual_sold_kg;
+                    $capitanjuanYield = $capitanjuanYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'BUGCAON') {
+                    $bugcaonSold = $bugcaonSold + $record->actual_sold_kg;
+                    $bugcaonYield = $bugcaonYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'KULASIHAN') {
+                    $kulasihanSold = $kulasihanSold + $record->actual_sold_kg;
+                    $kulasihanYield = $kulasihanYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'BANTUANON') {
+                    $bantuanonSold = $bantuanonSold + $record->actual_sold_kg;
+                    $bantuanonYield = $bantuanonYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'POBLACION') {
+                    $poblacionSold = $poblacionSold + $record->actual_sold_kg;
+                    $poblacionYield = $poblacionYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'BALILA') {
+                    $balilaSold = $balilaSold + $record->actual_sold_kg;
+                    $balilaYield = $balilaYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'BACLAYON') {
+                    $baclayonSold = $baclayonSold + $record->actual_sold_kg;
+                    $baclayonYield = $baclayonYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'KAATUAN') {
+                    $kaatuanSold = $kaatuanSold + $record->actual_sold_kg;
+                    $kaatuanYield = $kaatuanYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'ALANIB') {
+                    $alanibSold = $alanibSold + $record->actual_sold_kg;
+                    $alanibYield = $alanibYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'SONGCO') {
+                    $songcoSold = $songcoSold + $record->actual_sold_kg;
+                    $songcoYield = $songcoYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'CAWAYAN') {
+                    $cawayanSold = $cawayanSold + $record->actual_sold_kg;
+                    $cawayanYield = $cawayanYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'VICTORY') {
+                    $victorySold = $victorySold + $record->actual_sold_kg;
+                    $victoryYield = $victoryYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'KIBANGAY') {
+                    $kibangaySold = $kibangaySold + $record->actual_sold_kg;
+                    $kibangayYield = $kibangayYield + $record->prospect_harvest_in_kg;
+                } else if ($record->product_location == 'BASAC') {
+                    $basacSold = $basacSold + $record->actual_sold_kg;
+                    $basacYield = $basacYield + $record->prospect_harvest_in_kg;
+                }
             }
         }
 
-        return response([
-            'CapitanJuanArea' => $capitanjuanArea,
-            'CapitanJuanYield' => $capitanjuanYield,
 
-            'BugcaonArea' => $bugcaonArea,
-            'BugcaonYield' => $bugcaonYield,
+        // return response([
+        //     'capitanJuanSold' => $capitanJuanSold,
+        //     'CapitanJuanYield' => $capitanjuanYield,
 
-            'KulasihanArea' => $kulasihanArea,
-            'KulasihanYield' => $kulasihanYield,
+        //     'bugcaonSold' => $bugcaonSold,
+        //     'BugcaonYield' => $bugcaonYield,
 
-            'BantuanonArea' => $bantuanonArea,
-            'BantuanonYield' => $bantuanonYield,
+        //     'kulasihanSold' => $kulasihanSold,
+        //     'KulasihanYield' => $kulasihanYield,
 
-            'PoblacionArea' => $poblacionArea,
-            'PoblacionYield' => $poblacionYield,
+        //     'bantuanonSold' => $bantuanonSold,
+        //     'BantuanonYield' => $bantuanonYield,
 
-            'Balila Area' => $balilaArea,
-            'BalilaYield' => $balilaYield,
+        //     'poblacionSold' => $poblacionSold,
+        //     'PoblacionYield' => $poblacionYield,
 
-            'BaclayonArea' => $baclayonArea,
-            'BaclayonYield' => $baclayonYield,
+        //     'balilaSold' => $balilaSold,
+        //     'BalilaYield' => $balilaYield,
 
-            'KaatuanArea' => $kaatuanArea,
-            'KaatuanYield' => $kaatuanYield,
+        //     'baclayonSold' => $baclayonSold,
+        //     'BaclayonYield' => $baclayonYield,
 
-            'AlanibArea' => $alanibArea,
-            'AlanibYield' => $alanibYield,
+        //     'kaatuanSold' => $kaatuanSold,
+        //     'KaatuanYield' => $kaatuanYield,
 
-            'SongcoArea' => $songcoArea,
-            'SongcoYield' => $songcoYield,
+        //     'alanibSold' => $alanibSold,
+        //     'AlanibYield' => $alanibYield,
 
-            'CawayanArea' => $cawayanArea,
-            'CawayanYield' => $cawayanYield,
+        //     'songcoSold' => $songcoSold,
+        //     'SongcoYield' => $songcoYield,
 
-            'VictoryArea' => $victoryArea,
-            'VictoryYield' => $victoryYield,
+        //     'cawayanSold' => $cawayanSold,
+        //     'CawayanYield' => $cawayanYield,
 
-            'SongcoArea' => $songcoArea,
-            'SongcoYield' => $songcoYield,
+        //     'victorySold' => $victorySold,a
+        //     'VictoryYield' => $victoryYield,
 
-            'BasacArea' => $basacArea,
-            'BasacYield' => $basacYield,
+        //     'songcoSold' => $songcoSold,
+        //     'SongcoYield' => $songcoYield,
 
-            'MonthYear' => $monthYear,
-            'Commodity' => $commodity,
+        //     'basacSold' => $basacSold,
+        //     'BasacYield' => $basacYield,
 
-        ], 200);
+        //     'StartDate' => $$request->start_date,
+        //     'EndDate' => $request->end_date,
+        //     'Commodity' => $commodity,
+        // ], 200);
         // return CropRecordResource::collection($cropRecords);
     }
 
+    public function pendingProducts()
+    {
+        $pendingProducts =  Product::where('is_approved', 0)->orderBy('prospect_harvest_date', 'desc')
+            ->with('farm')
+            ->get();
+        return response()->json($pendingProducts);
+    }
+
+    public function pendingProduct($product)
+    {
+        $productWithFarmOwner = Product::where('id', $product)
+            ->with('farm')->first();
+        return response()->json($productWithFarmOwner);
+    }
 
 
+    public function getFarmers()
+    {
+        $farmers = Farm::with('user')->get();
+
+        return response()->json($farmers);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -175,15 +206,6 @@ class SuperAdminController extends Controller
     }
 
 
-    public function getIDimage($filename)
-    {
-        $path = "public/Users/{$filename}";
-        if (!Storage::exists($path)) {
-            abort(404);
-        }
-
-        return response()->file(storage_path("app/{$path}"));
-    }
 
     /**
      * Display the specified resource.
@@ -215,6 +237,27 @@ class SuperAdminController extends Controller
         return response(new SupportedBarangayResource($barangay), 201);
     }
 
+    // ####################################
+    // Products
+    public function pendingProductUpdate(Request $request, Product $product)
+    {
+
+        $product->where('id', $product->id)
+            ->update([
+                'is_approved' => 1,
+                'price' => $request->input('price'),
+            ]);
+
+        return response()->json(['success' => "Product Updated Successfully"]);
+    }
+
+    public function approvedProducts()
+    {
+        $product = Product::where('is_approved', 1)
+            ->with('farm')
+            ->get();
+        return response()->json($product);
+    }
 
     /**
      * Remove the specified resource from storage.

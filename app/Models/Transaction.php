@@ -11,13 +11,12 @@ class Transaction extends Model
 
     protected $fillable = [
         'ordered_on',
-        'payed_on',
-        'buyers_prospect_date_toget',
         'seller_prospect_date_todeliver',
-        'agreed_date_of_exchange',
+        'date_delivered',
+        'price_of_goods',
         'price_payed',
+        'payed_on',
         'buyers_name',
-        'from_farm'
     ];
 
     public function user()
@@ -25,15 +24,9 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'buyers_name');
     }
 
-    public function farm()
-    {
-        return $this->belongsTo(Farm::class, 'from_farm');
-    }
-
     public function TransactionDetail()
     {
         return $this->hasMany(TransactionDetail::class, 'transaction_id');
     }
-
 
 }

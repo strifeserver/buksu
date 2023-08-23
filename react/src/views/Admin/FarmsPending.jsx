@@ -51,7 +51,7 @@ function FarmsPending() {
               <div className="mx-2 w-72 lg:mb-0 mb-8">
                 <div>
                   <img
-                    src="https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png"
+                    src={`http://127.0.0.1:8000/storage/Farms/${farm.farm_pictures}`}
                     className="w-full h-44"
                   />
                 </div>

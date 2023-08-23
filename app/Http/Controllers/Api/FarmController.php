@@ -64,6 +64,7 @@ class FarmController extends Controller
             $farms = Farm::where('is_verified', 1)
                 ->with('user')->get();
             return response()->json($farms);
+
         }
     }
 
@@ -96,8 +97,8 @@ class FarmController extends Controller
             'farm_name' => 'required',
             'farm_location'  => 'required',
             'farm_hectares'  => 'required',
-            // 'longitude'  => 'required',
-            // 'latitude'  => 'required',
+            'longitude'  => 'required',
+            'latitude'  => 'required',
             'farm_info'  => 'required',
             'farm_owner'  => 'required',
         ]);

@@ -5,38 +5,36 @@ import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function FarmFormManage() {
+export default function productFormManage() {
   const [loading, setLoading] = useState(false);
-  const { user } = useStateContext();
-  const [farmID, setFarmID] = useState([]);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
   let { id } = useParams();
 
-  const [farm, setFarm] = useState({
-    farm_name: null,
-    farm_location: "",
-    farm_hectares: "",
-    longitude: "",
-    latitude: "",
-    farm_info: "",
-    farm_owner: "",
+  const [product, setProduct] = useState({
+    product_name: null,
+    product_type: "",
+    variety: "",
+    planted_date: "",
+    prospect_harvest_in_kg: "",
+    prospect_harvest_date: "",
+    price: "",
+    farm_belonged: "",
   });
 
   useEffect(() => {
-    getFarms();
+    getproducts();
   }, []);
 
-  const getFarms = () => {
+  const getproducts = () => {
     setLoading(true);
     axiosClient
-      .get(`/farm/${id}`)
+      .get(`/admin/product/${id}`)
       .then(({ data }) => {
         setLoading(false);
-        setFarm(data);
-        setUserType(data.user_type);
+        setProduct(data);
       })
       .catch(() => {
         setLoading(false);
@@ -46,10 +44,11 @@ export default function FarmFormManage() {
   const onSubmit = (ev) => {
     ev.preventDefault();
       axiosClient
-        .put(`/farm/${farm.id}`, farm)
+        .put(`/admin/product/${product.id}`, product)
         .then(() => {
-          alert("Farm was successfully updated");
-          navigate("/admin/farms/approved");
+          setProduct(null);
+          alert("User was successfully updated");
+          navigate("/admin/products/pending");
         })
         .catch((err) => {
           const response = err.response;
@@ -90,70 +89,68 @@ export default function FarmFormManage() {
                         </g>
                       </svg>
                       <h1 className="inline text-2xl font-semibold leading-none">
-                        Farm Info
+                        Product Info
                       </h1>
                     </div>
                   </div>
                   <div className="px-5 pb-5">
-                    <label htmlFor="farmName">Farm Name</label>
+                    <label htmlFor="product_name">Product Name</label>
                     <input
-                      value={farm.farm_name}
+                      value={product.product_name}
                       onChange={(ev) =>
-                        setFarm({ ...farm, farm_name: ev.target.value })
+                        setproduct({ ...product, product_name: ev.target.value })
                       }
-                      name="farm_name"
+                      readOnly
+                      name="product_name"
                       required
-                      id="farm_name"
+                      id="product_name"
                       className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 mb-1"
                     />
-                    <label htmlFor="farm_location">Address</label>
+                    <label htmlFor="product_location">Address</label>
                     <input
-                      value={farm.farm_location}
+                      value={product.product_location}
                       onChange={(ev) =>
-                        setFarm({ ...farm, farm_location: ev.target.value })
+                        setproduct({ ...product, product_location: ev.target.value })
                       }
-                      name="farm_location"
+                      name="product_location"
+                      readOnly
                       required
-                      id="farm_location"
+                      id="product_location"
                       className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 mb-2"
                     />
                     <div className="flex">
                       <div className="flex-grow w-1/4 pr-2">
-                        <label htmlFor="longitude">Longitude</label>
+                        <label htmlFor="variety">Variety</label>
 
                         <input
-                          value={farm.longitude}
+                          value={product.variety}
                           onChange={(ev) =>
-                            setFarm({ ...farm, longitude: ev.target.value })
+                            setproduct({ ...product, variety: ev.target.value })
                           }
+                          readOnly
                           required
-                          id="longitude"
-                          name="longitude"
+                          id="variety"
+                          name="variety"
                           className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 mb-2"
                         />
                       </div>
                       <div className="flex-grow">
-                        <label htmlFor="latitude">Latitude</label>
+                        <label htmlFor="latitude">Prospect Harvest Date</label>
                         <input
-                          value={farm.latitude}
+                          value={product.prospect_harvest_date}
                           onChange={(ev) =>
-                            setFarm({ ...farm, latitude: ev.target.value })
+                            setProduct({ ...product, prospect_harvest_date: ev.target.value })
                           }
                           required
-                          name="latitude"
-                          id="latitude"
+                          readOnly
+                          name="prospect_harvest_date"
+                          id="prospect_harvest_date"
                           className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                         />
                       </div>
                     </div>
                   </div>
-                  <a target="_blank" href="https://www.latlong.net/">
-                    <p>
-                      <span className="block mt-0 ml-5 text-blue-500 text-md ">
-                        Find the Coordinates Here
-                      </span>
-                    </p>
-                  </a>
+
                   <div className="flex">
                     <div className="flex-1 py-5 pl-5 overflow-hidden">
                       <svg
@@ -183,29 +180,20 @@ export default function FarmFormManage() {
                         </g>
                       </svg>
                       <h1 className="inline text-2xl font-semibold leading-none">
-                        Farm Description
+                        DA Regulated Section
                       </h1>
                     </div>
                     <div className="flex-none pt-2.5 pr-2.5 pl-1" />
                   </div>
                   <div className="px-5 pb-5">
-                    <Textarea
-                      value={farm.farm_info}
-                      onChange={(ev) =>
-                        setFarm({ ...farm, farm_info: ev.target.value })
-                      }
-                      required
-                      name="farm_info"
-                      id="farm_info"
-                      className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 mb-2"
-                    />
 
                     <label htmlFor="farm_owner">Farm Owner</label>
                     <input
-                      value={farm.owner ? farm.owner.name : ""}
+                      value={product.farm_belonged ? product.farm.farm_name : ""}
                       onChange={(ev) =>
-                        setFarm({ ...farm, farm_owner: ev.target.value })
+                        setproduct({ ...product, farm_belonged: ev.target.value })
                       }
+                      disabled
                       required
                       id="farm_owner"
                       name="farm_owner"
@@ -215,16 +203,16 @@ export default function FarmFormManage() {
                     />
                     <div className="flex">
                       <div className="flex-grow w-1/4 pr-2">
-                        <label htmlFor="farm_hectares">Hectares</label>
+                        <label htmlFor="price">Price :</label>
                         <input
-                          value={farm.farm_hectares}
+                          value={product.price}
                           onChange={(ev) =>
-                            setFarm({ ...farm, farm_hectares: ev.target.value })
+                            setProduct({ ...product, price: ev.target.value })
                           }
                           required
-                          id="farm_hectares"
-                          name="farm_hectares"
-                          type="text"
+                          id="price"
+                          name="price"
+                          type="number"
                           className=" ml-3 text-black placeholder-gray-600 w-1/4 px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                         />
                       </div>
@@ -235,7 +223,7 @@ export default function FarmFormManage() {
                     <div className="flex-initial pl-3">
                       <a
                         onClick={() => setShow(!show)}
-                        className="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-blue-500 rounded-md hover:bg-blue-800  focus:outline-none focus:bg-blue-900  transition duration-300 transform active:scale-95 ease-in-out cursor-pointer"
+                        className="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-yellow-500 rounded-md hover:bg-yellow-800  focus:outline-none focus:bg-blue-900  transition duration-300 transform active:scale-95 ease-in-out cursor-pointer"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +239,7 @@ export default function FarmFormManage() {
                           />
                           <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z" />
                         </svg>
-                        <span className="pl-2 mx-1">Confirm</span>
+                        <span className="pl-2 mx-1">Approve</span>
                       </a>
                     </div>
                     <div className="flex-initial">
@@ -279,8 +267,7 @@ export default function FarmFormManage() {
             </div>
           </div>
           <div className="w-1/2 h-screen bg-gray-100">
-            <a target="_blank" href={`http://127.0.0.1:8000/storage/Farms/${farm.farm_pictures}`}>
-
+            <a target="_blank" href={`http://127.0.0.1:8000/storage/Product/${product.product_picture}`}>
               <img
                 style={{
                   width: "500px",
@@ -290,7 +277,7 @@ export default function FarmFormManage() {
                   marginTop: "21px",
                   zIndex: 0, // Default z-index for the second image
                 }}
-                src={`http://127.0.0.1:8000/storage/Farms/${farm.farm_pictures}`}
+                src={`http://127.0.0.1:8000/storage/Product/${product.product_picture}`}
                 alt=""
               />
             </a>
@@ -332,7 +319,7 @@ export default function FarmFormManage() {
                             </h3>
                             <div className="mt-2">
                               <p className="text-sm text-red-500">
-                                Are you sure you that this farm and owner is Doenst Exist?
+                                Are you sure you that this product and owner is Doenst Exist?
                               </p>
                             </div>
                           </div>
@@ -388,11 +375,11 @@ export default function FarmFormManage() {
                               className="text-base font-semibold leading-6 text-gray-900"
                               id="modal-title"
                             >
-                              Confirm Farm?
+                              Confirm product?
                             </h3>
                             <div className="mt-2">
                               <p className="text-sm text-gray-500">
-                                Are you sure you that this farm and owner is Authentic?
+                                Are you sure you that this product and it's price is Following the Guideline?
                               </p>
                             </div>
                           </div>
@@ -403,7 +390,7 @@ export default function FarmFormManage() {
                           type="submit"
                           className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                         >
-                          Activate
+                         Yes Approve
                         </button>
                         <button
                           onClick={() => setShow(false)}

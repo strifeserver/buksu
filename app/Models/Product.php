@@ -30,7 +30,7 @@ class Product extends Model
         return $this->belongsTo(Farm::class, 'farm_belonged');
     }
 
-    public function transactionDetails()
+    public function transactionsPerProduct()
     {
         return $this->hasMany(TransactionDetail::class, 'product_id');
     }

@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 
-export default function OrdersLists() {
+export default function FulfilledOrder() {
   const { currentUserID } = useStateContext();
   const payload = {
     user_ID: currentUserID,
   };
 
   const [data, setData] = useState([]);
+
   useEffect(() => {
     // Make the POST request to your API endpoint here
     axiosClient
-      .post("getOrderLists", payload)
+      .post("getPendingOrders", payload)
       .then((response) => {
         setData(response.data.farmsOwnedByUser);
       })
@@ -20,6 +21,8 @@ export default function OrdersLists() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+
   return (
     <div className="bg-slate-400">
       {data.map((farm) => (

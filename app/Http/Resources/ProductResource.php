@@ -30,6 +30,7 @@ class ProductResource extends JsonResource
             'is_verified' => $this->is_verified,
             'price' => $this->price,
             'product_picture' => $this->product_picture,
+            'actual_sold_kg' => $this->actual_sold_kg,
         ];
     }
 }

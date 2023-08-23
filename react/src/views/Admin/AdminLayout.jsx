@@ -1,9 +1,9 @@
 import { Navigate, Outlet, useNavigate} from "react-router-dom";
 
 import axiosClient from "../../axios-client.js";
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 
-export default function BuyerLayout() {
+export default function DefaultLayout() {
   const {
     currentUserID,
     token,
@@ -30,8 +30,20 @@ export default function BuyerLayout() {
   //   return <Navigate to="/login1" />;
   // } else if (userType === 2) {
   //   return <Navigate to="/login2" />;
-   if (userType === 3) {
-    return <Navigate to="/login3" />;
+
+  if(userType === 0){
+    // navigate('/buyer/dashboard');
+    return <Navigate to="/buyer/dashboard" />;
+
+  }else if (userType === 1){
+    // navigate('/seller/dashboard');
+    return <Navigate to="/seller/dashboard" />;
+
+  }else if (userType === 2){
+    // alert("ajhgsjhg");
+    // navigate('/buyer&seller/dashboard');
+    return <Navigate to="/buyer-seller/dashboard" />
+
   }
 
   const onLogoutConfirm = () => {
@@ -80,11 +92,11 @@ export default function BuyerLayout() {
               </div>
               <div>
                 <p className="text-gray-600 text-sm font-medium">{userName}</p>
-                <p className="text-gray-600 text-xs">Buyer / Seller</p>
+                <p className="text-gray-600 text-xs">DA / ADMIN</p>
               </div>
             </div>
             <ul className="mt-6">
-              <a href="/buyer-seller/dashboard">
+              <a href="/admin/dashboard">
                 <li className="flex w-full justify-between text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center py-3 px-8">
                   <div className="flex items-center">
                     <svg
@@ -109,7 +121,7 @@ export default function BuyerLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/buyer-seller/product/add">
+              <a href="/admin/products/pending">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -127,11 +139,11 @@ export default function BuyerLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Add Product</span>
+                    <span className="text-sm  ml-2">Pending Products</span>
                   </div>
                 </li>
               </a>
-              <a href="/buyer-seller/products">
+              <a href="/admin/products/approved">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -149,11 +161,11 @@ export default function BuyerLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Product Lists</span>
+                    <span className="text-sm  ml-2">Approved Product</span>
                   </div>
                 </li>
               </a>
-              <a href="/buyer-seller/farm/add">
+              <a href="/admin/farms/pending">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -173,11 +185,11 @@ export default function BuyerLayout() {
                       <polyline points="17 8 21 12 17 16" />
                       <line x1={14} y1={4} x2={10} y2={20} />
                     </svg>
-                    <span className="text-sm  ml-2">Add Farm</span>
+                    <span className="text-sm  ml-2">Pending Farms</span>
                   </div>
                 </li>
               </a>
-              <a href="/buyer-seller/farms/">
+              <a href="/admin/farms/approved">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -197,7 +209,7 @@ export default function BuyerLayout() {
                       <polyline points="17 8 21 12 17 16" />
                       <line x1={14} y1={4} x2={10} y2={20} />
                     </svg>
-                    <span className="text-sm  ml-2">Farms</span>
+                    <span className="text-sm  ml-2">Approved Farms</span>
                   </div>
                 </li>
               </a>
@@ -225,7 +237,7 @@ export default function BuyerLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/buyer-seller/order">
+              <a href="/admin/croprecords">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
