@@ -120,7 +120,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/admin/products/setPrice">
+              <a href="/admin/products/pending">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -138,7 +138,7 @@ export default function DefaultLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Set Price</span>
+                    <span className="text-sm  ml-2">Pending Products</span>
                   </div>
                 </li>
               </a>

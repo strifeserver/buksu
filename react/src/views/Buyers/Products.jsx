@@ -278,11 +278,8 @@ export default function AProducts() {
                           <div className="flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full"></div>
                           <img
                             className="w-96 h-96"
-                            src={
-                              u.product_picture === ""
-                                ? `https://images-na.ssl-images-amazon.com/images/I/71nFvA-EOeL._SL1500_.jpg`
-                                : `http://127.0.0.1:8000/storage/Farms/${u.farm_belonged}/${u.product_picture}`
-                            }
+                            src={`http://127.0.0.1:8000/storage/Farms/${u.farm_belonged}/${u.product_picture}`}
+
                             alt="Product Pic"
                           />
                         </div>

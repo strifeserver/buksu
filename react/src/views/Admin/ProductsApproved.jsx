@@ -45,7 +45,8 @@ function ProductsApproved() {
                       <div className="mx-2 w-72 lg:mb-0 mb-8">
                         <div>
                           <img
-                            src={`http://127.0.0.1:8000/storage/Products/${product.product_picture}`}
+                          src={`http://127.0.0.1:8000/storage/Farms/${product.farm_belonged}/${product.product_picture}`}
+
                             className="w-full h-44"
                           />
                         </div>

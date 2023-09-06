@@ -81,7 +81,8 @@ export default function AProductOrder() {
                   <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full self-center object-center"></div>
                   <img
                     className="w-96 h-96 "
-                    src="https://images-na.ssl-images-amazon.com/images/I/71nFvA-EOeL._SL1500_.jpg"
+                    src={`http://127.0.0.1:8000/storage/Farms/${u.farm_belonged}/${u.product_picture}`}
+
                     alt="Cabbage"
                   />
                 </div>
