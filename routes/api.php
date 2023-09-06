@@ -77,6 +77,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getProductToOrder/{product}', [SellerBuyerController::class, 'getProductToOrder']);
     Route::post('addToCart',[SellerBuyerController::class, 'addToCart']);
     Route::post('getPendingOrders', [SellerBuyerController::class, 'getPendingOrders']);   //ORDERS
+    Route::get('getOrder/{order}', [SellerBuyerController::class, 'getFulfilledOrder']);
+    Route::put('conFirmOrderBuyer/{order}', [SellerBuyerController::class, 'conFirmOrderBuyer']);
+    Route::post('getFarmOrders', [SellerBuyerController::class, 'getFarmOrders']);
+
+
+
     // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
 
 

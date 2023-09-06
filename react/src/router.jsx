@@ -46,7 +46,8 @@ import ProductOrder from "./views/SellerBuyer/FarmProductOrders";
 
 // import FarmProductOrders from "./views/SellerBuyer/FarmProductOrders.jsx";
 import FulfilledOrder from "./views/SellerBuyer/FulfilledOrder.jsx";
-
+import FulfilledOrderConfirm from "./views/SellerBuyer/FulfilledOrderConfirm.jsx";
+import FarmProductOrderLists from "./views/SellerBuyer/OrderListsByFarm.jsx";
 
 import CropRecords from "./views/Admin/CropRecords.jsx";
 
@@ -60,6 +61,7 @@ import CropRecords from "./views/Admin/CropRecords.jsx";
 
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
+import PendingOrders from "./views/SellerBuyer/PendingOrders";
 
 //StateContext
 // import { useStateContext } from "./context/ContextProvider.jsx";
@@ -217,13 +219,21 @@ const router = createBrowserRouter([
         path: '/buyer-seller/order/products/:id',
         element: <ProductOrder />
       },
-      // {
-      //   path: '/buyer-seller/farm/product/orders',
-      //   element: <FarmProductOrders />
-      // },
+      {
+        path: '/buyer-seller/farm/product/orders',
+        element: <FarmProductOrderLists />
+      },
+      {
+        path: '/buyer-seller/orders/pending',
+        element: <PendingOrders />
+      },
       {
         path: '/buyer-seller/orders/fulfilled',
         element: <FulfilledOrder />
+      },
+      {
+        path: '/buyer-seller/order/confirm/:id',
+        element: <FulfilledOrderConfirm />
       },
       {
         path: '/sample',

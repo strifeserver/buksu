@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('price_of_goods')->nullable();
             $table->double('price_payed')->nullable();
             $table->date('payed_on')->nullable();
+            $table->text('proof_of_delivery')->nullable();
              //foreign ID
             $table->unsignedBigInteger('buyers_name');
             $table->foreign('buyers_name')->references('id')->on('users');

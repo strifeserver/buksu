@@ -122,8 +122,26 @@ class SellerBuyerController extends Controller
         return response()->json([
             'userPendingOrders' => $userPendingOrders,
         ]);
+    }
+
+    public function getFulfilledOrder($order){
+        $transaction = Transaction::where('id', $order)
+        ->with('TransactionDetail', 'user')
+        ->get();
+
+        return response()->json($transaction);
+    }
+
+    public function getFarmOrders(Request $request){
+        $user_ID = Crypt::decryptString($request->user_ID);
+        $owned = Farm::where('farm_owner', $user_ID)->first();
 
 
+        $farmOrders = TransactionDetail::where('from_farm', $owned->id)
+        ->with('transaction', 'transaction.user')
+        ->get();
+
+        return response()->json($farmOrders);
     }
 
     /**
@@ -144,9 +162,16 @@ class SellerBuyerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function conFirmOrderBuyer($id)
     {
-        //
+       $transaction = Transaction::where('id', $id)->first();
+
+       if ($transaction) {
+        $e = $transaction['price_of_goods'];
+        $transaction->update([
+            'price_payed' => $e,
+        ]);
+        }
     }
 
     /**
