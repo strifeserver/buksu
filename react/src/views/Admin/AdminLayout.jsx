@@ -36,14 +36,13 @@ export default function DefaultLayout() {
     return <Navigate to="/buyer/dashboard" />;
 
   }else if (userType === 1){
-    // navigate('/seller/dashboard');
-    return <Navigate to="/seller/dashboard" />;
-
-  }else if (userType === 2){
     // alert("ajhgsjhg");
     // navigate('/buyer&seller/dashboard');
     return <Navigate to="/buyer-seller/dashboard" />
-
+  }else if (userType === 2){
+    // alert("ajhgsjhg");
+    // navigate('/buyer&seller/dashboard');
+    return <Navigate to="/admin/dashboard" />
   }
 
   const onLogoutConfirm = () => {
@@ -59,17 +58,17 @@ export default function DefaultLayout() {
     }
   };
 
-  // const onLogout = (ev) => {
-  //   ev.preventDefault();
+  const onLogout = (ev) => {
+    ev.preventDefault();
 
-  //   axiosClient.post("/logout").then(() => {
-  //     setToken(null);
-  //     setUserName(null);
-  //     setCurrentUserID(null);
-  //     setUserType(null);
-  //    navigate("/login003");
-  //   });
-  // };
+    axiosClient.post("/logout").then(() => {
+      setToken(null);
+      setUserName(null);
+      setCurrentUserID(null);
+      setUserType(null);
+     navigate("/login");
+    });
+  };
 
   return (
     <div>
@@ -121,7 +120,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/admin/products/pending">
+              <a href="/admin/products/setPrice">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -139,7 +138,7 @@ export default function DefaultLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Pending Products</span>
+                    <span className="text-sm  ml-2">Set Price</span>
                   </div>
                 </li>
               </a>
@@ -161,7 +160,7 @@ export default function DefaultLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Approved Product</span>
+                    <span className="text-sm  ml-2">Products</span>
                   </div>
                 </li>
               </a>

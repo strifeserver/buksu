@@ -33,9 +33,11 @@ class ProductController extends Controller
                 $query->whereRaw('prospect_harvest_in_kg - actual_sold_kg != 0');
             })
             ->orderBy('product_name', 'asc')
-            ->paginate(8);
+            ->get();
 
         return ProductResource::collection($products);
+        // return response()->json($products);
+
     }
 
 

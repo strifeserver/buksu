@@ -447,9 +447,9 @@ export default function Signup() {
                           >
                             <option>Buyer ,Seller ? Please select</option>
                             <option value={0}>Buyer</option>
-                            <option value={1}>Seller</option>
-                            <option value={2}>Buyer / Seller</option>
-                            <option value={3}>Admin / DA</option>
+                            {/* <option value={1}>Seller</option> */}
+                            <option value={1}>Buyer / Seller</option>
+                            {/* <option value={2}>Admin / DA</option> */}
                           </select>
                         </div>
                       </div>

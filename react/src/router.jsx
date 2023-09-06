@@ -16,7 +16,6 @@ import UsersVerified from "./views/Admin/UsersVerified.jsx";
 import UserViewVerified from "./views/Admin/UserViewVerified.jsx";
 import UserForm from "./views/Admin/UserForm";
 import UserFormManage from "./views/Admin/UserFormManage.jsx";
-import Products from "./views/SellerBuyer/Products.jsx";
 
 import FarmsPending from "./views/Admin/FarmsPending.jsx"; //FARMS
 import FarmsApproved from "./views/Admin/FarmsApproved.jsx";
@@ -35,14 +34,13 @@ import BarangaySupported from "./views/Admin/BarangaySupported.jsx";
 import ProductsSupported from "./views/Admin/ProductsSupported.jsx";
 import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
 
-//SELLER BUYER-  PAGES
+;
 
-import SellerBuyerLayout from "./views/SellerBuyer/SellerBuyerLayout";
-import SellerBuyerDashboard from "./views/SellerBuyer/Dashboard"
+// import SellerBuyerLayout from "./views/SellerBuyer/SellerBuyerLayout";
+import SellerBuyerDashboard from "./views/SellerBuyer/ABuyerSellerDashboard"
 import ProductAdd from "./views/SellerBuyer/ProductAdd.jsx";
-import ProductListsSB from "./views/SellerBuyer/ProductListsSB.jsx"
 import FarmListBySeller from "./views/SellerBuyer/FarmsBySeller.jsx"
-import ProductOrder from "./views/SellerBuyer/FarmProductOrders";
+import ProductOrder from "./views/SellerBuyer/AProductOrder";
 
 // import FarmProductOrders from "./views/SellerBuyer/FarmProductOrders.jsx";
 import FulfilledOrder from "./views/SellerBuyer/FulfilledOrder.jsx";
@@ -53,33 +51,26 @@ import CropRecords from "./views/Admin/CropRecords.jsx";
 
 // import AddProd from "./views/Seller/AddProd.jsx";
 
-
-//SELLER-  PAGES
-
-
-//BUYER-  PAGES
+//SELLER BUYER-  PAGES
+import Products from "./views/SellerBuyer/AProducts.jsx";
+import BuyerSellerDashboard from "./views/SellerBuyer/ABuyerSellerDashboard";
+import SellerBuyerlayout from "./views/SellerBuyer/ASellerBuyerLayout";
+import ConfirmOrder from "./views/SellerBuyer/AConfirmOrder.jsx";
+import FarmersProduct from "./views/SellerBuyer/AFarmersProduct.jsx";
+import FarmViewProductsSB from "./views/SellerBuyer/AFarmViewProductsSB.jsx"
+import SellerCenter from "./views/SellerBuyer/ASellerCenter.jsx"
+import AddFarm from "./views/SellerBuyer/AAddFarm.jsx"
+import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
 
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
-import PendingOrders from "./views/SellerBuyer/PendingOrders";
+import Orders from "./views/SellerBuyer/AOrders";
 
-//StateContext
-// import { useStateContext } from "./context/ContextProvider.jsx";
-// export default function DefaultLayout() {
-//   const {
-//     user Type,
-//     setUserType,
-//   } = useStateContext();
-
-// const user_type = {userType};
-
-// const ProtectedRoute = ({ allowedUserType, ...props }) => {
-//   if (user_type === allowedUserType) {
-//     return <Route {...props} />;
-//   } else {
-//     return <Navigate to="/login" />;
-//   }
-// };
+import BuyerLayout from "./views/Buyers/BuyerLayout";
+import BuyerDashboard from "./views/Buyers/BuyerDashboard";
+import ListsProduct from "./views/Buyers/Products";
+import ProductOrderNow from "./views/Buyers/ProductOrder";
+import OrdersLists from "./views/Buyers/Orders.jsx";
 
 const router = createBrowserRouter([
   //ADMIN DA
@@ -179,13 +170,46 @@ const router = createBrowserRouter([
         element: <ProductsSupported />
       },
 
-    ]
-  }, //BUYERS
+      {
+        path: '/admin/products/setPrice',
+        element: <ProductsSupported />
+      },
 
+    ]
+  },
+
+  //BUYERS
 
   {
     path: '/',
-    element: <SellerBuyerLayout />,
+    element: <BuyerLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/buyer/dashboard"/>
+      },
+      {
+        path: '/buyer/dashboard',
+        element: <BuyerDashboard />
+      },
+      {
+        path: '/buyer/order/products',
+        element: <ListsProduct />
+      },
+      {
+        path: '/buyer/order/products/:id',
+        element: <ProductOrderNow />
+      },
+      {
+        path: '/buyer/orders', //orderlists
+        element: <OrdersLists />
+      },
+    ]
+  },
+
+  {
+    path: '/',
+    element: <SellerBuyerlayout />,
     children: [
       {
         path: '/',
@@ -193,23 +217,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/buyer-seller/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/buyer-seller/product/add',
-        element: <ProductAdd />
-      },
-      {
-        path: '/buyer-seller/farms/owned',
-        element: <FarmListBySeller />
-      },
-      // {
-      //   pa th: '/buyer-seller/products/lists',
-      //   element: <ProductListsSB />
-      // },
-      {
-        path: '/buyer-seller/farm/:id',
-        element: <ProductListsSB />
+        element: <BuyerSellerDashboard />
       },
       {
         path: '/buyer-seller/order/products',
@@ -219,21 +227,63 @@ const router = createBrowserRouter([
         path: '/buyer-seller/order/products/:id',
         element: <ProductOrder />
       },
+
+      {
+        path: '/buyer-seller/orders', //orderlists
+        element: <Orders />
+      },
+      {
+        path: '/buyer-seller/order/confirm/:id', //confirm Order
+        element: <ConfirmOrder />
+      },
+      {
+        path: '/buyer-seller/farmers/product/',
+        element: <FarmersProduct />
+      },
+      {
+        path: '/buyer-seller/farmers/product/', //FARM LISts per barangay
+        element: <FarmersProduct />
+      },
+      {
+        path: '/buyer-seller/farm/:id', //viewProductsByFarm
+        element: <FarmViewProductsSB />
+      },
+      {
+        path: '/seller/center', //viewProductsByFarm
+        element: <SellerCenter />
+      },
+      {
+        path: '/buyer-seller/product/add',
+        element: <ProductAdd />
+      },
+      {
+        path: '/buyer-seller/farms/owned',
+        element: <FarmListBySeller />
+      },
+      {
+        path: '/buyer-seller/order/delivered/:id',
+        element: <ConfirmDelivery />
+      },
+      // {
+      //   pa th: '/buyer-seller/products/lists',
+      //   element: <ProductListsSB />
+      // },
+
+
+
       {
         path: '/buyer-seller/farm/product/orders',
         element: <FarmProductOrderLists />
       },
-      {
-        path: '/buyer-seller/orders/pending',
-        element: <PendingOrders />
-      },
-      {
-        path: '/buyer-seller/orders/fulfilled',
-        element: <FulfilledOrder />
-      },
+
       {
         path: '/buyer-seller/order/confirm/:id',
         element: <FulfilledOrderConfirm />
+      },
+
+      {
+        path: '/seller/center/addFarm',
+        element: <AddFarm />
       },
       {
         path: '/sample',

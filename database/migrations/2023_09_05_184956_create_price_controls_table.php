@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('crop_records', function (Blueprint $table) {
+        Schema::create('price_controls', function (Blueprint $table) {
             $table->id();
-            $table->string('barangay');
-            $table->string('commodity');
-            $table->string('record_date');
-            $table->double('area')->nullable();
-            $table->double('yeild')->nullable();
             $table->timestamps();
+            $table->string('product_name');
+            $table->double('min');
+            $table->double('max');
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('crop_records');
+        Schema::dropIfExists('price_controls');
     }
 };

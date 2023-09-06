@@ -33,9 +33,6 @@ export default function ASellerBuyerlayout() {
   //   return <Navigate to="/login3" />;
   // }
 
-
-  const [showMenu, setShowMenu] = useState(false);
-
   const onLogoutConfirm = () => {
     const isConfirmed = window.confirm("Are you sure you want to logout?");
     if (isConfirmed) {
@@ -61,6 +58,8 @@ export default function ASellerBuyerlayout() {
     });
   };
 
+  const [showMenu, setShowMenu] = useState(false);
+
   return (
     <div>
       <div className="dark:bg-gray-900 bg-green-300">
@@ -69,7 +68,7 @@ export default function ASellerBuyerlayout() {
             <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 py-4">
               <div>
 
-                  <p className="text-md text-slate-100 ">Buyer DASHBOARD</p>
+                  <p className="text-md text-slate-100 ">Seller & Buyer DASHBOARD</p>
 
 
               </div>
@@ -77,7 +76,7 @@ export default function ASellerBuyerlayout() {
                 <ul className="flex items-center space-x-6">
                   <li>
                     <a
-                      href="/buyer/dashboard"
+                      href="/buyer-seller/dashboard"
                       className="dark:text-white  text-base text-right text-gray-800 focus:outline-none  hover:text-white"
                     >
                       Dashboard
@@ -85,20 +84,20 @@ export default function ASellerBuyerlayout() {
                   </li>
                   <li>
                     <a
-                      href="/buyer/order/products"
+                      href="/buyer-seller/order/products"
                       className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
                     >
                       Buy Goods
                     </a>
                   </li>
-                  {/* <li>
+                  <li>
                     <a
                       href="/buyer-seller/farmers/product/"
                       className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
                     >
                       Farms
                     </a>
-                  </li> */}
+                  </li>
                   {/* <li>
                     <a
                       href="/buyer-seller/orders"
@@ -107,14 +106,14 @@ export default function ASellerBuyerlayout() {
                       Orders
                     </a>
                   </li> */}
-                  {/* <li>
+                  <li>
                     <a
                       href="/seller/center"
                       className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
                     >
                       Seller Center
                     </a>
-                  </li> */}
+                  </li>
                 </ul>
               </div>
               <div className="hidden md:flex items-center space-x-4">
@@ -148,8 +147,8 @@ export default function ASellerBuyerlayout() {
                 </a>
 
                 <a
-                  title="Orders"
-                  href="/buyer/orders"
+                  title="Cart"
+                  href="/buyer-seller/orders"
                   className=" p-0.5 rounded"
                 >
                   <svg

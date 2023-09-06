@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\TransactionDetail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Farm extends Model
 {
@@ -29,5 +30,10 @@ class Farm extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'farm_belonged');
+    }
+
+    public function Transactions()
+    {
+        return $this->hasMany(Transaction::class, 'from_farm');
     }
 }

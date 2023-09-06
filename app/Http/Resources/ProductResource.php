@@ -19,6 +19,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'product_name' => $this->product_name,
+            'product_type' => $this->product_type,
             'variety' => $this->variety,
             'kilograms' => $this->kilograms,
             'planted_date' => $this->planted_date,
@@ -29,6 +30,7 @@ class ProductResource extends JsonResource
             'product_location' => $this->product_location,
             'is_verified' => $this->is_verified,
             'price' => $this->price,
+            'farm_belonged' => $this->farm_belonged,
             'product_picture' => $this->product_picture,
             'actual_sold_kg' => $this->actual_sold_kg,
         ];

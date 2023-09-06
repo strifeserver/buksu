@@ -2,3 +2,48 @@ https://www.latlong.net/
 
 
 ..ADDED A TABLE FOR LONG LASTING RECORDING
+
+
+-1 - Accounts not yet Verified
+0 -  Buyers
+1 -  Buyer Seller
+2 -  DA Admin
+:::
+
+Why Cart is Not Recommended ,
+Due to the Arrangement In Delivery and Transaction Date To be:
+
+
+1. ADD PRICE RANGES AND ONLY PICK FROM THE CHOICES THAT HAS BEEN SET by the DA ADMIN :
+2. Add
+
+CHANGES OF THE SYSTEM:
+
+
+Base on the Recommendations:
+-
+Viewing of proof of Delivery
+uploading proof of Delivery
+confirmation of the delivery
+
+
+//ORDERS CLASSIFICATIONS,
+
+NOT YET CONFIRMED ORDERS: -price payed = null
+DELIVERED ORDERS: price_payed = isNOT Null
+VERIFIED ORDERS: Consumated () payed_on is NOT NULL
+
+Pic of Delivery
+
+
+ <div className="mt-0 p-2 text-center">
+
+  <div className="flex justify-center space-x-4">
+    <button className="w-1/2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md">
+      Order Received
+    </button>
+    <button className="w-1/2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-md">
+      View Proof
+    </button>
+  </div>
+</div>

@@ -25,6 +25,8 @@ return new class extends Migration
              //foreign ID
             $table->unsignedBigInteger('buyers_name');
             $table->foreign('buyers_name')->references('id')->on('users');
+            $table->unsignedBigInteger('seller');
+            $table->foreign('seller')->references('id')->on('users');
             $table->timestamps();
         });
     }

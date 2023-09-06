@@ -53,13 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/admin/product/{product}', [SuperAdminController::class, 'pendingProductUpdate']);
     Route::get('/admin/products/approved', [SuperAdminController::class, 'approvedProducts']);
 
-
-
     //SUPERADMIN PAGES
     Route::get('/supportedBarangay', [SuperAdminController::class, 'supportedBarangay']);
-
     Route::post('/getCropPredictiveAnalysis', [SuperAdminController::class, 'getCropRecords']);
-
     Route::get('/barangays/{barangay}', [SuperAdminController::class, 'showBarangay']);
     Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
@@ -75,18 +71,25 @@ Route::middleware('auth:sanctum')->group(function () {
     //SELLER BUYER
     Route::post('/farmWithProducts', [SellerBuyerController::class, 'farmWProducts']);
     Route::get('/getProductToOrder/{product}', [SellerBuyerController::class, 'getProductToOrder']);
-    Route::post('addToCart',[SellerBuyerController::class, 'addToCart']);
-    Route::post('getPendingOrders', [SellerBuyerController::class, 'getPendingOrders']);   //ORDERS
+    Route::post('/orderNow',[SellerBuyerController::class, 'orderNow']);
+    Route::post('getOrders', [SellerBuyerController::class, 'getOrders']);   //ORDERS
     Route::get('getOrder/{order}', [SellerBuyerController::class, 'getFulfilledOrder']);
     Route::put('conFirmOrderBuyer/{order}', [SellerBuyerController::class, 'conFirmOrderBuyer']);
     Route::post('getFarmOrders', [SellerBuyerController::class, 'getFarmOrders']);
 
+    Route::post('/confirmOrder/{order}', [SellerBuyerController::class, 'confirmOrder']);
+
+    Route::post('/addFarmForm', [SellerBuyerController::class, 'addFarmForm']);
+    Route::post('/getOrdersSeller', [SellerBuyerController::class, 'getOrdersSeller']);   //ORDERS
+    Route::post('/confirmDelivery', [SellerBuyerController::class, 'confirmDelivery']);   //ORDERS
+
+    Route::post('/sellerDashboard', [SellerBuyerController::class, 'sellerDashboard']); //dashboard
+
+
+
 
 
     // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);
-
-
-
 });
 
 Route::post('/signup', [AuthController::class, 'signup']);

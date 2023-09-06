@@ -31,6 +31,7 @@ class TransactionFactory extends Factory
             'price_payed' =>null,
             'payed_on' => null,
             'buyers_name' => $this->faker->randomElement(\App\Models\User::pluck('id')->toArray()),
+            'seller' => $this->faker->randomElement(\App\Models\User::pluck('id')->toArray()),
         ];
     }
 }

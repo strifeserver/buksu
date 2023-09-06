@@ -3,6 +3,9 @@ import { useState } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 
+import { Tabs } from "flowbite-react";
+import { HiUserCircle } from "react-icons/hi";
+
 export default function AddProduct() {
   const [formData, setFormData] = useState({
     product_name: "",
@@ -61,6 +64,8 @@ export default function AddProduct() {
 
   return (
     <div>
+
+
       <p class="text-center text-lg mt-6">Add Product Form</p>
 
       <div class="m-12 outline outline-2  outline-offset-2 ">

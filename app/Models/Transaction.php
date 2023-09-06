@@ -17,6 +17,8 @@ class Transaction extends Model
         'price_payed',
         'payed_on',
         'buyers_name',
+        'proof_of_delivery',
+        'seller'
     ];
 
     public function user()
@@ -27,6 +29,10 @@ class Transaction extends Model
     public function TransactionDetail()
     {
         return $this->hasMany(TransactionDetail::class, 'transaction_id');
+    }
+
+    public function fromFarm(){
+        return $this->belongsTo(Farm::class, 'from_farm');
     }
 
 }

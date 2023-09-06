@@ -19,7 +19,7 @@ class TransactionDetail extends Model
         'kg_purchased',
         'transaction_id',
         'product_id',
-        'from_farm',
+
     ];
 
     public function transaction()
@@ -32,9 +32,9 @@ class TransactionDetail extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function farm()
-    {
-        return $this->belongsTo(Farm::class, 'from_farm');
-    }
+    // public function farm()
+    // {
+    //     return $this->belongsTo(Farm::class, 'from_farm');
+    // }
 
 }

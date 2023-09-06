@@ -32,7 +32,7 @@ class TransactionDetailFactory extends Factory
             'price_per_kilo' => 12.71,
             'transaction_id' => $this->faker->randomElement(\App\Models\Transaction::pluck('id')->toArray()),
             'product_id' => $this->faker->randomElement(\App\Models\Product::pluck('id')->toArray()),
-            'from_farm' => $this->faker->randomElement(\App\Models\Farm::pluck('id')->toArray()),
+
         ];
     }
 }

@@ -3,11 +3,14 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 // import { useHistory  } from "react-router-dom";
 
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 import { Tabs } from "flowbite-react";
 import { HiUserCircle } from "react-icons/hi";
 
+
 export default function ProductAdd() {
+
+
   const { currentUserID } = useStateContext();
 
   const payload = {
@@ -92,49 +95,49 @@ export default function ProductAdd() {
           price: "",
           product_picture: null, // Reset product_picture too
         });
+
       })
       .catch((error) => {
-        showInfoAlert();
+       showInfoAlert();
         console.error(error);
       });
   };
 
+
   const showSuccessAlert = () => {
     Swal.fire({
-      icon: "success",
-      title: "Success!",
-      text: "Product Added Successfully",
+      icon: 'success',
+      title: 'Success!',
+      text: 'Product Added Successfully',
     });
   };
 
   const showInfoAlert = () => {
     Swal.fire({
-      icon: "warning",
-      title: "Error!",
+      icon: 'warning',
+      title: 'Error!',
       text: "Please check all required fields are not empty",
     });
   };
 
   return (
     <div className="mt-3 mx-6">
-      <Tabs.Group
-        aria-label="Tabs with underline"
-        style="underline"
-        className="items-center"
-      >
-        <Tabs.Item active icon={HiUserCircle} title="Broccoli">
-          <h1>asjkahs</h1>
-        </Tabs.Item>
-        <Tabs.Item active icon={HiUserCircle} title="Cabbage">
-          <h1>asjkahs</h1>
-        </Tabs.Item>
-        <Tabs.Item active icon={HiUserCircle} title="Carrot">
-          <h1>asjkahs</h1>
-        </Tabs.Item>
-        <Tabs.Item active icon={HiUserCircle} title="Tomato">
-          <h1>asjkahs</h1>
-        </Tabs.Item>
-      </Tabs.Group>
+
+  <Tabs.Group aria-label="Tabs with underline" style="underline" className="items-center">
+            <Tabs.Item active icon={HiUserCircle} title="Broccoli">
+            <h1>asjkahs</h1>
+            </Tabs.Item>
+            <Tabs.Item active icon={HiUserCircle} title="Cabbage">
+    <h1>asjkahs</h1>
+            </Tabs.Item>
+            <Tabs.Item active icon={HiUserCircle} title="Carrot">
+    <h1>asjkahs</h1>
+            </Tabs.Item>
+            <Tabs.Item active icon={HiUserCircle} title="Tomato">
+    <h1>asjkahs</h1>
+            </Tabs.Item>
+
+            </Tabs.Group>
       <div className="m-12 outline outline-2  outline-offset-2">
         <div className="p-4 mb-5 bg-gray-200 dark:bg-gray-900 ">
           <p className="text-center text-lg mt-2 p-2">Add Product Form</p>
@@ -145,6 +148,7 @@ export default function ProductAdd() {
               style={{ fontFamily: '"Lato", sans-serif' }}
             >
               <div className="flex md:flex-row flex-col items-center py-8 px-4">
+
                 {/* Code block starts */}
                 <div className="flex flex-col md:mr-16">
                   <label
@@ -215,7 +219,7 @@ export default function ProductAdd() {
                       required
                       className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                     >
-                      <option value="0" selected disabled>
+                      <option value="0" selected disabled >
                         Select Product Type
                       </option>
                       {productType.map((product) => (

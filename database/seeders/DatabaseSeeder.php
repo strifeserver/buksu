@@ -19,15 +19,15 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\SupportedProduct::factory(4)->create();
 
-        \App\Models\User::factory(50)->create();
+        \App\Models\User::factory(2)->create();
 
-        \App\Models\Farm::factory(50)->create();
+        \App\Models\Farm::factory(1)->create();
 
-        \App\Models\Product::factory(130)->create();
+        \App\Models\Product::factory(5)->create();
 
-        \App\Models\Transaction::factory(100)->create();
+        \App\Models\Transaction::factory(1)->create();
 
-        \App\Models\TransactionDetail::factory(200)->create();
+        \App\Models\TransactionDetail::factory(2)->create();
 
     }
 }

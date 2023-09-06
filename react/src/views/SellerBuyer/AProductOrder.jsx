@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { Textarea, Table } from "flowbite-react";
+import { Textarea, Table, Tabs } from "flowbite-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { HiInformationCircle, HiUserCircle } from "react-icons/hi";
 
-export default function FarmProductOrders() {
+
+export default function AProductOrder() {
   const [loading, setLoading] = useState(false);
   const { currentUserID } = useStateContext();
   const [product, setProduct] = useState([]);
@@ -38,9 +40,9 @@ export default function FarmProductOrders() {
   const submitToCart = (event) => {
     event.preventDefault();
     axiosClient
-      .post("/addToCart", formData)
+      .post("/orderNow", formData)
       .then(() => {
-        window.location.href = "/buyer-seller/orders/pending";
+        window.location.href = "/buyer-seller/orders";
       })
       .catch((error) => {
         // Handle error if needed
@@ -58,31 +60,29 @@ export default function FarmProductOrders() {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
   return (
+
     <div>
-      <div className="flex">
-        <div className="w-1/2 h-screen bg-gray-100">
-          <MapContainer
-            center={[45.4, -75.7]}
-            zoom={12}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            />
-          </MapContainer>
-        </div>
-        <div className="w-1/2 h-screen bg-gray-100 mt-24">
+       <Tabs.Group
+    aria-label="Tabs with underline"
+    style="underline"
+    className="items-center"
+  >
+    <Tabs.Item active icon={HiUserCircle} title="Order Now">
+      <div className="">
+        {/* <div className="w-1/2 h-screen bg-gray-100">
+
+        </div> */}
+        <div className="w-full h-screen bg-slate-100 mt-0 p-16">
           <form onSubmit={submitToCart}>
             {product.map((u) => (
               <div className="relative">
                 <div className=" absolute top-0 left-0 py-2 px-4 bg-white bg-opacity-50 "></div>
                 <div className=" relative group">
-                  <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full"></div>
+                  <div className=" flex justify-center items-center opacity-0 bg-gradient-to-t from-gray-800 via-gray-800 to-opacity-30 group-hover:opacity-50 absolute top-0 left-0 h-full w-full self-center object-center"></div>
                   <img
-                    className=" w-96 h-96"
-                    src="https://s-media-cache-ak0.pinimg.com/736x/ba/ef/c1/baefc1bbbc0aa057a4682e045ef9a10d--gymnastics-girls-handstand.jpg"
-                    alt="A girl Posing Img"
+                    className="w-96 h-96 "
+                    src="https://images-na.ssl-images-amazon.com/images/I/71nFvA-EOeL._SL1500_.jpg"
+                    alt="Cabbage"
                   />
                 </div>
 
@@ -116,7 +116,7 @@ export default function FarmProductOrders() {
                       min={1}
                       max={u.prospect_harvest_in_kg - u.actual_sold_kg}
                       aria-label="input"
-                      className="border border-gray-300 h-full text-center w-14 pb-1"
+                      className="border border-gray-300 h-full text-center w-15 pb-1"
                       required
                     />
                   </div>
@@ -125,13 +125,15 @@ export default function FarmProductOrders() {
                   type="submit"
                   className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2"
                 >
-                  Order Now
+                 Order Now
                 </button>
               </div>
             ))}
           </form>
         </div>
       </div>
+      </Tabs.Item>
+      </Tabs.Group>
     </div>
   );
 }
