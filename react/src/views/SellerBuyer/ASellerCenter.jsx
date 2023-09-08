@@ -811,7 +811,9 @@ export default function ASellerCenter() {
                                   Customer : <br />
                                   <span className="text-sm border-y-orange-400">
                                     {" "}
-                                    {order.user.name}
+                                    {order.user.name} <br />
+                                    {order.user.mobile_number}
+
                                   </span>
                                 </h3>
                                 <div className="flex justify-between items-start w-full">
@@ -985,11 +987,6 @@ export default function ASellerCenter() {
                                             <p className="text-bold rounded-md bg-green-500 text-white text-center">
 Confirmed
                                             </p>
-
-
-
-
-
                                           )}
                                         </span>
                                       </p>
@@ -1003,7 +1000,8 @@ Confirmed
                                   Delivered to : <br />
                                   <span className="text-sm border-y-orange-400">
                                     {" "}
-                                    {order.user.name}
+                                    {order.user.name} <br />
+                                    {order.user.mobile_number}
                                   </span>
                                 </h3>
                                 <div className="flex justify-between items-start w-full">
