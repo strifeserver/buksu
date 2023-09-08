@@ -125,7 +125,7 @@ export default function Srp() {
                           required
                           className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                         >
-                          <option value="-" disabled>Please Select --</option>
+<option value="SelectOne">Select One</option>
 
                           <option value="Brocollis">Brocollis</option>
                           <option value="Carrots">Carrots</option>
