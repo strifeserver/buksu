@@ -3,7 +3,7 @@ import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useState } from "react";
 
-export default function ASellerBuyerlayout() {
+export default function ASellerBuyerLayoutBuyer() {
   const {
     currentUserID,
     token,
@@ -108,18 +108,19 @@ export default function ASellerBuyerlayout() {
                 {/* Dropdown menu */}
                 {isDropdownOpen && (
                   <div className="absolute mt-6 w-48 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                     <a
+                      href="/buyer-seller/dashboard"
+                      className="block px-4 py-2 text-gray-800 hover:bg-blue-200"
+                    >
+                      Seller Mode
+                    </a>
                     <a
                       href="/buyer-seller/role/buyer"
                       className="block px-4 py-2 text-gray-800 hover:bg-blue-200"
                     >
                       Buyer Mode
                     </a>
-                    <a
-                      href="http://127.0.0.1:3000/buyer-seller/dashboard"
-                      className="block px-4 py-2 text-gray-800 hover:bg-blue-200"
-                    >
-                      Seller Mode
-                    </a>
+
                     {/* Add more dropdown items as needed */}
                   </div>
                 )}
@@ -130,7 +131,7 @@ export default function ASellerBuyerlayout() {
                 <p className="text-xl text-white font-bold mt-0 mb-0">
                   {" "}
                   E-Tabo
-                  <span className="text-xs text-black">&nbsp;Seller Mode</span>
+                  <span className="text-xs text-black">&nbsp;Buyer Mode</span>
                 </p>
               </div>
 
@@ -138,17 +139,17 @@ export default function ASellerBuyerlayout() {
               <div className="flex items-center space-x-4">
                 {/* Logout button */}
                 <a
-                  href="/buyer-seller/dashboard "
+                  href="/buyer-seller/role/buyer"
                   className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
                 >
-                  Dashboard
+                  Order Now
                 </a>
                 &nbsp; |
                 <a
-                  href="/seller/center"
+                  href="/buyer-seller/orders"
                   className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
                 >
-                  Seller Center
+                  My Orders
                 </a>
                 &nbsp; | &nbsp;
                 <button
@@ -178,168 +179,4 @@ export default function ASellerBuyerlayout() {
       </div>
     </div>
   );
-}
-
-// <div className="py-4 mx-4 md:mx-6">
-// <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 py-4">
-//   <div>
-
-//       <p className="text-md text-slate-100 ">Seller & Buyer DASHBOARD</p>
-
-//   </div>
-//   <div className="hidden md:block">
-//     <ul className="flex items-center space-x-6">
-//       <li>
-//         <a
-//           href="/buyer-seller/dashboard"
-//           className="dark:text-white  text-base text-right text-gray-800 focus:outline-none  hover:text-white"
-//         >
-//           Dashboard
-//         </a>
-//       </li>
-//       <li>
-//         <a
-//           href="/buyer-seller/order/products"
-//           className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
-//         >
-//           Buy Goods
-//         </a>
-//       </li>
-//       <li>
-//         <a
-//           href="/buyer-seller/farmers/product/"
-//           className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
-//         >
-//           Farms
-//         </a>
-//       </li>
-{
-  /* <li>
-        <a
-          href="/buyer-seller/orders"
-          className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
-        >
-          Orders
-        </a>
-      </li> */
-}
-{
-  /* <li>
-        <a
-          href="/seller/center"
-          className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
-        >
-          Seller Center
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div className="hidden md:flex items-center space-x-4">
-    <a
-      onClick={onLogoutConfirm}
-      className=" p-0.5 rounded"
-    >
-      hhh
-      <svg
-        className="fill-stroke text-gray-800 dark:text-white"
-        width={18}
-        height={20}
-        viewBox="0 0 18 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M17 19V17C17 15.9391 16.5786 14.9217 15.8284 14.1716C15.0783 13.4214 14.0609 13 13 13H5C3.93913 13 2.92172 13.4214 2.17157 14.1716C1.42143 14.9217 1 15.9391 1 17V19"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M9 9C11.2091 9 13 7.20914 13 5C13 2.79086 11.2091 1 9 1C6.79086 1 5 2.79086 5 5C5 7.20914 6.79086 9 9 9Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </a>
-
-    <a
-      title="Cart"
-      href="/buyer-seller/orders"
-      className=" p-0.5 rounded"
-    >
-      <svg
-        className="fill-stroke text-gray-800 dark:text-white"
-        width={20}
-        height={22}
-        viewBox="0 0 20 22"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 1L1 5V19C1 19.5304 1.21071 20.0391 1.58579 20.4142C1.96086 20.7893 2.46957 21 3 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V5L16 1H4Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M1 5H19"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M14 9C14 10.0609 13.5786 11.0783 12.8284 11.8284C12.0783 12.5786 11.0609 13 10 13C8.93913 13 7.92172 12.5786 7.17157 11.8284C6.42143 11.0783 6 10.0609 6 9"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </a>
-  </div>
-  <div className="md:hidden">
-    <button
-      aria-label="open menu"
-      onClick={() => setShowMenu(true)}
-      className=" rounded"
-    >
-      <svg
-        className="fill-stroke text-gray-800 dark:text-white"
-        width={24}
-        height={24}
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 6H20"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M10 12H20"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M6 18H20"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  </div>
-</div>
-</div> */
 }

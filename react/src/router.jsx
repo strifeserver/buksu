@@ -17,14 +17,14 @@ import UserViewVerified from "./views/Admin/UserViewVerified.jsx";
 import UserForm from "./views/Admin/UserForm";
 import UserFormManage from "./views/Admin/UserFormManage.jsx";
 
-import FarmsPending from "./views/Admin/FarmsPending.jsx"; //FARMS
+// import FarmsPending from "./views/Admin/FarmsPending.jsx"; //FARMS
 import FarmsApproved from "./views/Admin/FarmsApproved.jsx";
 import FarmFormManage from "./views/Admin/FarmFormManage.jsx";
 import FarmViewProducts from "./views/Admin/FarmViewProducts.jsx";
 import FarmersProfile from "./views/Admin/FarmersProfile.jsx";
 import FarmersProfileInfo from "./views/Admin/FarmersProfileInfo.jsx";
 
-import ProductsPending from "./views/Admin/ProductsPending.jsx";
+import Srp from "./views/Admin/Srp.jsx";
 import ProductFormManage from "./views/Admin/ProductFormManage.jsx";
 import ProductsApproved from "./views/Admin/ProductsApproved.jsx";
 import ProductsFormView from "./views/Admin/ProductFormView.jsx";
@@ -62,13 +62,14 @@ import SellerCenter from "./views/SellerBuyer/ASellerCenter.jsx"
 import AddFarm from "./views/SellerBuyer/AAddFarm.jsx"
 import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
 
+import BuyerMode from "./views/SellerBuyer/ASellerBuyerLayout-Buyer";
+
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
 import Orders from "./views/SellerBuyer/AOrders";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
-import BuyerDashboard from "./views/Buyers/BuyerDashboard";
-import ListsProduct from "./views/Buyers/Products";
+import ListsProduct from "./views/Buyers/AProducts";
 import ProductOrderNow from "./views/Buyers/ProductOrder";
 import OrdersLists from "./views/Buyers/Orders.jsx";
 
@@ -117,10 +118,10 @@ const router = createBrowserRouter([
         path: '/admin/pending/user/:id',
         element: <UserForm key="userUpdate" />
       },
-      {                             //FARMS
-        path: '/admin/farms/pending',
-        element: <FarmsPending />
-      },
+      // {                             //FARMS
+      //   path: '/admin/farms/pending',
+      //   element: <FarmsPending />
+      // },
       {
         path: '/admin/farms/approved',
         element: <FarmsApproved />
@@ -134,8 +135,8 @@ const router = createBrowserRouter([
         element: <FarmViewProducts />
       },
       {                         //Products
-        path: '/admin/products/pending',
-        element: <ProductsPending />
+        path: '/admin/products/srp',
+        element: <Srp />
       },
       {
         path: '/admin/products/approved',
@@ -186,11 +187,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/buyer/dashboard"/>
-      },
-      {
-        path: '/buyer/dashboard',
-        element: <BuyerDashboard />
+        element: <Navigate to="/buyer/order/products"/>
       },
       {
         path: '/buyer/order/products',
@@ -206,6 +203,36 @@ const router = createBrowserRouter([
       },
     ]
   },
+  //BUYER MODE
+  {
+    path: '/',
+    element: <BuyerMode />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/buyer-seller/role/buyer"/>
+      },
+      {
+        path: '/buyer-seller/role/buyer',
+        element: <Products />
+      },
+      {
+        path: '/buyer-seller/order/products/:id',
+        element: <ProductOrder />
+      },
+      {
+        path: '/buyer-seller/orders', //orderlists
+        element: <Orders />
+      },
+      {
+        path: '/buyer-seller/order/confirm/:id', //confirm Order
+        element: <ConfirmOrder />
+      },
+
+
+    ]
+  },
+
 
   {
     path: '/',
@@ -219,23 +246,9 @@ const router = createBrowserRouter([
         path: '/buyer-seller/dashboard',
         element: <BuyerSellerDashboard />
       },
-      {
-        path: '/buyer-seller/order/products',
-        element: <Products />
-      },
-      {
-        path: '/buyer-seller/order/products/:id',
-        element: <ProductOrder />
-      },
 
-      {
-        path: '/buyer-seller/orders', //orderlists
-        element: <Orders />
-      },
-      {
-        path: '/buyer-seller/order/confirm/:id', //confirm Order
-        element: <ConfirmOrder />
-      },
+
+
       {
         path: '/buyer-seller/farmers/product/',
         element: <FarmersProduct />

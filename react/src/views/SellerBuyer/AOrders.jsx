@@ -70,7 +70,7 @@ export default function AOrders() {
                                   <div className="pb-4 md:pb-8 w-full md:w-40">
                                     <img
                                       className="w-full hidden md:block"
-                                      src="https://placehold.co/600x400.png"
+                                      src={`http://127.0.0.1:8000/storage/Farms/${detail.product_ordered.farm_belonged}/${detail.product_ordered.product_picture}`}
                                     />
                                   </div>
                                   <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
@@ -215,7 +215,7 @@ export default function AOrders() {
                                   <div className="pb-4 md:pb-8 w-full md:w-40">
                                     <img
                                       className="w-full hidden md:block"
-                                      src="https://placehold.co/600x400.png"
+                                      src={`http://127.0.0.1:8000/storage/Farms/${detail.product_ordered.farm_belonged}/${detail.product_ordered.product_picture}`}
                                     />
                                   </div>
                                   <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
@@ -388,7 +388,7 @@ export default function AOrders() {
                                   <div className="pb-4 md:pb-8 w-full md:w-40">
                                     <img
                                       className="w-full hidden md:block"
-                                      src="https://placehold.co/600x400.png"
+                                      src={`http://127.0.0.1:8000/storage/Farms/${detail.product_ordered.farm_belonged}/${detail.product_ordered.product_picture}`}
                                     />
                                   </div>
                                   <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">

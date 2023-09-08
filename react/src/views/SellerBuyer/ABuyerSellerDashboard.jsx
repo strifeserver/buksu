@@ -78,7 +78,7 @@ export default function ABuyerSellerDashboard() {
                                     <div class="rounded-full p-5 bg-pink-600"><FontAwesomeIcon icon={faUsersViewfinder} size='lg' inverse /></div>
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
-                                    <h2 class="font-bold uppercase text-gray-600">Pending Orders</h2>
+                                    <h2 class="font-bold uppercase text-gray-600">Total Orders</h2>
                                     <p class="font-bold text-3xl">{pendingOrderCount} <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></p>
                                 </div>
                             </div>

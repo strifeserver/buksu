@@ -111,8 +111,6 @@ export default function AProductOrder() {
                       id="counter"
                       name="kg_"
                       type="number"
-                      // name={`kg_${u.id}`}
-                      // value={formData[`kg_${u.id}`] || u.id}
                       onChange={handleChange}
                       min={1}
                       max={u.prospect_harvest_in_kg - u.actual_sold_kg}
@@ -124,10 +122,17 @@ export default function AProductOrder() {
                 </div>
                 <button
                   type="submit"
-                  className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2"
+                  className="focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-3 lg:mt-4 mt-2"
                 >
                  Order Now
                 </button>
+
+                <a href="/buyer/order/products"
+                  type="submit"
+                  className="text-center focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-slate-800 font-medium text-base leading-4 text-white bg-slate-800 w-full py-3 lg:mt-4 mb-5"
+                >
+                 Back
+                </a>
               </div>
             ))}
           </form>

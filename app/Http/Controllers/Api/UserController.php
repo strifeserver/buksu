@@ -33,7 +33,7 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $user = User::orderByDesc('updated_at')->paginate(10);
+        $user = User::where('user_type', '!=', 2)->orderByDesc('updated_at')->paginate(10);
         return UserResource::collection($user);
     }
 

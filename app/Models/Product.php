@@ -23,12 +23,15 @@ class Product extends Model
         'price',
         'product_picture',
         'farm_belonged',
+        'is_approved',
     ];
 
     public function farm()
     {
         return $this->belongsTo(Farm::class, 'farm_belonged');
     }
+
+
 
     public function transactionsPerProduct()
     {

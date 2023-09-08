@@ -6,6 +6,7 @@ use App\Models\Farm;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\PriceControl;
 use Illuminate\Http\Request;
 use App\Models\TransactionDetail;
 use App\Http\Controllers\Controller;
@@ -128,7 +129,7 @@ class SellerBuyerController extends Controller
             ->whereHas('transactions')
             ->with(['transactions' => function ($query) {
                 $query->orderBy('seller_prospect_date_todeliver', 'desc');
-            }, 'transactions.TransactionDetail'])
+            }, 'transactions.TransactionDetail', 'transactions.TransactionDetail.productOrdered' ])
             ->get();
 
 
@@ -150,7 +151,7 @@ class SellerBuyerController extends Controller
         //     ]);
 
         $transactions = Transaction::where('seller', $user_ID)
-            ->with('TransactionDetail', 'user')
+            ->with('TransactionDetail', 'user', 'TransactionDetail.productOrdered')
             ->get();
 
         // return response()->json($farm);
@@ -308,6 +309,28 @@ class SellerBuyerController extends Controller
             'pendingOrderCount' => $pendingOrderCount,
             'totalSold' => $cost,
         ]);
+    }
+
+    public function priceRange(Request $request){
+
+        $validatedData = $request->validate([
+            'product_type' => 'required|string',
+            'min' => 'required|numeric',
+            'max' => 'required|numeric',
+        ]);
+
+        // Find an existing record by 'product_name' or create a new one
+       PriceControl::updateOrCreate(
+            ['product_name' => $validatedData['product_type']],
+            [
+                'max' => $validatedData['max'],
+                'min' => $validatedData['min'],
+            ]
+        );
+
+
+        return response()->json(['success' => 'Product Added Successfully']);
+
     }
 
     /**

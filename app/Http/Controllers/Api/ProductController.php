@@ -32,11 +32,14 @@ class ProductController extends Controller
             ->where(function ($query) {
                 $query->whereRaw('prospect_harvest_in_kg - actual_sold_kg != 0');
             })
+            ->with('farm.user')
             ->orderBy('product_name', 'asc')
             ->get();
 
-        return ProductResource::collection($products);
-        // return response()->json($products);
+        // return ProductResource::collection($products);
+        return response()->json([
+            'products' => $products
+        ]);
 
     }
 
@@ -103,6 +106,7 @@ class ProductController extends Controller
             $fileName = $photo->getClientOriginalName();
             // Store the file in the public storage inside the 'product_images' folder
             $photo->storeAs('public/Farms/' . $request->farm_belonged, $fileName);
+            $data['is_approved'] = 1;
             $data['product_picture'] = $fileName;
         }
         $product = Product::create($data);

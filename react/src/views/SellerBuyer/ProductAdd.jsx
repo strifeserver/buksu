@@ -123,7 +123,7 @@ export default function ProductAdd() {
         className="items-center"
       >
         <Tabs.Item active icon={HiUserCircle} title="Broccoli">
-          <h1>asjkahs</h1>
+          <h1>assssjkahs</h1>
         </Tabs.Item>
         <Tabs.Item active icon={HiUserCircle} title="Cabbage">
           <h1>asjkahs</h1>

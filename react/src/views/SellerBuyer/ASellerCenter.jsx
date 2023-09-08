@@ -14,7 +14,7 @@ export default function ASellerCenter() {
     user_ID: currentUserID,
   };
 
-  const [productType, setProductType] = useState([]);
+  const [productTypeZ, setProductTypeZ] = useState([]);
   const [farmsOwned, setfarmsOwned] = useState([]);
   var counter = 1;
 
@@ -22,7 +22,7 @@ export default function ASellerCenter() {
     axiosClient
       .get("/getProductTypes")
       .then((response) => {
-        setProductType(response.data.productType);
+        setProductTypeZ(response.data.productType);
       })
       .catch((error) => {
         console.error(error);
@@ -45,6 +45,7 @@ export default function ASellerCenter() {
     product_name: "",
     product_type: "",
     farm_belonged: "",
+    is_approved: 1,
     variety: "",
     planted_date: "",
     prospect_harvest_in_kg: "",
@@ -228,14 +229,12 @@ export default function ASellerCenter() {
                           required
                           className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                         >
-                          <option value="0" selected disabled>
-                            Select Product Type
-                          </option>
-                          {productType.map((product) => (
-                            <option value={product.supported_product}>
-                              {product.supported_product}
-                            </option>
-                          ))}
+                          <option value="-">Please Select --</option>
+
+                          <option value="Brocollis">Brocollis</option>
+                          <option value="Carrots">Carrots</option>
+                          <option value="Cabbages">Cabbages</option>
+                          <option value="Tomatoes">Tomatoes</option>
                         </select>
                       </div>
                     </div>
@@ -701,7 +700,7 @@ export default function ASellerCenter() {
                                 <div className="pb-4 md:pb-8 w-full md:w-40">
                                   <img
                                     className="w-full hidden md:block"
-                                    src="https://placehold.co/600x400.png"
+                                    src={`http://127.0.0.1:8000/storage/Farms/${transaction_detail.product_ordered.farm_belonged}/${transaction_detail.product_ordered.product_picture}`}
                                   />
                                 </div>
                                 <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
@@ -833,12 +832,12 @@ export default function ASellerCenter() {
                                         </span>
                                       </p>
                                       <a
-                                      href={`/buyer-seller/order/delivered/${order.id}`}
-                                    >
-                                      <button className="rounded-lg focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2 p-2">
-                                        Order Delivered
-                                      </button>
-                                    </a>
+                                        href={`/buyer-seller/order/delivered/${order.id}`}
+                                      >
+                                        <button className="rounded-lg focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2 p-2">
+                                          Order Delivered
+                                        </button>
+                                      </a>
                                     </div>
                                   </div>
                                 </div>
@@ -854,7 +853,7 @@ export default function ASellerCenter() {
           </div>
         </Tabs.Item>
         <Tabs.Item active icon={HiUserCircle} title="Farms Fulfilled Order">
-        <div className="bg-gray-100 w-full">
+          <div className="bg-gray-100 w-full">
             <p className="text-center mt-3">Fulfilled Orders</p>
             <p className="text-xs mt-0 mb-6 text-center italic">
               Successfully Ordered Commodities
@@ -863,7 +862,7 @@ export default function ASellerCenter() {
               <div className="bg-slate-200" key={order.id}>
                 {order.transaction_detail.map(
                   (transaction_detail) =>
-                    order.price_payed != null && order.payed_on != null ? (
+                    order.price_payed != null ? (
                       <div
                         key={transaction_detail.id}
                         className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto"
@@ -880,7 +879,7 @@ export default function ASellerCenter() {
                                 <div className="pb-4 md:pb-8 w-full md:w-40">
                                   <img
                                     className="w-full hidden md:block"
-                                    src="https://placehold.co/600x400.png"
+                                    src={`http://127.0.0.1:8000/storage/Farms/${transaction_detail.product_ordered.farm_belonged}/${transaction_detail.product_ordered.product_picture}`}
                                   />
                                 </div>
                                 <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
@@ -958,10 +957,10 @@ export default function ASellerCenter() {
 
                               <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6">
                                 <h3 className="text-xl font-semibold leading-5 text-gray-800">
-                                  Order Status :{" "}
+                                 Order Status :{" "} <br />
                                   <span className="text-sm border-y-orange-400">
                                     {" "}
-                                    DELIVERED{" "}
+                                    DELIVERED{" "} {order.payed_on}
                                   </span>
                                 </h3>
                                 <div className="flex justify-between items-start w-full">
@@ -975,14 +974,23 @@ export default function ASellerCenter() {
                                     </div>
                                     <div className="flex flex-col justify-start items-center">
                                       <p className="text-lg leading-6 font-semibold text-green-800">
-                                        Delivered date
+                                       Buyers Confirmation
                                         <br />
                                         <span className="font-normal">
-                                          {order.date_delivered === null ? (
-                                            <p className="text-red-600">NOT YET CONFIRMED BY THE BUYER</p>
-                                          ) :
-                                          order.date_delivered
-                                          }
+                                          {order.payed_on === null ? (
+                                            <p className="text-red-600">
+                                              NOT YET CONFIRMED BY THE BUYER
+                                            </p>
+                                          ) : (
+                                            <p className="text-bold rounded-md bg-green-500 text-white text-center">
+Confirmed
+                                            </p>
+
+
+
+
+
+                                          )}
                                         </span>
                                       </p>
                                     </div>

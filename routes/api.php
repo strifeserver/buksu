@@ -85,8 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/sellerDashboard', [SellerBuyerController::class, 'sellerDashboard']); //dashboard
 
-
-
+    Route::post('/priceRange', [SellerBuyerController::class, 'priceRange']); //dashboard
 
 
     // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);

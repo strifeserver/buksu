@@ -33,17 +33,18 @@ export default function DefaultLayout() {
 
   if(userType === 0){
     // navigate('/buyer/dashboard');
-    return <Navigate to="/buyer/dashboard" />;
+    return <Navigate to="/buyer/order/products" />;
 
   }else if (userType === 1){
     // alert("ajhgsjhg");
     // navigate('/buyer&seller/dashboard');
     return <Navigate to="/buyer-seller/dashboard" />
-  }else if (userType === 2){
-    // alert("ajhgsjhg");
-    // navigate('/buyer&seller/dashboard');
-    return <Navigate to="/admin/dashboard" />
   }
+  // else if (userType === 2){
+  //   // alert("ajhgsjhg");
+  //   // navigate('/buyer&seller/dashboard');
+  //   return <Navigate to="/admin/dashboard" />
+  // }
 
   const onLogoutConfirm = () => {
     const isConfirmed = window.confirm("Are you sure you want to logout?");
@@ -120,7 +121,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/admin/products/pending">
+              <a href="/admin/products/srp">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -138,7 +139,7 @@ export default function DefaultLayout() {
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" />
                     </svg>
-                    <span className="text-sm  ml-2">Pending Products</span>
+                    <span className="text-sm  ml-2">Price Control</span>
                   </div>
                 </li>
               </a>
@@ -164,7 +165,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
-              <a href="/admin/farms/pending">
+              {/* <a href="/admin/farms/pending">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -187,8 +188,8 @@ export default function DefaultLayout() {
                     <span className="text-sm  ml-2">Pending Farms</span>
                   </div>
                 </li>
-              </a>
-              <a href="/admin/farms/approved">
+              </a> */}
+              {/* <a href="/admin/farms/approved">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
                     <svg
@@ -208,10 +209,10 @@ export default function DefaultLayout() {
                       <polyline points="17 8 21 12 17 16" />
                       <line x1={14} y1={4} x2={10} y2={20} />
                     </svg>
-                    <span className="text-sm  ml-2">Approved Farms</span>
+                    <span className="text-sm  ml-2">Farm Lists</span>
                   </div>
                 </li>
-              </a>
+              </a> */}
               <a href="/admin/farmers/profile/">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600 cursor-pointer items-center  px-8 py-3">
                   <div className="flex items-center">
