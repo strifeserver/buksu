@@ -303,11 +303,14 @@ class SellerBuyerController extends Controller
             $cost = $cost + $totalSold->price_payed;
         }
 
+        $priceRange = PriceControl::all();
+
 
         return response()->json([
             'farmcount' => $productCount,
             'pendingOrderCount' => $pendingOrderCount,
             'totalSold' => $cost,
+            'priceRange' => $priceRange,
         ]);
     }
 

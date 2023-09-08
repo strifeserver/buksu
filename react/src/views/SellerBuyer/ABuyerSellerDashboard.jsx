@@ -11,8 +11,10 @@ export default function ABuyerSellerDashboard() {
 //  const userAll = 11;
   const [farmCount, setFarmCount] = useState([]);
   const [pendingOrderCount, setPendingOrderCount] = useState([]);
+  const [range, setRange] = useState([]);
   const [totalSold, setTotalSold] = useState([]);
   const { currentUserID } = useStateContext();
+
 
   const payload = {
     user_ID: currentUserID,
@@ -25,6 +27,7 @@ export default function ABuyerSellerDashboard() {
         setFarmCount(response.data.farmcount),
         setPendingOrderCount(response.data.pendingOrderCount),
         setTotalSold(response.data.totalSold)
+        setRange(response.data.priceRange)
         ;
       })
       .catch(error => {
@@ -101,6 +104,27 @@ export default function ABuyerSellerDashboard() {
                         </div>
 
                     </div>
+
+                    {range.map((price) => (
+                      <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+
+                      <div class="bg-gradient-to-b from-pink-200 to-pink-100 border-b-4 border-pink-500 rounded-lg shadow-xl p-5">
+                          <div class="flex flex-row items-center">
+                              <div class="flex-shrink pr-4">
+                                  <div class="rounded-full p-5 bg-green-600"><FontAwesomeIcon icon={faWeightScale} size='lg' inverse /></div>
+                              </div>
+                              <div class="flex-1 text-right md:text-center">
+                                  <h2 class="font-bold uppercase text-gray-600">{price.product_name}</h2>
+                                  <p class="font-bold text-xl">₱ {price.min} &nbsp;- &nbsp;{price.max} <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></p>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+
+                    ))}
+
+
 
                 </div>
             </div>

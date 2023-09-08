@@ -62,6 +62,35 @@ export default function ASellerCenter() {
     const { name, value, type, files } = e.target;
     const newValue = type === "file" ? files[0] : value;
 
+  // Determine min and max values based on the selected product type
+  let minPrice = 0;
+  let maxPrice = 100;
+
+  if (formData.product_type === "Brocollis") {
+    minPrice = 5;
+    maxPrice = 15;
+  } else if (formData.product_type === "Carrots") {
+    minPrice = 3;
+    maxPrice = 10;
+  } else if (formData.product_type === "Cabbages") {
+    minPrice = 2;
+    maxPrice = 8;
+  } else if (formData.product_type === "Tomatoes") {
+    minPrice = 4;
+    maxPrice = 12;
+  }
+
+  // Ensure the price falls within the min and max values
+  if (name === "price") {
+    const parsedValue = parseFloat(newValue);
+    if (parsedValue < minPrice) {
+      newValue = minPrice.toString();
+    } else if (parsedValue > maxPrice) {
+      newValue = maxPrice.toString();
+    }
+  }
+
+
     setFormData({
       ...formData,
       [name]: newValue,
@@ -140,6 +169,8 @@ export default function ASellerCenter() {
   if (data.userPendingOrders === undefined) {
     return <div>Loading ...</div>;
   }
+
+
 
   return (
     <div className="mt-3 mx-6">
@@ -592,6 +623,8 @@ export default function ASellerCenter() {
                           type="number"
                           id="price"
                           name="price"
+                          min={0}
+                          max={100}
                           required
                           value={formData.price}
                           onChange={handleChange}
