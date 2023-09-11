@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\StoreProductRequest;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Resources\ProductResource;
+use App\Models\PriceControl;
 
 class ProductController extends Controller
 {
@@ -56,9 +57,39 @@ class ProductController extends Controller
     {
         $user_ID = Crypt::decryptString($request->user_ID);
         $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
+        $PriceRanges = PriceControl::all();
+
+        $BrocoMin =0; $BrocoMax=0;
+        $CarMin = 0; $CarMax=0;
+        $CabMin = 0; $CabMax=0;
+        $TomaMin=0; $TomaMax=0;
+        foreach($PriceRanges as $PriceRange){
+            if($PriceRange->product_name == 'Brocollis'){
+                $BrocoMin =  $BrocoMin + $PriceRange->min;
+                $BrocoMax =  $BrocoMax + $PriceRange->max;
+            }else if($PriceRange->product_name == 'Cabbages'){
+                $CabMin =  $CabMin + $PriceRange->min;
+                $CabMax =  $CabMax + $PriceRange->max;
+            }else if($PriceRange->product_name == 'Carrots'){
+                $CarMin =  $CarMin + $PriceRange->min;
+                $CarMax =  $CarMax + $PriceRange->max;
+            }else if($PriceRange->product_name == 'Tomatoes'){
+                $TomaMin =  $TomaMin + $PriceRange->min;
+                $TomaMax =  $TomaMax + $PriceRange->max;
+            }
+        }
+
         return response([
             'farmsOwned' => $farmsOwnedByUser,
             'userID' => $user_ID,
+            'minBrocolli' => $BrocoMin,
+            'maxBrocolli' => $BrocoMax,
+            'minCabbage' => $CabMin,
+            'maxCabbage' => $CabMax,
+            'minCarrot' => $CarMin,
+            'maxCarrot' => $CarMax,
+            'minTomato' => $TomaMin,
+            'maxTomato' => $TomaMax,
         ]);
     }
 

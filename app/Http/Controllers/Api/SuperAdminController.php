@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
+
 use App\Models\Farm;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\CropRecord;
 use Illuminate\Http\Request;
 use App\Models\SupportedBarangay;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\CropRecordResource;
 use App\Http\Resources\SupportedProductResource;
 use App\Http\Resources\SupportedBarangayResource;
 use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
 use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
+use App\Models\PriceControl;
+
+// require_once __DIR__ . '/vendor/autoload.php';
 
 class SuperAdminController extends Controller
 {
@@ -205,6 +211,70 @@ class SuperAdminController extends Controller
         return response(new SupportedBarangayResource($supportedBarangay), 201);
     }
 
+    public function generateReport(Request $request)
+    {
+        $request->product_type;
+        $request->end_date;
+        $request->starting_date;
+        $request->user_ID;
+
+        $requestedMonth =   $request->starting_date;
+        $totalCounter = 0;
+        $grade_levels = ['Grade-7', 'Grade-8', 'Grade-9', 'Grade-10', 'Grade-11', 'Grade-12'];
+        //  Query the database to filter transactions for the specified month, join wsith the users table, and filter by grade level
+
+        $reportData = '<h4 style="text-align: center;">Bukidnon National High School Library Information System</h4>'
+            . '<h5 style="text-align: center;">Main Campus Malaybalay City Bukidnon</h5>';
+        $reportData .= '<p style="text-align: center; font-style: italic;">Borrowed Books in the Period of ' . $requestedMonth . '</p>';
+        $reportData .= '<table border="1" style="width: 100%; text-align: center;">
+                        <thead>
+                            <tr>
+                                <th>Grade Level</th>
+                                <th>Number of borrowed books</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+        // foreach ($grade_levels as $gradeLevel) {
+        //     $transactionCount = DB::table('transactions')
+        //         ->join('users', 'transactions.user_id', '=', 'users.id')
+        //         ->whereMonth('transactions.borrowed_at', $requestedMonth)
+        //         ->where('users.grade_and_section', $gradeLevel)
+        //         ->count();
+        //     $reportData .= '<tr>';
+        //     $reportData .= '<td>' . $gradeLevel . '</td>';
+        //     $reportData .= '<td>' . $transactionCount . '</td>';
+        //     $reportData .= '</tr>';
+
+        //     $totalCounter =  $totalCounter + $transactionCount;
+        // // }
+
+        $reportData .= '<tr>';
+
+        $reportData .= '</tr>';
+        $reportData .= '</tbody>';
+        $reportData .= '</table>';
+        // $reportData .= '<p style="text-align: right; padding-right: 50px;"> Total books Borrowed: ' . $totalCounter . '</p>';
+        $reportData .= '<p style="text-align: right; padding-right: 50px;"> Total books Borrowed:  j </p>';
+
+        $reportData .= '<br><br><br><br><br>';
+        $reportData .= '<p style="text-align: left;">PREPARED BY:</p><br>';
+        $reportData .= '<footer>
+        <p style="font-size: 16px; font-weight: bold;margin: 0px;"><u>' . Auth::user()->name . '</u></p>
+        <p style="font-style: italic;margin-left: 10px; margin-top:0px;">Librarian</p>
+      </footer>';
+        $reportData .= '<br>';
+        $reportData .= '<p style="text-align: right; padding-right: 50px;">Noted:</p>';
+        $reportData .= '<p style="text-align: right;">______________________</p><br>';
+        $reportData .= '<br><br>';
+        $reportData .= '<p style="text-align: right; font-style: italic;">Generated on: ' . date('Y-m-d H:i:s') . '</p><br>';
+        $mpdf = new Mpdf();
+        // $mpdf->WriteHTML('<h1>Report</h1>');
+        $mpdf->WriteHTML($reportData);
+        $mpdf->Output('report.pdf', 'I');
+
+    }
+
 
 
     /**
@@ -257,6 +327,11 @@ class SuperAdminController extends Controller
             ->with('farm')
             ->get();
         return response()->json($product);
+    }
+
+    public function getPriceRange(){
+        $prices = PriceControl::all();
+        return response()->json($prices);
     }
 
     /**

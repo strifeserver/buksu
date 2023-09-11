@@ -47,6 +47,8 @@ import FulfilledOrder from "./views/SellerBuyer/FulfilledOrder.jsx";
 import FulfilledOrderConfirm from "./views/SellerBuyer/FulfilledOrderConfirm.jsx";
 import FarmProductOrderLists from "./views/SellerBuyer/OrderListsByFarm.jsx";
 
+import GenerateReport from "./views/Admin/GenerateReport";
+
 import CropRecords from "./views/Admin/CropRecords.jsx";
 
 // import AddProd from "./views/Seller/AddProd.jsx";
@@ -174,6 +176,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/products/setPrice',
         element: <ProductsSupported />
+      },
+      {
+        path: '/admin/report/generate',
+        element: <GenerateReport />
       },
 
     ]

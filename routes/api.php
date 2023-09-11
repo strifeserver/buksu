@@ -60,6 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/barangays/{barangay}', [SuperAdminController::class, 'updateBarangay']);
     Route::post('/addBarangay', [DashboardController::class, 'addBarangay']);
     Route::get('/ids/{filename}', [SuperAdminController::class, 'getIDimage']);
+    Route::post('/generateReport', [SuperAdminController::class, 'generateReport']); //dashboard
+    Route::get('/getPriceRange', [SuperAdminController::class, 'getPriceRange']); //dashboard
+
 
    //Farms
     Route::post('/farms', [FarmController::class, 'getFarms']);
@@ -86,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/sellerDashboard', [SellerBuyerController::class, 'sellerDashboard']); //dashboard
 
     Route::post('/priceRange', [SellerBuyerController::class, 'priceRange']); //dashboard
+
 
 
     // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);

@@ -16,16 +16,6 @@ export default function ASellerCenter() {
 
   const [productTypeZ, setProductTypeZ] = useState([]);
   const [farmsOwned, setfarmsOwned] = useState([]);
-  const [minCabbage, setminCabbage] = useState();
-  const [maxCabbage, setmaxCabbage] = useState();
-  const [minBrocolli, setminBrocolli] = useState();
-  const [maxBrocolli, setmaxBrocolli] = useState();
-  const [minCarrot, setminCarrot] = useState();
-  const [maxCarrot, setmaxCarrot] = useState();
-  const [minTomato, setminTomato] = useState();
-  const [maxTomato, setmaxTomato] = useState();
-
-
   var counter = 1;
 
   useEffect(() => {
@@ -44,15 +34,6 @@ export default function ASellerCenter() {
       .post("/getFarmInfo", payload)
       .then((response) => {
         setfarmsOwned(response.data.farmsOwned);
-        setminBrocolli(response.data.minBrocolli);
-        setmaxBrocolli(response.data.maxBrocolli);
-        setminCabbage(response.data.minCabbage);
-        setmaxCabbage(response.data.maxCabbage);
-        setminCarrot(response.data.minCarrot);
-        setmaxCarrot(response.data.maxCarrot);
-        setminTomato(response.data.minTomato);
-        setmaxTomato(response.data.maxTomato);
-
       })
       .catch((error) => {
         console.error(error);
@@ -249,6 +230,7 @@ export default function ASellerCenter() {
                           className="text-gray-600 dark:text-gray-400 focus:outline-none focus:border focus:border-indigo-700 dark:focus:border-indigo-700 dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
                         >
                           <option value="-">Please Select --</option>
+
                           <option value="Brocollis">Brocollis</option>
                           <option value="Carrots">Carrots</option>
                           <option value="Cabbages">Cabbages</option>
@@ -610,18 +592,8 @@ export default function ASellerCenter() {
                           type="number"
                           id="price"
                           name="price"
-                          min={
-                            formData.product_type === 'Brocollis' ? minBrocolli :
-                            formData.product_type === 'Carrots' ? minCarrot :
-                            formData.product_type === 'Cabbages' ? minCabbage :
-                            formData.product_type === 'Tomatoes' ? minTomato : ''
-                          } // Set min based on product type
-                          max={
-                            formData.product_type === 'Brocollis' ? maxBrocolli :
-                            formData.product_type === 'Carrots' ? maxCarrot:
-                            formData.product_type === 'Cabbages' ? maxCabbage :
-                            formData.product_type === 'Tomatoes' ? maxTomato : ''
-                          } // Set max based on product type
+                          min={0}
+                          max={100}
                           required
                           value={formData.price}
                           onChange={handleChange}

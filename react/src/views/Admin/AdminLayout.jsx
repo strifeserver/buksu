@@ -165,30 +165,7 @@ export default function DefaultLayout() {
                   </div>
                 </li>
               </a>
-              {/* <a href="/admin/farms/pending">
-                <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-code"
-                      width={20}
-                      height={20}
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" />
-                      <polyline points="7 8 3 12 7 16" />
-                      <polyline points="17 8 21 12 17 16" />
-                      <line x1={14} y1={4} x2={10} y2={20} />
-                    </svg>
-                    <span className="text-sm  ml-2">Pending Farms</span>
-                  </div>
-                </li>
-              </a> */}
+
               {/* <a href="/admin/farms/approved">
                 <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
                   <div className="flex items-center">
@@ -326,6 +303,30 @@ export default function DefaultLayout() {
                       <path d="M1000 940H776V790c0-36-10-63-30-81s-71.333-47.667-154-89c26.667-20 40-48 40-84 0-10.667-4.333-21.667-13-33-8.667-11.333-15-28.333-19-51-1.333-5.333-6-10.667-14-16s-12.667-19.333-14-42c0-16 4-26 12-30-4-22.667-6.667-42.667-8-60-2.667-25.333 5-51.333 23-78s49.667-40 95-40 77.333 13.333 96 40 26.667 52.667 24 78l-8 60c8 4 12 14 12 30-1.333 22.667-6 36.667-14 42-8 5.333-12.667 10.667-14 16-4 22.667-10.333 39.667-19 51-8.667 11.333-13 22.333-13 33 0 28 7 50 21 66s39.667 32 77 48c74.667 30.667 118 57.333 130 80 4 5.333 7 25.667 9 61s3.667 69 5 101v48M512 678c121.333 52 182 93.333 182 124v138H0V756c0-29.333 28-55.333 84-78 50.667-21.333 85.333-42.667 104-64s28-50.667 28-88c0-13.333-6.333-28-19-44s-21-38.667-25-68c-1.333-6.667-7.333-14-18-22s-17.333-26.667-20-56c0-9.333 1-17 3-23s4.333-10.333 7-13l4-2c-4-30.667-7.333-58-10-82-2.667-33.333 8.333-67.667 33-103s67-53 127-53 102.333 17.667 127 53 35.667 69.667 33 103l-10 82c9.333 5.333 14 18 14 38-2.667 29.333-9.333 48-20 56s-16.667 15.333-18 22c-4 29.333-12.333 52-25 68s-19 30.667-19 44c0 37.333 9.333 66.667 28 88s53.333 42.667 104 64" />
                     </svg>
                     <span className="text-sm  ml-2"> &nbsp;All Users</span>
+                  </div>
+                </li>
+              </a>
+              <a href="/admin/report/generate">
+                <li className="flex w-full justify-between  text-white hover:text-gray-300 hover:bg-green-600  cursor-pointer items-center px-8 py-3">
+                  <div className="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-code"
+                      width={20}
+                      height={20}
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" />
+                      <polyline points="7 8 3 12 7 16" />
+                      <polyline points="17 8 21 12 17 16" />
+                      <line x1={14} y1={4} x2={10} y2={20} />
+                    </svg>
+                    <span className="text-sm  ml-2">Generate Reports</span>
                   </div>
                 </li>
               </a>
