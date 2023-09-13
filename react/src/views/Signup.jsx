@@ -330,7 +330,8 @@ const dataURLtoBlob = (dataURL) => {
                         message={modalMessage}
                       />
                     )}
-                    <button onClick={handleOpen}>Take Photo</button>
+                    <p>Please take a Photo with Your ID and Face in one frame.</p>
+                    <button  className="btn my-custom-button-class bg-blue-500 text-white p-3 rounded-lg" onClick={handleOpen}>Take Photo</button>
                     {open && (
                       <div
                         style={{
@@ -365,7 +366,7 @@ const dataURLtoBlob = (dataURL) => {
                             screenshotFormat="image/jpeg"
                             screenshotQuality={0.8}
                           />
-                          <button onClick={handleCapture}>Capture</button>
+                          <button  className=" w-full btn my-custom-button-class bg-green-500 text-white p-3 rounded-lg mt-3" onClick={handleCapture}>Capture</button>
                         </div>
                       </div>
                     )}
