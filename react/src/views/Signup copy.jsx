@@ -426,7 +426,6 @@ export default function Signup() {
                           <input
                             type="file"
                             id="id_pic"
-                            capture="camera" // Prompt for camera access
                             name="id_pic"
                             onChange={handleFileChange} // Handle file input separately
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -486,5 +485,112 @@ export default function Signup() {
       </div>
     </div>
 
+    // <div className="bg-gray-800 min-h-screen flex flex-col">
+    //   <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
+    //     <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+    //       <h1 className="mb-8 text-3xl text-center">Signup</h1>
+
+    //       <form onSubmit={handleSubmit} encType="multipart/form-data">
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="name"
+    //           placeholder="Full Name"
+    //           value={formData.name}
+    //           onChange={handleChange}
+    //           required
+    //         />
+
+    //         <input
+    //           type="email"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="email"
+    //           placeholder="Email"
+    //           value={formData.email}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="mobile_number"
+    //           placeholder="Mobile Number"
+    //           value={formData.mobile_number}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="date"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="birthday"
+    //           value={formData.birthday}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="address"
+    //           placeholder="Address"
+    //           value={formData.address}
+    //           onChange={handleChange}
+    //           required
+    //         />
+
+    //         <select
+    //           id="user_type"
+    //           name="user_type"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           value={formData.user_type}
+    //           onChange={handleChange}
+    //           required
+    //         >
+    //            <option>
+    //            Buyer ,Seller ? Please select
+    //           </option>
+    //           <option value={0}>
+    //             Buyer
+    //           </option>
+    //           <option value={1}>Seller</option>
+    //         </select>
+
+    //         <label
+    //           className="block  w-full text-slate-200 bg-slate-500 rounded mb-2"
+    //           htmlFor="id_pic"
+    //         >
+    //           {" "}
+    //           Upload a Valid ID for Confirmation
+    //         </label>
+
+    //            <input
+    //           id="id_pic"
+    //           type="file"
+    //           name="id_pic"
+    //           onChange={handleFileChange} // Handle file input separately
+    //         />
+
+    //          <button
+    //           type="submit"
+    //           className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none mt-4 ${
+    //             isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+    //           }`}
+    //           disabled={isSubmitting}
+    //         >
+    //           Create Account
+    //         </button>
+    //       </form>
+    //       <div className="text-grey-dark mt-5">
+    //         Already have an account?
+    //         <a
+    //           className="no-underline border-b border-blue text-blue"
+    //           href="/login"
+    //         >
+    //           &nbsp; Log in
+    //         </a>
+    //         .
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }

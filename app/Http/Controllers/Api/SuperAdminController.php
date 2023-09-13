@@ -19,6 +19,7 @@ use App\Http\Resources\SupportedBarangayResource;
 use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
 use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
 use App\Models\PriceControl;
+use App\Models\Transaction;
 
 // require_once __DIR__ . '/vendor/autoload.php';
 
@@ -213,65 +214,32 @@ class SuperAdminController extends Controller
 
     public function generateReport(Request $request)
     {
-        $request->product_type;
-        $request->end_date;
-        $request->starting_date;
-        $request->user_ID;
 
-        $requestedMonth =   $request->starting_date;
-        $totalCounter = 0;
-        $grade_levels = ['Grade-7', 'Grade-8', 'Grade-9', 'Grade-10', 'Grade-11', 'Grade-12'];
-        //  Query the database to filter transactions for the specified month, join wsith the users table, and filter by grade level
+        // $request->end_date
+        // $request->product_type
+        // $request->starting_date
+        // $request->user_ID
 
-        $reportData = '<h4 style="text-align: center;">Bukidnon National High School Library Information System</h4>'
-            . '<h5 style="text-align: center;">Main Campus Malaybalay City Bukidnon</h5>';
-        $reportData .= '<p style="text-align: center; font-style: italic;">Borrowed Books in the Period of ' . $requestedMonth . '</p>';
-        $reportData .= '<table border="1" style="width: 100%; text-align: center;">
-                        <thead>
-                            <tr>
-                                <th>Grade Level</th>
-                                <th>Number of borrowed books</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
+        // $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
+        // ->with('user', 'TransactionDetail', 'TransactionDetail.productOrdered' => (query::where('product', '==' $request->product_type)))
+        // ->get();
 
-        // foreach ($grade_levels as $gradeLevel) {
-        //     $transactionCount = DB::table('transactions')
-        //         ->join('users', 'transactions.user_id', '=', 'users.id')
-        //         ->whereMonth('transactions.borrowed_at', $requestedMonth)
-        //         ->where('users.grade_and_section', $gradeLevel)
-        //         ->count();
-        //     $reportData .= '<tr>';
-        //     $reportData .= '<td>' . $gradeLevel . '</td>';
-        //     $reportData .= '<td>' . $transactionCount . '</td>';
-        //     $reportData .= '</tr>';
+        $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
+    ->with([
+        'user',
+        'transactionDetail' => function ($query) use ($request) {
+            $query->whereHas('productOrdered', function ($subquery) use ($request) {
+                $subquery->where('product_type', $request->product_type);
+            });
+        },
+        'transactionDetail.productOrdered'
+    ])
+    ->get();
 
-        //     $totalCounter =  $totalCounter + $transactionCount;
-        // // }
+        return response()->json($transactions);
 
-        $reportData .= '<tr>';
 
-        $reportData .= '</tr>';
-        $reportData .= '</tbody>';
-        $reportData .= '</table>';
-        // $reportData .= '<p style="text-align: right; padding-right: 50px;"> Total books Borrowed: ' . $totalCounter . '</p>';
-        $reportData .= '<p style="text-align: right; padding-right: 50px;"> Total books Borrowed:  j </p>';
 
-        $reportData .= '<br><br><br><br><br>';
-        $reportData .= '<p style="text-align: left;">PREPARED BY:</p><br>';
-        $reportData .= '<footer>
-        <p style="font-size: 16px; font-weight: bold;margin: 0px;"><u>' . Auth::user()->name . '</u></p>
-        <p style="font-style: italic;margin-left: 10px; margin-top:0px;">Librarian</p>
-      </footer>';
-        $reportData .= '<br>';
-        $reportData .= '<p style="text-align: right; padding-right: 50px;">Noted:</p>';
-        $reportData .= '<p style="text-align: right;">______________________</p><br>';
-        $reportData .= '<br><br>';
-        $reportData .= '<p style="text-align: right; font-style: italic;">Generated on: ' . date('Y-m-d H:i:s') . '</p><br>';
-        $mpdf = new Mpdf();
-        // $mpdf->WriteHTML('<h1>Report</h1>');
-        $mpdf->WriteHTML($reportData);
-        $mpdf->Output('report.pdf', 'I');
 
     }
 

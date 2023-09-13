@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { Tabs } from "flowbite-react";
 import { HiUserCircle } from "react-icons/hi";
 
+import { useReactToPrint} from "react-to-print";
 export default function GenerateReport() {
   // Get today's date in the format yyyy-MM-dd
   const today = new Date().toISOString().split("T")[0];
@@ -14,6 +15,8 @@ export default function GenerateReport() {
   const payload = {
     user_ID: currentUserID,
   };
+
+  const [data, setData] = useState([]);
 
   var counter = 1;
   //ADDING PRODUCTS
@@ -40,17 +43,27 @@ export default function GenerateReport() {
     axiosClient
       .post("/generateReport", formData)
       .then((response) => {
-        setFormData({
-          product_type: "",
-          starting_date: "",
-          end_date: "",
-        });
+        setData(response.data);
+        // setFor mData({
+        //   product_type: "",
+        //   starting_date: "",
+        //   end_date: "",
+        // });
       })
       .catch((error) => {
         showInfoAlert();
         console.error(error);
       });
   };
+
+
+    const componentRef  = useRef();
+    const handlePrint  = useReactToPrint({
+      content: () => componentRef.current,
+      documentTitle: 'Printing...',
+      onAfterPrint: ()=> alert('Generation Success')
+    });
+
 
   return (
     <div className="mt-3 mx-6">
@@ -220,7 +233,98 @@ export default function GenerateReport() {
             </div>
           </div>
         </Tabs.Item>
+        <Tabs.Item  active icon={HiUserCircle} title="Generated">
+        <div className="items-center text-center" ref={componentRef}   style={{
+        width: '210mm',
+        height: '297mm',
+        marginLeft: '5mm',
+        marginRight: '5mm',
+        padding: '20px',
+      }}>
+        <h1 className="mt-3 mb-3">Generated Report</h1>
+
+                <table class="min-w-full border text-center text-sm font-light dark:border-neutral-500">
+                  <thead class="border-b font-medium dark:border-neutral-500">
+                    <tr>
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Transaction ID
+                      </th>
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Buyer
+                      </th>
+
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Product
+                      </th>
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Kg
+                      </th>
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Per Kilo
+                      </th>
+                      <th
+                        scope="col"
+                        class="border-r px-6 py-4 dark:border-neutral-500"
+                      >
+                        Amount Paid
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((transaction) => (
+                      <tr
+                        class="border-b dark:border-neutral-500"
+                        key={transaction.id}
+                      >
+                        <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                          {transaction.id}
+                        </td>
+                        <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                          {transaction.user.name}
+                        </td>
+                        {transaction.transaction_detail.map((trxDetail) => (
+                          <>
+                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              {trxDetail.product_name}
+                            </td>
+                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              {" "}
+                              {trxDetail.kg_purchased}
+                            </td>
+                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              {" "}
+                              {trxDetail.price_per_kilo}
+                            </td>
+                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              {transaction.price_of_goods}
+                            </td>
+                          </>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <button onClick={handlePrint} class="mt-12 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Print to PDF</button>
+              </div>
+
+        </Tabs.Item>
       </Tabs.Group>
+
     </div>
   );
 }
