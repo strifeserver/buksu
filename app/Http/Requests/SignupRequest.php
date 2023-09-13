@@ -31,7 +31,7 @@ class SignupRequest extends FormRequest
             'mobile_number' => ['required', 'unique:users,mobile_number'],
             'email' => ['required', 'email', 'unique:users,email'],
             'user_type' => ['required'],
-            'id_pic' => ['required', 'image'],
+            'id_pic' => ['required'],
         ];
     }
 }

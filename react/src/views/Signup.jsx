@@ -1,38 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axiosClient from "../axios-client.js";
-import { useStateContext } from "../context/ContextProvider.jsx";
+import Webcam from "react-webcam";
 import Modal from "../components/Modal.jsx";
 
 export default function Signup() {
+  const webcamRef = useRef(null);
+  const [imageCaptured, setImageCaptured] = useState(null);
+  const [open, setOpen] = useState(false);
+
   const [errors, setErrors] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
 
   const [formData, setFormData] = useState({
+    id_pic: null,
     name: "",
     email: "",
     birthday: "",
     mobile_number: "",
     address: "",
     user_type: "", // Add an initial value here
-    id_pic: null, // Change to null to handle file uploads
+    // id_pic: null, // Change to null to handle file uploads
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleCapture = () => {
+    const screenshot = webcamRef.current.getScreenshot();
+    setImageCaptured(screenshot);
+
+    // Add email and age to formData
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const birthday = document.getElementById("birthday").value;
+    const mobile_number = document.getElementById("mobile_number").value;
+    const address = document.getElementById("address").value;
+    const user_type = document.getElementById("user_type").value;
+
     setFormData({
       ...formData,
-      [name]: value,
+      id_pic: screenshot,
+      name: name,
+      email: email,
+      birthday: birthday,
+      mobile_number: mobile_number,
+      address: address,
+      user_type: user_type, // Add a
     });
+
+    setOpen(false);
   };
 
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files[0],
-    });
+  const handleOpen = () => {
+    setOpen(true);
+    webcamRef.current.start();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    webcamRef.current.stop();
+  };
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest(".modal")) {
+      setOpen(false);
+      webcamRef.current.stop();
+    }
   };
 
   const handleSubmit = (e) => {
@@ -40,13 +72,38 @@ export default function Signup() {
     setIsSubmitting(true);
     setErrors(null); // Reset errors before form submission
 
-    const userData = new FormData();
-    for (const key in formData) {
-      userData.append(key, formData[key]);
-    }
+  // Create a FormData object for the image
+  const imageFormData = new FormData();
+  const desiredFilename = `${formData.name}.jpg`; // Construct desired filename
+  const name = `${formData.name}`; // Construct desired filename
+  const birthday = `${formData.birthday}`; // Construct desired filename
+  const address = `${formData.address}`; // Construct desired filename
+  const mobile_number = `${formData.mobile_number}`; // Construct desired filename
+  const email = `${formData.email}`; // Construct desired filename
+  const user_type = `${formData.user_type}`; // Construct desired filename
+
+
+
+  // const desiredFilename = `${formData.name}; // Construct desired filename
+  // const desiredFilename = `${formData.name}; // Construct desired filename
+
+
+  // Append the captured image with the desired filename
+  imageFormData.append("id_pic", dataURLtoBlob(imageCaptured), desiredFilename);
+  imageFormData.append("name", name );
+  imageFormData.append("birthday", birthday );
+  imageFormData.append("address", address );
+  imageFormData.append("mobile_number", mobile_number );
+  imageFormData.append("email", email );
+  imageFormData.append("user_type", user_type );
+  // imageFormData.append("user_type", user_type );
+
+
+
+  imageFormData.append("birthday", birthday );
 
     axiosClient
-      .post("/signup", userData)
+      .post("/signup", imageFormData)
       .then((response) => {
         setIsSubmitting(false);
         if (response && response.status === 200) {
@@ -56,8 +113,6 @@ export default function Signup() {
             setModalMessage(successMessage);
           }
         }
-
-        // Optionally, you can redirect to another page here
       })
       .catch((err) => {
         const response = err.response;
@@ -71,6 +126,19 @@ export default function Signup() {
   const closeModal = () => {
     setIsModalOpen(false); // Close the modal
   };
+
+  // Helper function to convert data URL to Blob
+const dataURLtoBlob = (dataURL) => {
+  const parts = dataURL.split(",");
+  const contentType = parts[0].split(":")[1].split(";")[0];
+  const raw = window.atob(parts[1]);
+  const rawLength = raw.length;
+  const uInt8Array = new Uint8Array(rawLength);
+  for (let i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+  return new Blob([uInt8Array], { type: contentType });
+};
 
   return (
     // <!-- ===== Page Wrapper Start ===== -->
@@ -262,7 +330,47 @@ export default function Signup() {
                         message={modalMessage}
                       />
                     )}
-                 <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <button onClick={handleOpen}>Take Photo</button>
+                    {open && (
+                      <div
+                        style={{
+                          position: "fixed",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          zIndex: 100,
+                          background: "rgba(0, 0, 0, 0.7)",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div
+                          className="modal"
+                          style={{
+                            width: 600,
+                            height: 600,
+                            background: "white",
+                            borderRadius: 10,
+                            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                          }}
+                          onClick={handleClickOutside}
+                        >
+                          <Webcam
+                            ref={webcamRef}
+                            height={600}
+                            width={600}
+                            mirrored={true}
+                            screenshotFormat="image/jpeg"
+                            screenshotQuality={0.8}
+                          />
+                          <button onClick={handleCapture}>Capture</button>
+                        </div>
+                      </div>
+                    )}
+                     {imageCaptured && (
+                    <form onSubmit={handleSubmit}>
                       <div className="mb-4">
                         <label className="mb-2.5 block font-medium text-black dark:text-white">
                           Name
@@ -270,9 +378,12 @@ export default function Signup() {
                         <div className="relative">
                           <input
                             type="text"
+                            id="name"
                             name="name"
                             value={formData.name}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({ ...formData, name: e.target.value })
+                            }
                             required
                             placeholder="Enter your full name"
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -307,8 +418,14 @@ export default function Signup() {
                         <div className="relative">
                           <input
                             name="email"
+                            id="email"
                             value={formData.email}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                email: e.target.value,
+                              })
+                            }
                             required
                             type="email"
                             placeholder="Enter your email"
@@ -342,8 +459,14 @@ export default function Signup() {
                             type="number"
                             placeholder="09xxxxxxx"
                             name="mobile_number"
+                            id="mobile_number"
                             value={formData.mobile_number}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                mobile_number: e.target.value,
+                              })
+                            }
                             required
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                           />
@@ -374,8 +497,14 @@ export default function Signup() {
                           <input
                             type="date"
                             name="birthday"
+                            id="birthday"
                             value={formData.birthday}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                birthday: e.target.value,
+                              })
+                            }
                             required
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                           />
@@ -383,14 +512,20 @@ export default function Signup() {
                       </div>
                       <div className="mb-4">
                         <label className="mb-2.5 block font-medium text-black dark:text-white">
-                        Address
+                          Address
                         </label>
                         <div className="relative">
                           <input
                             type="text"
                             name="address"
+                            id="address"
                             value={formData.address}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                address: e.target.value,
+                              })
+                            }
                             required
                             placeholder="Enter your Location / Address"
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -418,7 +553,7 @@ export default function Signup() {
                           </span>
                         </div>
                       </div>
-                      <div className="mb-2">
+                      {/* <div className="mb-2">
                         <label className="mb-1 block font-medium text-black dark:text-white">
                           ID Picture Verification
                         </label>
@@ -426,13 +561,12 @@ export default function Signup() {
                           <input
                             type="file"
                             id="id_pic"
-                            capture="camera" // Prompt for camera access
                             name="id_pic"
                             onChange={handleFileChange} // Handle file input separately
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="mb-6">
                         <label className="mb-2.5 block font-medium text-black dark:text-white">
                           User Type
@@ -443,7 +577,12 @@ export default function Signup() {
                             name="user_type"
                             className="block border border-grey-light w-full p-3 rounded mb-4"
                             value={formData.user_type}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                user_type: e.target.value,
+                              })
+                            }
                             required
                           >
                             <option>Buyer ,Seller ? Please select</option>
@@ -475,6 +614,7 @@ export default function Signup() {
                         </p>
                       </div>
                     </form>
+                     )}
                   </div>
                 </div>
               </div>
@@ -486,5 +626,112 @@ export default function Signup() {
       </div>
     </div>
 
+    // <div className="bg-gray-800 min-h-screen flex flex-col">
+    //   <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
+    //     <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+    //       <h1 className="mb-8 text-3xl text-center">Signup</h1>
+
+    //       <form onSubmit={handleSubmit} encType="multipart/form-data">
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="name"
+    //           placeholder="Full Name"
+    //           value={formData.name}
+    //           onChange={handleChange}
+    //           required
+    //         />
+
+    //         <input
+    //           type="email"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="email"
+    //           placeholder="Email"
+    //           value={formData.email}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="mobile_number"
+    //           placeholder="Mobile Number"
+    //           value={formData.mobile_number}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="date"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="birthday"
+    //           value={formData.birthday}
+    //           onChange={handleChange}
+    //           required
+    //         />
+    //         <input
+    //           type="text"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           name="address"
+    //           placeholder="Address"
+    //           value={formData.address}
+    //           onChange={handleChange}
+    //           required
+    //         />
+
+    //         <select
+    //           id="user_type"
+    //           name="user_type"
+    //           className="block border border-grey-light w-full p-3 rounded mb-4"
+    //           value={formData.user_type}
+    //           onChange={handleChange}
+    //           required
+    //         >
+    //            <option>
+    //            Buyer ,Seller ? Please select
+    //           </option>
+    //           <option value={0}>
+    //             Buyer
+    //           </option>
+    //           <option value={1}>Seller</option>
+    //         </select>
+
+    //         <label
+    //           className="block  w-full text-slate-200 bg-slate-500 rounded mb-2"
+    //           htmlFor="id_pic"
+    //         >
+    //           {" "}
+    //           Upload a Valid ID for Confirmation
+    //         </label>
+
+    //            <input
+    //           id="id_pic"
+    //           type="file"
+    //           name="id_pic"
+    //           onChange={handleFileChange} // Handle file input separately
+    //         />
+
+    //          <button
+    //           type="submit"
+    //           className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none mt-4 ${
+    //             isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+    //           }`}
+    //           disabled={isSubmitting}
+    //         >
+    //           Create Account
+    //         </button>
+    //       </form>
+    //       <div className="text-grey-dark mt-5">
+    //         Already have an account?
+    //         <a
+    //           className="no-underline border-b border-blue text-blue"
+    //           href="/login"
+    //         >
+    //           &nbsp; Log in
+    //         </a>
+    //         .
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }

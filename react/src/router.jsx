@@ -69,6 +69,7 @@ import BuyerMode from "./views/SellerBuyer/ASellerBuyerLayout-Buyer";
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
 import Orders from "./views/SellerBuyer/AOrders";
+import Home from "./views/Buyers/Home";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
 import ListsProduct from "./views/Buyers/AProducts";
@@ -193,7 +194,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/buyer/order/products"/>
+        element: <Navigate to="/buyer/home"/>
+      },
+      {
+        path: '/buyer/home',
+        element: <Home />
       },
       {
         path: '/buyer/order/products',

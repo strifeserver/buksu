@@ -37,10 +37,11 @@ export default function AOrders() {
   }
   return (
     <>
+    <div className="px-48 py-5">
       <Tabs.Group
         aria-label="Tabs with underline"
         style="underline"
-        className="items-center"
+        // className="items-center"
       >
         <Tabs.Item active icon={HiUserCircle} title="Pending Orders">
           <div className="bg-gray-100 w-full">
@@ -504,6 +505,7 @@ export default function AOrders() {
           </div>
         </Tabs.Item>
       </Tabs.Group>
+      </div>
     </>
   );
 }

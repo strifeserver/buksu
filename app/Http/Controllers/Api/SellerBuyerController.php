@@ -39,7 +39,12 @@ class SellerBuyerController extends Controller
             ->with('farm')
             ->get();
 
-        return response()->json($product);
+        $max = $product[0]->prospect_harvest_in_kg - $product[0]->actual_sold_kg;
+
+        return response()->json([
+            'product' => $product,
+            'maximum' => $max,
+        ]);
     }
 
     /**

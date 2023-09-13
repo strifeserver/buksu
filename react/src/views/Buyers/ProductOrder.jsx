@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { Textarea, Table, Tabs } from "flowbite-react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { HiInformationCircle, HiUserCircle } from "react-icons/hi";
-
 
 export default function AProductOrder() {
   const [loading, setLoading] = useState(false);
@@ -16,7 +12,7 @@ export default function AProductOrder() {
   const navigate = useNavigate();
   let { id } = useParams();
 
-  const [data, setData] = useState([]);
+  const [max, setMax] = useState();
 
   useEffect(() => {
     getProduct();
@@ -28,9 +24,8 @@ export default function AProductOrder() {
       .get(`/getProductToOrder/${id}`)
       .then(({ data }) => {
         setLoading(false);
-        setPrice(data.price);
-        setProduct(data);
-        setUserType(data.user_type);
+        setMax(data.maximum);
+        setProduct(data.product);
       })
       .catch(() => {
         setLoading(false);
@@ -50,8 +45,7 @@ export default function AProductOrder() {
     axiosClient
       .post("/orderNow", updatedFormData)
       .then(() => {
-        window.location.href = "/buyer-seller/orders";
-        // alert('hhshs');
+        window.location.href = "/buyer/orders";
       })
       .catch((error) => {
         // Handle error if needed
@@ -60,17 +54,19 @@ export default function AProductOrder() {
   };
 
     //added
-    const [rotate, setRotate] = useState(false);
     const [count, setCount] = useState(0);
+    const maximumValue = max;
 
     const addCount = () => {
+      if (count < maximumValue) {
         setCount((prev) => prev + 1);
+      }
     };
 
     const minusCount = () => {
-        if (count > 0) {
-            setCount((prev) => prev - 1);
-        }
+      if (count > 0) {
+        setCount((prev) => prev - 1);
+      }
     };
 
     //end added
@@ -134,13 +130,13 @@ export default function AProductOrder() {
 
                   <div className="lg:mt-11 mt-10">
                       <div className="flex flex-row justify-between">
-                          <p className=" font-medium text-base leading-4 text-gray-600">Select Kilos:</p>
+                          <p className=" font-medium text-base leading-4 text-gray-600">Select Kilos :</p>
                           <div className="flex">
                               <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
                                   -
                               </span>
-                              <input id="counter"  name="kg_"  aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="number" value={count} onChange={(e) => e.target.value}
-                               min={1} max={u.prospect_harvest_in_kg - u.actual_sold_kg} />
+                              <input id="counter"  name="kg_"  aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" value={count} onChange={(e) => e.target.value}
+                               min={1} max={10} />
                               <span onClick={addCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
                                   +
                               </span>
@@ -148,14 +144,14 @@ export default function AProductOrder() {
                       </div>
                       <hr className=" bg-gray-200 w-full my-2" />
                       <div className=" flex flex-row justify-between items-center mt-4">
-                          <p className="font-medium text-base leading-4 text-gray-600">Location</p>
+                          <p className="font-medium text-base leading-4 text-gray-600">Location : </p>
                           {u.farm.farm_location}
                       </div>
                       <hr className=" bg-gray-200 w-full mt-4" />
                   </div>
                   <input type="text" name="product_ID" value={u.id} hidden />
 
-                  <button  type="submit" className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6"> Order Now</button>
+                  <button  type="submit" className="focus:outline-none focus:ring-2 hover:bg-green-400 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-green-600 w-full py-5 lg:mt-12 mt-6">Order Now</button>
               </div>
 
 
