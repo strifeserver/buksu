@@ -36,7 +36,7 @@ class SellerBuyerController extends Controller
     public function getProductToOrder($product)
     {
         $product =  Product::where('id', $product)
-            ->with('farm')
+            ->with('farm', 'farm.user')
             ->get();
 
         $max = $product[0]->prospect_harvest_in_kg - $product[0]->actual_sold_kg;

@@ -126,6 +126,10 @@ export default function AProductOrder() {
                     Available Kilos : <strong>  {u.prospect_harvest_in_kg - u.actual_sold_kg}</strong>
 
                   </p>
+                  <p className=" font-normal text-base leading-6 text-gray-600 mt-1">
+                   Seller: <strong> {u.farm.user.name}</strong> <span className="italic">{u.farm.user.mobile_number}</span>
+
+                  </p>
                   <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">₱ {u.price}.00</p>
 
                   <div className="lg:mt-11 mt-10">
