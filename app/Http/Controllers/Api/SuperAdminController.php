@@ -302,6 +302,32 @@ class SuperAdminController extends Controller
         return response()->json($prices);
     }
 
+    public function getPriceRangeSpecific(){
+        $brocolli =0;
+        $cabbage=0;
+        $carrot=0;
+        $tomato=0;
+        $prices = PriceControl::all();
+        foreach ($prices as $price){
+            if($price->product_name == "Brocollis"){
+                $brocolli = $brocolli + $price->max;
+            }else if($price->product_name == "Cabbages"){
+                $cabbage = $cabbage + $price->max;
+            }else if($price->product_name == "Carrots"){
+                $carrot = $carrot + $price->max;
+            }else if($price->product_name == "Tomatoes"){
+                $tomato =  $tomato + $price->max;
+            }
+        }
+
+        return response()->json([
+            'broccoli' => $brocolli,
+            'cabbage' => $cabbage,
+            'carrot' => $carrot,
+            'tomato' => $tomato
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

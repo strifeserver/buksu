@@ -71,6 +71,7 @@ export default function Login() {
                         className="hidden dark:block"
                         src="logo.jpg"
                         alt="Logo"
+
                       />
                       <img className="dark:hidden" src="logo.jpg" alt="Logo" />
                     </a>

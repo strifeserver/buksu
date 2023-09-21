@@ -173,8 +173,10 @@ const dataURLtoBlob = (dataURL) => {
                         className="hidden dark:block"
                         src="logo.jpg"
                         alt="Logo"
+                        width={90}
+                        height={10}
                       />
-                      <img className="dark:hidden" src="logo.jpg" alt="Logo" />
+                      <img className="dark:hidden" src="logo.jpg" alt="Logo"  />
                     </a>
                     <p className="font-medium 2xl:px-20"></p>
                     <span className="mt-15 inline-block">

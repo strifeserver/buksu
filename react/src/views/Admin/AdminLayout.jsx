@@ -332,53 +332,18 @@ export default function DefaultLayout() {
               </a>
             </ul>
           </div>
-          <div className="px-8 bg-indigo-800">
+          <div className="px-8 bg-green-600">
             <ul className="w-full flex items-center justify-between ">
-              <li className="cursor-pointer text-white pt-5 pb-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-bell"
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" />
-                  <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
-                  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-                </svg>
-              </li>
 
-              <li className="cursor-pointer text-white pt-5 pb-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-archive"
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" />
-                  <rect x={3} y={4} width={18} height={4} rx={2} />
-                  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-                  <line x1={10} y1={12} x2={14} y2={12} />
-                </svg>
-              </li>
+
+
               <li className="cursor-pointer text-white pt-5 pb-3">
                 <a onClick={onLogoutConfirm}>
                   <svg
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    height="1em"
-                    width="1em"
+                    height="1.5em"
+                    width="1.5em"
                   >
                     <path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z" />
                   </svg>

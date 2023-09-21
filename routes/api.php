@@ -62,6 +62,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/ids/{filename}', [SuperAdminController::class, 'getIDimage']);
     Route::post('/generateReport', [SuperAdminController::class, 'generateReport']); //dashboard
     Route::get('/getPriceRange', [SuperAdminController::class, 'getPriceRange']); //dashboard
+    Route::get('/getPriceRangeSpecific', [SuperAdminController::class, 'getPriceRangeSpecific']); //dashboard
+
 
 
    //Farms
