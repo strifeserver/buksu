@@ -3,20 +3,18 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../context/ContextProvider.jsx";
 
-
-
-export default function AConfirmOrder() {
+export default function ABuyerSellerCancel() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     // This code will run when the page is triggered
-    handleConfirm();
+    handleCancel();
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  const handleConfirm = () => {
+  const handleCancel = () => {
     // If confirmed, send the ID to the backend
-    axiosClient.post(`/confirmOrder/${id}`).then((response) => {
+    axiosClient.post(`/cancelOrder/${id}`).then((response) => {
       // Handle success or error
       console.log("Confirmation sent to the backend");
 
@@ -29,7 +27,7 @@ export default function AConfirmOrder() {
 
   return (
     <div className="text-center">
-    <p className="text-center">Confirming ...</p>
+    <p className="text-center">Cancelling ...</p>
   </div>
   )
 }

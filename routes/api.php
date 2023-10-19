@@ -11,17 +11,6 @@ use App\Http\Controllers\Api\SellerBuyerController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SuperAdminController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', function (Request $request) {
@@ -64,8 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getPriceRange', [SuperAdminController::class, 'getPriceRange']); //dashboard
     Route::get('/getPriceRangeSpecific', [SuperAdminController::class, 'getPriceRangeSpecific']); //dashboard
 
-
-
    //Farms
     Route::post('/farms', [FarmController::class, 'getFarms']);
     Route::get('/farm/{farm}', [FarmController::class, 'getFarm']);
@@ -92,6 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/priceRange', [SellerBuyerController::class, 'priceRange']); //dashboard
 
+    Route::post('/cancelOrder/{order}', [SellerBuyerController::class, 'cancelOrder']);
 
 
     // Route::post('getPendingOrders', [ProductController::class, 'getPendingOrders']);

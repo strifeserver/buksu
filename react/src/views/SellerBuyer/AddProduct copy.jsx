@@ -65,7 +65,6 @@ export default function AddProduct() {
   return (
     <div>
 
-
       <p class="text-center text-lg mt-6">Addss Product Form</p>
 
       <div class="m-12 outline outline-2  outline-offset-2 ">

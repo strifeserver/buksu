@@ -1,9 +1,9 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import axiosClient from "../../axios-client.js";
-import { useStateContext } from "../../context/ContextProvider.jsx";
+import axiosClient from "../../../axios-client.js";
+import { useStateContext } from "../../../context/ContextProvider.jsx";
 import { useState } from "react";
 
-export default function ASellerBuyerLayoutBuyer() {
+export default function LayoutBuyer() {
   const {
     currentUserID,
     token,

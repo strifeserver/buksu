@@ -341,6 +341,25 @@ class SellerBuyerController extends Controller
 
     }
 
+    public function cancelOrder($id){
+        $trxn = Transaction::where('id', $id)->first();
+        $data['price_of_goods'] = -1;
+
+        if ($trxn) {
+            $trxn->update($data);
+
+            $transactionDetails = TransactionDetail::where('transaction_id', $id)->first();
+
+            // Delete all retrieved transaction details
+                $product = Product::where('id',  $transactionDetails->product_id)->first();
+                $data1['actual_sold_kg'] = $product->actual_sold_kg - $transactionDetails->kg_purchased;
+                $product->update($data1);
+                $transactionDetails->delete();
+        }
+
+        return response()->json(200);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

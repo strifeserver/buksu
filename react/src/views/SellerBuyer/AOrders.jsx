@@ -35,6 +35,16 @@ export default function AOrders() {
   if (data.userPendingOrders === undefined) {
     return <div>Loading ...</div>;
   }
+
+  const handleCancelOrder = (transactionId) => {
+    const shouldCancel = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
+    if (shouldCancel) {
+      window.location.href = `/buyer-seller/order/cancel/${transactionId}`;
+    }
+  };
+
   return (
     <>
       <Tabs.Group
@@ -52,7 +62,7 @@ export default function AOrders() {
               <div className="bg-slate-200" key={order.id}>
                 {order.transactions.map(
                   (transaction) =>
-                    transaction.price_payed === null ? (
+                    transaction.price_payed === null && transaction.price_of_goods !== -1 ? (
                       <div
                         key={transaction.id}
                         className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto"
@@ -171,6 +181,18 @@ export default function AOrders() {
                                             }
                                           </span>
                                         </p>
+
+                                        <div key={transaction.id}>
+                                        {/* <p>Press this if you want to cancel Order</p> */}
+                                          <button
+                                            className="rounded-lg focus:outline-none focus:ring-2 hover:bg-red-400 focus:ring-offset-2 font-medium text-base leading-4 text-white bg-w-full  lg:mt-4 mt-2 bg-red-600 p-4"
+                                            onClick={() =>
+                                              handleCancelOrder(transaction.id)
+                                            }
+                                          >
+                                            Cancel Order
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

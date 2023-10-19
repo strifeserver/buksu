@@ -56,7 +56,7 @@ import CropRecords from "./views/Admin/CropRecords.jsx";
 //SELLER BUYER-  PAGES
 import Products from "./views/SellerBuyer/AProducts.jsx";
 import BuyerSellerDashboard from "./views/SellerBuyer/ABuyerSellerDashboard";
-import SellerBuyerlayout from "./views/SellerBuyer/ASellerBuyerLayout";
+import SellerBuyerlayout from "./views/SellerBuyer/Layout/LayoutSeller";
 import ConfirmOrder from "./views/SellerBuyer/AConfirmOrder.jsx";
 import FarmersProduct from "./views/SellerBuyer/AFarmersProduct.jsx";
 import FarmViewProductsSB from "./views/SellerBuyer/AFarmViewProductsSB.jsx"
@@ -64,7 +64,7 @@ import SellerCenter from "./views/SellerBuyer/ASellerCenter.jsx"
 import AddFarm from "./views/SellerBuyer/AAddFarm.jsx"
 import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
 
-import BuyerMode from "./views/SellerBuyer/ASellerBuyerLayout-Buyer";
+import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
@@ -75,6 +75,9 @@ import BuyerLayout from "./views/Buyers/BuyerLayout";
 import ListsProduct from "./views/Buyers/AProducts";
 import ProductOrderNow from "./views/Buyers/ProductOrder";
 import OrdersLists from "./views/Buyers/Orders.jsx";
+import LayoutSeller from "./views/SellerBuyer/Layout/LayoutSeller";
+import LayoutBuyer from "./views/SellerBuyer/Layout/LayoutBuyer";
+import CancelOrder from "./views/SellerBuyer/ABuyerSellerCancel";
 
 const router = createBrowserRouter([
   //ADMIN DA
@@ -217,7 +220,7 @@ const router = createBrowserRouter([
   //BUYER MODE
   {
     path: '/',
-    element: <BuyerMode />,
+    element: <LayoutBuyer />,
     children: [
       {
         path: '/',
@@ -239,6 +242,10 @@ const router = createBrowserRouter([
         path: '/buyer-seller/order/confirm/:id', //confirm Order
         element: <ConfirmOrder />
       },
+      {
+        path: '/buyer-seller/order/cancel/:id', //confirm Order
+        element: <CancelOrder />
+      },
 
 
     ]
@@ -247,7 +254,7 @@ const router = createBrowserRouter([
 
   {
     path: '/',
-    element: <SellerBuyerlayout />,
+    element: <LayoutSeller />,
     children: [
       {
         path: '/',
