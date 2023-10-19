@@ -35,6 +35,17 @@ export default function AOrders() {
   if (data.userPendingOrders === undefined) {
     return <div>Loading ...</div>;
   }
+
+  const handleCancelOrder = (transactionId) => {
+    const shouldCancel = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
+    if (shouldCancel) {
+      window.location.href = `/buyer/order/cancel/${transactionId}`;
+    }
+  };
+
+
   return (
     <>
     <div className="px-48 py-5">
@@ -172,6 +183,17 @@ export default function AOrders() {
                                             }
                                           </span>
                                         </p>
+                                        <div key={transaction.id}>
+                                        {/* <p>Press this if you want to cancel Order</p> */}
+                                          <button
+                                            className="rounded-lg focus:outline-none focus:ring-2 hover:bg-red-400 focus:ring-offset-2 font-medium text-base leading-4 text-white bg-w-full  lg:mt-4 mt-2 bg-red-600 p-4"
+                                            onClick={() =>
+                                              handleCancelOrder(transaction.id)
+                                            }
+                                          >
+                                            Cancel Order
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

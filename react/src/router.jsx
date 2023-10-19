@@ -78,6 +78,7 @@ import OrdersLists from "./views/Buyers/Orders.jsx";
 import LayoutSeller from "./views/SellerBuyer/Layout/LayoutSeller";
 import LayoutBuyer from "./views/SellerBuyer/Layout/LayoutBuyer";
 import CancelOrder from "./views/SellerBuyer/ABuyerSellerCancel";
+import CancelOrderBuyer from "./views/Buyers/Cancel";
 
 const router = createBrowserRouter([
   //ADMIN DA
@@ -214,6 +215,10 @@ const router = createBrowserRouter([
       {
         path: '/buyer/orders', //orderlists
         element: <OrdersLists />
+      },
+      {
+        path: '/buyer/order/cancel/:id', //confirm Order
+        element: <CancelOrderBuyer />
       },
     ]
   },
