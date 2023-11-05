@@ -150,6 +150,13 @@ export default function LayoutSeller() {
                 >
                   Seller Center
                 </a>
+                &nbsp; |
+                <a
+                  href="/seller/center"
+                  className="dark:text-white dark:hover:text-gray-300 text-base text-right text-gray-800  hover:text-white"
+                >
+                  Generate Report
+                </a>
                 &nbsp; | &nbsp;
                 <button
                   onClick={onLogoutConfirm}
