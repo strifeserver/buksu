@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SuperAdminController;
 use App\Http\Controllers\ProductManagementController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -99,4 +100,4 @@ Route::resource('/product_management', ProductManagementController::class, [
 Route::resource('/cart', CartController::class, [
     'except' => ['create'],
 ]);
-Route::get('/testerr', [ProductManagementController::class, 'testmailer']);
+Route::post('/checkout', [CheckoutController::class, 'checkout']);
