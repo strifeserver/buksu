@@ -35,14 +35,14 @@ class CheckoutController extends Controller
             //     }
             // }
  
-            $buyer = User::where('id','=',$user_ID)->first();
-            if($buyer){
-                if($buyer->email){
-                    $EmailService = app(MailService::class);
-                    $body = 'you have placed an Order Successfully';
-                    $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
-                }
-            }
+            // $buyer = User::where('id','=',$user_ID)->first();
+            // if($buyer){
+            //     if($buyer->email){
+            //         $EmailService = app(MailService::class);
+            //         $body = 'you have placed an Order Successfully';
+            //         $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
+            //     }
+            // }
             //Notification
 
 
@@ -76,7 +76,12 @@ class CheckoutController extends Controller
                 'actual_sold_kg' => $kgTotal,
                 'actual_harvested_in_kg' => $kgTotal2,
             ]);
-            $cartItem->delete();
+            $removeCartItem = Cart::find($cartItem_id);
+
+            if ($removeCartItem) {
+                $removeCartItem->delete();
+            } 
+            
         }
  
         return response()->json("sucesss");
