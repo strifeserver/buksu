@@ -84,6 +84,6 @@ class CheckoutController extends Controller
             
         }
  
-        return response()->json("sucesss");
+        return response(json_encode(['status'=>1]), 200)->header('Content-Type', 'application/json');
     }
 }
