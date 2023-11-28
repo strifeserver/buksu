@@ -5,55 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Cart extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'product_name',
-        'product_type',
-        'variety',
-        'planted_date',
-        'prospect_harvest_in_kg',
-        'prospect_harvest_date',
-        'actual_harvested_in_kg',
-        'actual_sold_kg',
-        'harvested_date',
-        'product_location',
-        'price',
-        'product_picture',
-        'farm_belonged',
-        'is_approved',
+        'added_on',
+        'kg_added',
+        'user_id',
+        'product_id',
     ];
-
-    public function farm()
-    {
-        return $this->belongsTo(Farm::class, 'farm_belonged');
-    }
-
-    public function transactionsPerProduct()
-    {
-        return $this->hasMany(TransactionDetail::class, 'product_id');
-    }
 
     public function display_fields($mode = null)
     {
 
         $fields = [
-            'product_name',
-            'product_type',
-            'variety',
-            'planted_date',
-            'prospect_harvest_in_kg',
-            'prospect_harvest_date',
-            'actual_harvested_in_kg',
-            'actual_sold_kg',
-            'harvested_date',
-            'product_location',
-            'price',
-            'product_picture',
-            'farm_belonged',
-            'is_approved',
+            'id',
+            'kg_added',
+            'user_id',
+            'product_id',
+            'created_at',
+            'updated_at',
         ];
 
         $amibiguous_fields = [
@@ -78,7 +50,7 @@ class Product extends Model
 
     public function index(array $data): array
     {
-        
+
         $returns = [];
         $items_per_page = @$data['items_per_page'];
         $pagination = @$data['pagination'];
@@ -258,6 +230,7 @@ class Product extends Model
         $id = optional($request)->get('id', '');
         $fields = $this->fillable;
         $submittedData = collect($request)->only($fields)->toArray();
+   
         $execute = $this::create($submittedData)->id;
 
         $executeStatus = (is_integer($execute)) ? 1 : 0;
@@ -355,7 +328,7 @@ class Product extends Model
     //  * @return array
     //  * @param integer $id
     //  */
-    public function execute_destroy($id): array
+    public function execute_destroy($id)
     {
         $response = [];
         $success = false;
@@ -394,5 +367,8 @@ class Product extends Model
     {
         return date('Y-m-d h:i:s', strtotime($value));
     }
-
+    public function setAddedOnAttribute($value)
+    {
+        $this->attributes['added_on'] = date('Y-m-d h:i:s');
+    }
 }

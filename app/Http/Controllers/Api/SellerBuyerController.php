@@ -12,6 +12,7 @@ use App\Models\TransactionDetail;
 use App\Http\Controllers\Controller;
 use  Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Crypt;
+use App\Services\MailService;
 
 
 class SellerBuyerController extends Controller
@@ -59,7 +60,13 @@ class SellerBuyerController extends Controller
         $product = Product::where('id', $request->productID_)->first();
 
         $seller = Farm::where('id', $product->farm_belonged)->first();
-
+        if($seller){
+            if($seller->email){
+                $EmailService = app(MailService::class);
+                $body = 'an Order has been created successfully';
+                $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
+            }
+        }
         $newTransaction  = Transaction::create([
             'seller' => $seller->farm_owner,
             'ordered_on' => now(),
