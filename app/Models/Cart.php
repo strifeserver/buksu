@@ -21,18 +21,35 @@ class Cart extends Model
     {
 
         $fields = [
-            'id',
             'kg_added',
             'user_id',
             'product_id',
-            'created_at',
-            'updated_at',
+            'products.product_name',
+            'products.product_type',
+            'products.variety',
+            'products.planted_date',
+            'products.prospect_harvest_in_kg',
+            'products.prospect_harvest_date',
+            'products.actual_harvested_in_kg',
+            'products.actual_sold_kg',
+            'products.harvested_date',
+            'products.product_location',
+            'products.price',
+            'products.product_picture',
+            'products.is_approved',
         ];
 
         $amibiguous_fields = [
+            'carts.id',
+            'carts.created_at',
+            'carts.updated_at',
         ];
         $shopify_account_fields = [
-
+            'products.product_name',
+            'products.type',
+            'products.variety',
+            'products.planted_date',
+            'products.prospect_harvest_in_kg',
         ];
         if ($mode == 1) {
             $detail_fields = [];
@@ -45,7 +62,7 @@ class Cart extends Model
         } else {
             $fields = array_merge($amibiguous_fields, $fields);
         }
-
+  
         return $fields;
     }
 
@@ -86,6 +103,7 @@ class Cart extends Model
         if (!empty($selected_fields)) {
             $fields = $selected_fields;
         }
+   
         $query = $this->select($fields);
 
         if (!empty($filter)) {
@@ -95,7 +113,7 @@ class Cart extends Model
         if (!empty($sort)) {
             $query = $this->applySorting($query, $sort);
         }
-
+        $query->leftJoin('products', 'carts.product_id', '=', 'products.id');
         if ($pagination == 1) {
             $result = $query->paginate($items_per_page)->toArray();
         } else {
