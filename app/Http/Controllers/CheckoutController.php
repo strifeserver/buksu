@@ -17,8 +17,10 @@ class CheckoutController extends Controller
     public function checkout(Request $request)
     {
         $user_ID = Crypt::decryptString($request->user_ID);
-        $cartItems = json_decode($request->cart_id);
+        $cartItems = explode(',', $request->cart_id);
+
         $cartItemsCart = Cart::whereIn('id', $cartItems)->where('user_id',$user_ID)->get();
+   
         $User = User::where('id','=',$user_ID)->first();
 
         foreach ($cartItems as $cartItem_id) {
