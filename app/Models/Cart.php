@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Crypt;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -171,6 +172,11 @@ class Cart extends Model
                         }
                     });
                     break;
+                case 'user_id';
+                    $user_ID = Crypt::decryptString($value['filter']);
+                    $query->where($key, '=', $user_ID);
+
+                    break;
                 case 'created_at';
                     try {
                         $from = date('Y-m-d', strtotime($value->from));
@@ -230,7 +236,7 @@ class Cart extends Model
         $id = optional($request)->get('id', '');
         $fields = $this->fillable;
         $submittedData = collect($request)->only($fields)->toArray();
-   
+
         $execute = $this::create($submittedData)->id;
 
         $executeStatus = (is_integer($execute)) ? 1 : 0;
