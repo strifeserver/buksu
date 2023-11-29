@@ -61,11 +61,11 @@ class CartService
 
     public function update(array $request)
     {
-        $user_ID = Crypt::decryptString($request['user_ID']);
-        $request['product_id'] = $request['productID_'];
-        $request['user_id'] = $user_ID;
+        // $user_ID = Crypt::decryptString($request['user_ID']);
+        // $request['product_id'] = $request['productID_'];
+        // $request['user_id'] = $user_ID;
         $request['kg_added'] = $request['kg_'];
-        $request['added_on'] = date('Y-m-d h:i:s');
+        // $request['added_on'] = date('Y-m-d h:i:s');
         
         $execution = $this->repository->execute_update($request);
         // if ($execution['result']) {
