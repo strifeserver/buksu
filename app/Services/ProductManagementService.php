@@ -23,6 +23,7 @@ class ProductManagementService
         $filter = request('filter') ?? [];
         $sort = request('sort') ?? [];
         $pagination = request('pagination');
+        $special_filter = request('special_filter') ?? null;
         if (empty($pagination)) {
             $pagination = 0;
         }
@@ -31,6 +32,7 @@ class ProductManagementService
         $data['filters'] = $filter;
         $data['sort'] = $sort;
         $data['pagination'] = $pagination;
+        $data['special_filter'] = $special_filter;
         $execution = $this->repository->index($data);
         return $execution;
     }

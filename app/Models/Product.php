@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Crypt;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -78,11 +79,12 @@ class Product extends Model
 
     public function index(array $data): array
     {
-        
+
         $returns = [];
         $items_per_page = @$data['items_per_page'];
         $pagination = @$data['pagination'];
         $filter = is_string($data['filters']) ? json_decode($data['filters'], true) : ($data['filters'] ?? []);
+        $special_filter = is_string($data['special_filter']) ? json_decode($data['special_filter'], true) : ($data['special_filter'] ?? []);
         if (isset($data['sort']) && gettype(($data['sort'])) == 'string') {
             $sort = @json_decode($data['sort'], true) ?? [];
         } else {
@@ -95,7 +97,7 @@ class Product extends Model
         if (empty($sort) || empty($sort['created_at'])) {
             $sort['created_at'] = ['sort_by' => 'descending'];
         }
-        
+
         $fields = $this->display_fields();
 
         if (!empty($data['others'])) {
@@ -128,6 +130,23 @@ class Product extends Model
         } else {
             $result = $query->get()->toArray();
         }
+        if (!empty($special_filter)) {
+            $reresult = [];
+            foreach ($result as $key => $value) {
+                if (!empty($special_filter['product_owner'])) {
+                    $farmOwnerId = $value['farm']['farm_owner'];
+                    $user_ID = Crypt::decryptString($special_filter['product_owner']['filter']);
+                    if ($farmOwnerId == $user_ID) {
+                        $reresult[] = $value;
+                    }
+                }
+            }
+            
+            $result = $reresult;
+        }
+
+
+
         $returns['status'] = 1;
         $returns['data'] = @$result;
 
