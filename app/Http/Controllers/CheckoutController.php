@@ -18,16 +18,18 @@ class CheckoutController extends Controller
     {
         $status = 0;
         $code = 400;
-        try {
+        // try {
             $user_ID = Crypt::decryptString($request->user_ID);
             $cartItems = explode(',', $request->cart_id);
     
             $cartItemsCart = Cart::whereIn('id', $cartItems)->where('user_id',$user_ID)->get();
             if(count($cartItemsCart) > 0){
                 $User = User::where('id','=',$user_ID)->first();
-                foreach ($cartItems as $cartItem_id) {
-                    $product = Product::where('id', $cartItem_id)->first();
+                foreach ($cartItemsCart as $cartItem_id) {
+                  
+                    $product = Product::where('id', $cartItem_id->product_id)->first();
              
+
                     $seller = Farm::where('id', $product->farm_belonged)->first();
         
                     //Notification
@@ -79,7 +81,7 @@ class CheckoutController extends Controller
                         'actual_sold_kg' => $kgTotal,
                         'actual_harvested_in_kg' => $kgTotal2,
                     ]);
-                    $removeCartItem = Cart::find($cartItem_id);
+                    $removeCartItem = Cart::find($cartItem_id->id);
         
                     if ($removeCartItem) {
                         $removeCartItem->delete();
@@ -95,12 +97,12 @@ class CheckoutController extends Controller
 
 
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            $status = 0;
-            $code = 400;
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     $status = 0;
+        //     $code = 400;
 
-        }
+        // }
 
  
         return response(json_encode(['status'=>$status]), $code)->header('Content-Type', 'application/json');
