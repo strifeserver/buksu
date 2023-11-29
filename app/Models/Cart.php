@@ -271,7 +271,8 @@ class Cart extends Model
         $identifiers = ['id'];
         $displayableFields = [];
         $search_vals = ['identifiers' => $identifiers, 'value' => $id];
-        $fields = $this->display_fields();
+        // $fields = $this->display_fields();
+        $fields = $this->fillable;
         $fieldraw = [];
 
         $selected_fields = @$data['fieldnames'];
