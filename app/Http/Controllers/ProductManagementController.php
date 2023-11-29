@@ -19,11 +19,13 @@ class ProductManagementController extends Controller
         $page = request('page') ?? '';
         $itemsPerPage = request('itemsPerPage') ?? '';
         $pagination = request('pagination') ?? '';
+        $sort = request('sort') ?? [];
         $requests = [
             'filter' => $filters,
             'page' => $page,
             'itemsPerPage' => $itemsPerPage,
             'pagination' => $pagination,
+            'sort' => $sort,
         ];
         $execution = $this->service->index($requests);
 

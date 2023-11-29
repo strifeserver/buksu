@@ -95,7 +95,7 @@ class Product extends Model
         if (empty($sort) || empty($sort['created_at'])) {
             $sort['created_at'] = ['sort_by' => 'descending'];
         }
-
+        
         $fields = $this->display_fields();
 
         if (!empty($data['others'])) {
