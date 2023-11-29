@@ -122,7 +122,7 @@ class Product extends Model
         if (!empty($sort)) {
             $query = $this->applySorting($query, $sort);
         }
-
+        $query->with('farm.user');
         if ($pagination == 1) {
             $result = $query->paginate($items_per_page)->toArray();
         } else {
