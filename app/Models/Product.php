@@ -41,6 +41,7 @@ class Product extends Model
     {
 
         $fields = [
+            'id',
             'product_name',
             'product_type',
             'variety',
@@ -141,7 +142,7 @@ class Product extends Model
                     }
                 }
             }
-            
+
             $result = $reresult;
         }
 
