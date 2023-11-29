@@ -78,14 +78,14 @@ class CartService
     }
     public function destroy($id)
     {
-        $existing_data = $this->edit($id);
+        // $existing_data = $this->edit($id);
         $execution = $this->repository->execute_destroy($id);
     
-        if ($execution['status'] === 1 && $existing_data) {
-            // $existing_data = $existing_data['result'];
-            // $audit_data = ['existing_data' => $existing_data];
-            // $this->audit_service->store($audit_data);
-        }
+        // if ($execution['status'] === 1 && $existing_data) {
+        //     // $existing_data = $existing_data['result'];
+        //     // $audit_data = ['existing_data' => $existing_data];
+        //     // $this->audit_service->store($audit_data);
+        // }
         return $execution;
     }
 
