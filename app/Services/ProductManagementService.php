@@ -63,9 +63,9 @@ class ProductManagementService
 
         // }
 
-        $response = $this->helper->apiResponse($execution['status'], 200, $execution['message'] ?? null, $execution['result']);
+        // $response = $this->helper->apiResponse($execution['status'], 200, $execution['message'] ?? null, $execution['result']);
 
-        return $response;
+        return $execution;
     }
     public function destroy($id)
     {
