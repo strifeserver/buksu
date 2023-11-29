@@ -291,9 +291,8 @@ export default function Login() {
                         {/* <input type="submit" defaultValue="Sign In" className="w-full cursor-pointer rounded-lg border border-blue-500 bg-blue-500 p-4 font-medium text-white transition hover:bg-opacity-90" /> */}
                         <button
                           type="submit"
-                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${
-                            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                          }`}
+                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                           disabled={isSubmitting}
                         >
                           Signin

@@ -1,7 +1,10 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../context/ContextProvider.jsx";
-import { useState } from "react";
+import { useState, useEffect, Fragment } from "react";
+import SellerDataTable from '../../../components/SellerDataTable.jsx';
+import EditForm from '../../../components/EditForm.jsx';
+import SearchBar from '../../../components/SearchBar';
 
 export default function LayoutSeller() {
   const {
@@ -24,12 +27,44 @@ export default function LayoutSeller() {
     return <Navigate to="/login" />;
   }
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditDate] = useState([]);
+  const [data, setData] = useState([]);
+  const [productData, setProductData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(0);
+  const columns = [
+    { name: 'ID', selector: 'id', sortable: true },
+    { name: 'Product Name', selector: 'product_name', sortable: true },
+    { name: 'Variety', selector: 'variety', sortable: true },
+    { name: 'Price', selector: 'price', sortable: true },
+    { name: 'Planted Date', selector: 'planted_date', sortable: true },
+    { name: 'Harvested Date', selector: 'harvested_date', sortable: true },
+    { name: 'Harvested kg', selector: 'actual_harvested_in_kg', sortable: true },
+    { name: 'Approval', selector: 'is_approved', sortable: true },
+    {
+      name: '',
+      button: true,
+      cell: (row) => <button onClick={() => handleEdit(row.id)}>Edit</button>,
+    },
+  ];
+  const [formData, setFormData] = useState({
+    product_name: '',
+    product_type: '',
+    variety: '',
+    planted_date: '',
+    prospect_harvest_in_kg: '',
+    prospect_harvest_date: '',
+    actual_harvested_in_kg: '',
+    harvested_date: '',
+    product_location: '',
+    price: '',
+  });
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
-
-  // const [showMenu, setShowMenu] = useState(false);
 
   const onLogoutConfirm = () => {
     const isConfirmed = window.confirm("Are you sure you want to logout?");
@@ -44,20 +79,129 @@ export default function LayoutSeller() {
     }
   };
 
-  const onLogout = (ev) => {
-    ev.preventDefault();
+  const handleSearchChange = (value) => {
+    setSearchValue(value);
 
-    axiosClient.post("/logout").then(() => {
-      setToken(null);
-      setUserName(null);
-      setCurrentUserID(null);
-      setUserType(null);
-      navigate("/login");
+    const apiUrl = '/product_management';
+    const requestParams = {
+      filter: JSON.stringify({
+        all: {
+          filter: value,
+        }
+      }),
+      special_filter: JSON.stringify({
+        product_owner: { filter: currentUserID }
+      }),
+    };
+
+    // Make the Axios request
+    axiosClient.get(apiUrl, { params: requestParams })
+      .then(response => {
+
+        const newData = response.data.data.map((item) => ({
+          id: item.id,
+          product_name: item.product_name,
+          variety: item.variety,
+          price: item.price,
+          planted_date: item.planted_date,
+          harvested_date: item.harvested_date,
+          is_approved: item.is_approved,
+          actual_harvested_in_kg: item.actual_harvested_in_kg,
+        }));
+        setProductData(newData);
+        setData(response.data.data);
+
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const handleEdit = (id) => {
+    const targetObject = data.find(item => item.id === id);
+    setEditDate(targetObject);
+
+    setFormData({
+      product_name: targetObject.product_name,
+      product_type: targetObject.product_type,
+      variety: targetObject.variety,
+      planted_date: targetObject.planted_date,
+      prospect_harvest_in_kg: targetObject.prospect_harvest_in_kg,
+      prospect_harvest_date: targetObject.prospect_harvest_date,
+      actual_harvested_in_kg: targetObject.actual_harvested_in_kg,
+      harvested_date: targetObject.harvested_date,
+      product_location: targetObject.product_location,
+      price: targetObject.price,
+    });
+    setEditId(id);
+    setEditMode(true);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
   };
 
-  const [showMenu, setShowMenu] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const apiUrl = `/product_management/${editId}`;
 
+    console.log(apiUrl);
+    axiosClient.put(apiUrl, formData)
+      .then((response) => {
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const getTableData = () => {
+    const apiUrl = '/product_management';
+
+    const requestParams = {
+      special_filter: JSON.stringify({
+        product_owner: { filter: currentUserID }
+      }),
+    };
+
+    // Make the Axios request
+    axiosClient.get(apiUrl, { params: requestParams })
+      .then(response => {
+        const newData = response.data.data.map((item) => ({
+          id: item.id,
+          product_name: item.product_name,
+          variety: item.variety,
+          price: item.price,
+          planted_date: item.planted_date,
+          harvested_date: item.harvested_date,
+          is_approved: item.is_approved,
+          actual_harvested_in_kg: item.actual_harvested_in_kg,
+        }));
+
+        // Create a Set to ensure unique items based on id
+        const uniqueData = new Set([...productData, ...newData]);
+
+        // Convert the Set back to an array
+        const uniqueArray = Array.from(uniqueData);
+
+        // Update the state with unique data
+        setProductData(uniqueArray);
+        setData(response.data.data);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error fetching data:', error);
+      });
+  }
+
+
+  useEffect(() => {
+    getTableData();
+  }, []);
   return (
     <div>
       <div className="dark:bg-gray-900 bg-green-300">
@@ -68,9 +212,8 @@ export default function LayoutSeller() {
               <div className="relative group">
                 {/* Title */}
                 <p
-                  className={`text-white text-md ${
-                    isDropdownOpen ? "group-hover:text-gray-200" : ""
-                  }`}
+                  className={`text-white text-md ${isDropdownOpen ? "group-hover:text-gray-200" : ""
+                    }`}
                 >
                   <button
                     onClick={toggleDropdown}
@@ -181,8 +324,24 @@ export default function LayoutSeller() {
       <div className="p-0">
         <div className="p-2  border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <Outlet />
+          {
+            editMode ?
+              <EditForm formData={formData}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                setEditMode={setEditMode} />
+              :
+              <Fragment>
+                <SearchBar onSearchChange={handleSearchChange} />
+                <hr className=" w-full bg-gray-200 mt-1" />
+                <SellerDataTable data={productData} columns={columns} handleEdit={handleEdit} />
+              </Fragment>
+
+          }
         </div>
       </div>
     </div>
+
+
   );
 }

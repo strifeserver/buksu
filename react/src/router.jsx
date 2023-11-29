@@ -63,6 +63,7 @@ import FarmViewProductsSB from "./views/SellerBuyer/AFarmViewProductsSB.jsx"
 import SellerCenter from "./views/SellerBuyer/ASellerCenter.jsx"
 import AddFarm from "./views/SellerBuyer/AAddFarm.jsx"
 import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
+import CartBuyer from "./views/SellerBuyer/Cart";
 
 import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 
@@ -70,6 +71,7 @@ import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 import Sample from "./views/sample.jsx";
 import Orders from "./views/SellerBuyer/AOrders";
 import Home from "./views/Buyers/Home";
+import Cart from "./views/Buyers/Cart";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
 import ListsProduct from "./views/Buyers/AProducts";
@@ -205,6 +207,10 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
+        path: '/buyer/order/cart',
+        element: <Cart />
+      },
+      {
         path: '/buyer/order/products',
         element: <ListsProduct />
       },
@@ -230,6 +236,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Navigate to="/buyer-seller/role/buyer"/>
+      },
+      {
+        path: '/buyer/buyer-seller/cart',
+        element: <CartBuyer />
       },
       {
         path: '/buyer-seller/role/buyer',

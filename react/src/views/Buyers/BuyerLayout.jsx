@@ -33,21 +33,6 @@ export default function ASellerBuyerlayout() {
   const [showMenu, setShowMenu] = useState(false);
   const [showMenuSm, setShowMenuSm] = useState(false);
 
-  // const onLogoutConfirm = () => {
-  //   const isConfirmed = window.confirm("Are you sure you want to logout?");
-  //   if (isConfirmed) {
-  //     axiosClient.post("/logout").then(() => {
-  //       setToken(null);
-  //       setUserName(null);
-  //       setCurrentUserID(null);
-  //       setUserType(null);
-  //       localStorage.clear();
-  //       // return <Navigate to="/login" />;
-  //       alert("sahjsah");
-  //     });
-  //   }
-  // };
-
   const onLogout = (ev) => {
     ev.preventDefault();
 
@@ -58,6 +43,11 @@ export default function ASellerBuyerlayout() {
       setUserType(null);
       navigate("/login");
     });
+  };
+
+  const goToCart = (ev) => {
+    ev.preventDefault();
+    window.location.href = "/buyer/order/cart";
   };
 
   return (
@@ -202,6 +192,11 @@ export default function ASellerBuyerlayout() {
               </div>
             </div>
             <div className="lg:w-3/12 flex justify-end items-center space-x-4">
+              <a href="" onClick={goToCart}>
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </a>
               <a href="" onClick={onLogout}>
                 <svg
                   viewBox="0 0 24 24"
@@ -429,9 +424,8 @@ export default function ASellerBuyerlayout() {
           {/* Main Menu */}
           <div
             id="mobile-menu"
-            className={`${
-              showMenuSm ? "flex" : "hidden"
-            } md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white pt-4`}
+            className={`${showMenuSm ? "flex" : "hidden"
+              } md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white pt-4`}
           >
             <div className="w-full">
               <div className="flex items-center justify-between border-b border-gray-200 pb-4 mx-4">
