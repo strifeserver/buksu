@@ -18,7 +18,11 @@ class CheckoutController extends Controller
     {
         $status = 0;
         $code = 400;
-        // try {
+        $mailingList = [];
+        $mailerInfo = [];
+
+
+        try {
             $user_ID = Crypt::decryptString($request->user_ID);
             $cartItems = explode(',', $request->cart_id);
     
@@ -31,36 +35,61 @@ class CheckoutController extends Controller
              
 
                     $seller = Farm::where('id', $product->farm_belonged)->first();
-        
                     //Notification
-                    // if($seller){
-                    //     if($seller->email){
-                    //         $EmailService = app(MailService::class);
-                    //         $body = 'an Order has been created successfully';
-                    //         $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
-                    //     }
-                    // }
+                    $buyer = User::where('id','=',$user_ID)->first();
+                    $sellerAcct = User::where('id','=',$seller->farm_owner)->first();
+                    if(!empty($sellerAcct)){
+                       
+           
+                        if($sellerAcct->email){
+                            $mailingList[] = $sellerAcct->email;
+                            $EmailService = app(MailService::class);
+                            $body = 'you have placed an Order Successfully from the farm: '.$seller->farm_name;
+
+
+                            $sendtoSeller = [
+                                'email'=>$sellerAcct->email,
+                                'body'=>$body,
+                                'role'=>'seller',
+                                'user_id'=>$sellerAcct->id,
+                            ];
+                            
+                            $mailerInfo[] = $sendtoSeller;
+                        }
+                    }
          
-                    // $buyer = User::where('id','=',$user_ID)->first();
-                    // if($buyer){
-                    //     if($buyer->email){
-                    //         $EmailService = app(MailService::class);
-                    //         $body = 'you have placed an Order Successfully';
-                    //         $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
-                    //     }
-                    // }
+                    if(!empty($buyer)){
+                        $mailingList[] = $buyer->email;
+
+                        if($buyer->email){
+                            $EmailService = app(MailService::class);
+                            $body = 'an Order has been created successfully Buyer:'.$buyer->name;
+
+                            $sendtoBuyer = [
+                                'email'=>$buyer->email,
+                                'body'=>$body,
+                                'role'=>'buyer',
+                                'user_id'=>$buyer->id,
+                            ];
+                            
+                            $mailerInfo[] = $sendtoBuyer;
+                        }
+                    }
                     //Notification
-        
+                    
+                    $kgTotal =  $product->actual_sold_kg + $cartItem_id->kg_added;
+                    $kgTotal2 = $product->actual_harvested_in_kg - $cartItem_id->kg_added;
+
                     $newTransaction  = Transaction::create([
                         'seller' => $seller->farm_owner,
                         'ordered_on' => now(),
-                        'price_of_goods' => $product->price * $request->kg_,
+                        'price_of_goods' => $product->price * $cartItem_id->kg_added,
                         'buyers_name' => $user_ID,
                         'from_farm' => $product->farm_belonged,
             
                     ]);
             
-                    $cost = $product->price * $request->kg_;
+                    $cost = $product->price * $cartItem_id->kg_added;
                     TransactionDetail::create([
                         'product_id' => $product->id,
                         'product_name' => $product->product_name,
@@ -68,14 +97,13 @@ class CheckoutController extends Controller
                         'variety' => $product->variety,
                         'planted_date' => $product->planted_date,
                         'harvested_date' => $product->harvested_date,
-                        'kg_purchased' => $request->kg_,
+                        'kg_purchased' => $cartItem_id->kg_added,
                         'price_per_kilo' => $product->price,
                         'total_price' => $cost,
                         'transaction_id' => $newTransaction->id,
             
                     ]);
-                    $kgTotal =  $product->actual_sold_kg + $request->kg_;
-                    $kgTotal2 = $product->actual_harvested_in_kg - $request->kg_;
+
             
                     $product->update([
                         'actual_sold_kg' => $kgTotal,
@@ -88,7 +116,12 @@ class CheckoutController extends Controller
                     } 
                     
                 }
-    
+                
+
+                foreach ($mailerInfo as $key => $value) {
+                    $execution = $EmailService->send($value['email'], 'Order Created', $value['body'], '', '', '', []);
+                }
+            
                 $status = 1;
                 $code = 200;
             }else{
@@ -97,12 +130,12 @@ class CheckoutController extends Controller
 
 
             }
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        //     $status = 0;
-        //     $code = 400;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $status = 0;
+            $code = 400;
 
-        // }
+        }
 
  
         return response(json_encode(['status'=>$status]), $code)->header('Content-Type', 'application/json');

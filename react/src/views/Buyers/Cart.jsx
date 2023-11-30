@@ -99,7 +99,7 @@ export default function Cart() {
     };
 
     const onCheckOut = () => {
-
+        Swal.showLoading()
         let combinedString = selectedRows.map(obj => obj.id).join(',');
 
         const formData = {
