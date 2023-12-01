@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Cart;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\Product;
 class CartService
 {
 
@@ -44,34 +45,59 @@ class CartService
 
     public function store(array $request)
     {
+
         // $currentUserId = auth()->id();
         $user_ID = Crypt::decryptString($request['user_ID']);
         $request['product_id'] = $request['productID_'];
         $request['user_id'] = $user_ID;
         $request['kg_added'] = $request['kg_'];
         $request['added_on'] = date('Y-m-d h:i:s');
+        $message = '';
+        $checkProduct = Product::where('id',$request['productID_'])->first();
 
-        $execution = $this->repository->store($request);
-
-        if ($execution['status'] === 1) {
-            $audit_data = ['incoming_data' => $request];
+        if($checkProduct){
+            if($checkProduct->prospect_harvest_in_kg - $checkProduct->actual_sold_kg  <= 0){
+                $message = 'out of stock';
+                
+            }else if($checkProduct->prospect_harvest_in_kg - $request['kg_added'] <= 0){
+                $message = 'out of stock';
+                $execution = [
+                    'status'=>0,
+                    'message'=>$message,
+                ];
+            }
+            else{
+                $execution = $this->repository->store($request);
+            }
         }
+
         return $execution;
     }
 
     public function update(array $request)
     {
-        // $user_ID = Crypt::decryptString($request['user_ID']);
-        // $request['product_id'] = $request['productID_'];
-        // $request['user_id'] = $user_ID;
-        $request['kg_added'] = $request['kg_'];
-        // $request['added_on'] = date('Y-m-d h:i:s');
-        
-        $execution = $this->repository->execute_update($request);
-        // if ($execution['result']) {
-        //     // $id = $execution['result']['shopify_id'] ?? null;
 
-        // }
+        $request['kg_added'] = $request['kg_'];
+        $message = '';
+        $execution = $this->repository->edit($request['id']);
+        $checkProduct = Product::where('id',$execution['data']['product_id'])->first();
+
+        if($checkProduct){
+            if($checkProduct->prospect_harvest_in_kg - $checkProduct->actual_sold_kg  <= 0){
+                $message = 'out of stock';
+            }else if($checkProduct->prospect_harvest_in_kg - $request['kg_added'] <= 0){
+                $message = 'out of stock';
+                $execution = [
+                    'status'=>0,
+                    'message'=>$message,
+                ];
+            }
+            else{
+                $execution = $this->repository->execute_update($request);
+            }
+        }
+
+
 
 
         return $execution;
