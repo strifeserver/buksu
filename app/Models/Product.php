@@ -134,19 +134,42 @@ class Product extends Model
         if (!empty($special_filter)) {
             $reresult = [];
             foreach ($result as $key => $value) {
-                if (!empty($special_filter['product_owner'])) {
-                    $farmOwnerId = $value['farm']['farm_owner'];
-                    $user_ID = Crypt::decryptString($special_filter['product_owner']['filter']);
-                    if ($farmOwnerId == $user_ID) {
-                        $reresult[] = $value;
+
+                foreach ($special_filter as $special_filter_key => $special_filter_value) {
+
+                    switch ($special_filter_key) {
+                        case 'product_owner':
+                            $farmOwnerId = $value['farm']['farm_owner'];
+                            $user_ID = Crypt::decryptString($special_filter['product_owner']['filter']);
+                            if ($farmOwnerId == $user_ID) {
+                                $reresult[] = $value;
+                            }
+                            break;
+                        case 'farm_name':
+                            $filter = $special_filter['farm_name']['filter'];
+                            $farmName = $value['farm']['farm_name'];
+
+                            if (stripos($farmName, $filter) !== false) {
+                                $reresult[] = $value;
+                            }
+                            break;
+
+                        case 'seller_name':
+                            $filter = $special_filter['seller_name']['filter'];
+                            $sarchValue = $value['farm']['user']['name'];
+
+                            if (stripos($sarchValue, $filter) !== false) {
+                                $reresult[] = $value;
+                            }
+                            break;
                     }
+                
                 }
+
             }
 
             $result = $reresult;
         }
-
-
 
         $returns['status'] = 1;
         $returns['data'] = @$result;
