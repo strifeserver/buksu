@@ -80,15 +80,17 @@ class CheckoutController extends Controller
                     $kgTotal =  $product->actual_sold_kg + $cartItem_id->kg_added;
                     $kgTotal2 = $product->actual_harvested_in_kg - $cartItem_id->kg_added;
 
-                    $newTransaction  = Transaction::create([
-                        'seller' => $seller->farm_owner,
+                    $transactionArr = [
                         'ordered_on' => now(),
                         'price_of_goods' => $product->price * $cartItem_id->kg_added,
                         'buyers_name' => $user_ID,
+                        'seller' => $product->farm_belonged,
                         'from_farm' => $product->farm_belonged,
             
-                    ]);
-            
+                    ];
+
+                    $newTransaction  = Transaction::create($transactionArr);
+
                     $cost = $product->price * $cartItem_id->kg_added;
                     TransactionDetail::create([
                         'product_id' => $product->id,
