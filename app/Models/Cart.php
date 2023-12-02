@@ -37,6 +37,8 @@ class Cart extends Model
             'products.price',
             'products.product_picture',
             'products.is_approved',
+            'users.id',
+            'users.name',
         ];
 
         $amibiguous_fields = [
@@ -114,6 +116,8 @@ class Cart extends Model
             $query = $this->applySorting($query, $sort);
         }
         $query->leftJoin('products', 'carts.product_id', '=', 'products.id');
+        $query->leftJoin('farms', 'farms.id', '=', 'products.farm_belonged');
+        $query->leftJoin('users', 'users.id', '=', 'farms.farm_owner');
         if ($pagination == 1) {
             $result = $query->paginate($items_per_page)->toArray();
         } else {
