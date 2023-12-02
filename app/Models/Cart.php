@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Crypt;
 
 class Cart extends Model
 {
@@ -75,6 +76,11 @@ class Cart extends Model
 
 
         $data['filters'] = str_replace("}}}", "}}", $data['filters']);
+
+        
+        
+ 
+        // $data['filters'] = 
         $filter = is_string($data['filters']) ? json_decode($data['filters'], true) : ($data['filters'] ?? []);
  
         if (isset($data['sort']) && gettype(($data['sort'])) == 'string') {
@@ -85,6 +91,11 @@ class Cart extends Model
 
         $others = $data['others'] ?? [];
 
+        if(!empty($_GET['user_id'])){
+            $user_ID = Crypt::decryptString($_GET['user_id']);
+            $filter['user_id']['filter'] =$user_ID;
+        }
+ 
         #default newest_to_oldest
         if (empty($sort) || empty($sort['created_at'])) {
             $sort['created_at'] = ['sort_by' => 'descending'];
