@@ -38,6 +38,7 @@ class Cart extends Model
             'products.product_picture',
             'products.is_approved',
             'users.name',
+            'farms.farm_name',
         ];
 
         $amibiguous_fields = [
