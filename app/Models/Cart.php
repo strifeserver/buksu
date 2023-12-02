@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Crypt;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,7 +36,6 @@ class Cart extends Model
             'products.price',
             'products.product_picture',
             'products.is_approved',
-            'users.id as userid',
             'users.name',
         ];
 
@@ -64,7 +62,7 @@ class Cart extends Model
         } else {
             $fields = array_merge($amibiguous_fields, $fields);
         }
-  
+
         return $fields;
     }
 
@@ -75,6 +73,7 @@ class Cart extends Model
         $items_per_page = @$data['items_per_page'];
         $pagination = @$data['pagination'];
         $filter = is_string($data['filters']) ? json_decode($data['filters'], true) : ($data['filters'] ?? []);
+ 
         if (isset($data['sort']) && gettype(($data['sort'])) == 'string') {
             $sort = @json_decode($data['sort'], true) ?? [];
         } else {
@@ -105,7 +104,7 @@ class Cart extends Model
         if (!empty($selected_fields)) {
             $fields = $selected_fields;
         }
-   
+
         $query = $this->select($fields);
 
         if (!empty($filter)) {
@@ -179,7 +178,7 @@ class Cart extends Model
                     $query->where(function ($query) use ($attributes) {
                         $fields = $attributes['fields'];
                         $search_value = $attributes['search_value'];
-                        $searched_fields = [];
+                        $searched_fields = []; 
                         foreach ($fields as $field_values) {
                             $raw_field_names = explode('.', $field_values);
                             $searched_fields[] = $field_values . ' == ' . $search_value;
@@ -190,16 +189,9 @@ class Cart extends Model
                                 $field = $check_alias[0];
                                 $field_values = $tbl_name . '.' . $field;
                             }
-                            if($field_values != 'user_id'){
-                                $query->orWhere($field_values, 'LIKE', '%' . $search_value . '%');
-                            }
+                            $query->orWhere($field_values, 'LIKE', '%' . $search_value . '%');
                         }
                     });
-                    break;
-                case 'user_id';
-                    $user_ID = Crypt::decryptString($value['filter']);
-                    $query->where($key, '=', $user_ID);
-
                     break;
                 case 'created_at';
                     try {
@@ -249,7 +241,6 @@ class Cart extends Model
         $iterationCount++;
         return $query;
     }
-
     // /**
     //  * @return array
     //  * @param array $request
