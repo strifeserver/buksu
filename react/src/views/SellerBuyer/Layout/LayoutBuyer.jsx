@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet} from "react-router-dom";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../context/ContextProvider.jsx";
 import { useState } from "react";
@@ -23,13 +23,12 @@ export default function LayoutBuyer() {
     setUserType(null);
     return <Navigate to="/login" />;
   }
+  
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
-
-  // const [showMenu, setShowMenu] = useState(false);
 
   const onLogoutConfirm = () => {
     const isConfirmed = window.confirm("Are you sure you want to logout?");
@@ -44,24 +43,10 @@ export default function LayoutBuyer() {
     }
   };
 
-  const onLogout = (ev) => {
-    ev.preventDefault();
-
-    axiosClient.post("/logout").then(() => {
-      setToken(null);
-      setUserName(null);
-      setCurrentUserID(null);
-      setUserType(null);
-      navigate("/login");
-    });
-  };
-
   const goToCart = (ev) => {
     ev.preventDefault();
-    window.location.href = "/buyer/buyer-seller/cart";
+    window.location.href = "/buyer-seller/cart";
   };
-
-  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div>

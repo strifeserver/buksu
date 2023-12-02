@@ -1,8 +1,8 @@
-// TableComponent.js
+// CartTable.js
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 
-const TableComponent = ({
+const CartTable = ({
     data: initialData,
     columns,
     onDetailsClick,
@@ -14,12 +14,9 @@ const TableComponent = ({
     const [data, setData] = useState(initialData);
 
     useEffect(() => {
-        // Filter data when the filterText changes
         const filteredData = initialData.filter((item) =>
             columns.some((column) => {
                 const columnValue = item[column.selector];
-
-                // Check if columnValue is not undefined and not null before calling toString
                 if (columnValue !== undefined && columnValue !== null) {
                     const stringValue = columnValue.toString().toLowerCase();
                     return stringValue.includes(filterText.toLowerCase());
@@ -31,30 +28,6 @@ const TableComponent = ({
 
         setData(filteredData);
     }, [filterText, initialData, columns]);
-
-
-    const handleSearch = (e) => {
-        const searchText = e.target.value.toLowerCase();
-
-        // Update the filterText state
-        setFilterText(searchText);
-
-        // Filter data when the filterText changes
-        const filteredData = initialData.filter((item) =>
-            columns.some((column) => {
-                const columnValue = item[column.selector];
-
-                if (columnValue !== undefined && columnValue !== null) {
-                    const stringValue = columnValue.toString().toLowerCase();
-                    return stringValue.includes(searchText);
-                }
-
-                return false;
-            })
-        );
-
-        setData(filteredData);
-    };
 
     const tableProps = {
         columns: columns.map((column) =>
@@ -102,7 +75,6 @@ const TableComponent = ({
                         }
                         : column
         ),
-        data,
         pagination: true,
         paginationPerPage: 5,
         highlightOnHover: true,
@@ -112,19 +84,14 @@ const TableComponent = ({
         onSelectedRowsChange: onSelectedRowsChange,
         paginationRowsPerPageOptions: [5, 10, 15],
         noHeader: true,
+        data,
     };
 
     return (
         <div>
-            <input
-                type="text"
-                placeholder="Search"
-                value={filterText}
-                onChange={handleSearch}
-            />
             <DataTable {...tableProps} />
         </div>
     );
 };
 
-export default TableComponent;
+export default CartTable;

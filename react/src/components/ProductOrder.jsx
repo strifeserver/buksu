@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-import axiosClient from "../../axios-client.js";
-import { useStateContext } from "../../context/ContextProvider.jsx";
+import axiosClient from "../axios-client.js";
+import { useStateContext } from "../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function AProductOrder() {
   const [loading, setLoading] = useState(false);
-  const { currentUserID } = useStateContext();
+  const { currentUserID, userType } = useStateContext();
   const [product, setProduct] = useState([]);
   const [price, setPrice] = useState();
-
   const navigate = useNavigate();
   let { id } = useParams();
-
   const [max, setMax] = useState();
+  const denominations = [1, 5, 10, 20, 30, 50, 100, 500, 1000];
+  const [count, setCount] = useState(1);
+  const maximumValue = max;
+
+  const handleChange = (event) => {
+    setCount(event.target.value);
+  };
 
   useEffect(() => {
     getProduct();
@@ -31,90 +37,43 @@ export default function AProductOrder() {
         setLoading(false);
       });
   };
-  /*
-    const submitToCart = (event) => {
-      event.preventDefault();
-  
-      // Update formData with the current count value
-    const updatedFormData = {
-      ...formData,
-      kg_: count,
-    };
-  
-  
-      axiosClient
-        .post("/orderNow", updatedFormData)
-        .then(() => {
-          window.location.href = "/buyer-seller/orders";
-        })
-        .catch((error) => {
-          // Handle error if needed
-          console.error("Error submitting form:", error);
-        });
-    };
-    */
 
   const submitToCart = (event) => {
     event.preventDefault();
 
-    // Update formData with the current count value
-    const updatedFormData = {
-      ...formData,
-      kg_: count,
-    };
+    if (count <= maximumValue) {
+      const updatedFormData = {
+        productID_: id,
+        kg_: count,
+        user_ID: currentUserID,
+      };
 
-    axiosClient
-      .post("/cart", updatedFormData)
-      .then(() => {
-        window.location.href = "/buyer/buyer-seller/cart";
-      })
-      .catch((error) => {
-        // Handle error if needed
-        console.error("Error submitting form:", error);
+      axiosClient
+        .post("/cart", updatedFormData)
+        .then(() => {
+          if (userType == 1) {
+            window.location.href = "/buyer-seller/cart";
+          }
+          if (userType == 0) {
+            window.location.href = "/buyer/cart";
+          }
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+        });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Quantity exceeds maximum value.",
       });
-
-  };
-
-  //added
-  const [count, setCount] = useState(0);
-  const maximumValue = max;
-
-  const addCount = () => {
-    if (count < maximumValue) {
-      setCount((prev) => prev + 1);
     }
   };
 
-  const minusCount = () => {
-    if (count > 0) {
-      setCount((prev) => prev - 1);
-    }
-  };
-
-  //end added
-
-  const [formData, setFormData] = useState({
-    productID_: id,
-    kg_: count,
-    user_ID: currentUserID,
-  });
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  // Function to set the count to 100
-  const setCountTo100 = () => {
-    setCount(100);
-  };
-  const setCountTo500 = () => {
-    setCount(500);
-  }; const setCountTo1000 = () => {
-    setCount(1000);
-  };
+  const setCountValue = (value) => {
+    setCount(value + count);
+  }
 
   return (
-
     <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
       <form onSubmit={submitToCart}>
         {product.map((u) => (
@@ -152,23 +111,18 @@ export default function AProductOrder() {
 
               <div className="lg:mt-11 mt-10">
                 <div className="flex flex-row justify-between">
-                  <p className=" font-medium text-base leading-4 text-gray-600">Select Kilos :</p>
+                  <p className=" font-medium text-base leading-4 text-gray-600">Add Kilos :</p>
                   <div className="flex">
-
-                    <span onClick={minusCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1">
-                      -
-                    </span>
-                    <input required id="counter" name="kg_" aria-label="input" className="border border-gray-300 h-full text-center w-14 pb-1" type="text" max={u.prospect_harvest_in_kg - u.actual_sold_kg} min={1} value={count} onChange={(e) => e.target.value} />
-                    <span onClick={addCount} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 ">
-                      +
-                    </span>
+                    <input required id="counter" name="kg_" aria-label="input" className="border border-gray-300 h-full text-center w-full pb-1" type="number" max={u.prospect_harvest_in_kg - u.actual_sold_kg} min={1} value={count} onChange={handleChange} />
                   </div>
-
                 </div>
-                <a onClick={setCountTo100} className=" ml-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 w-14 h-7 text-center bg-green-100">100</a>
-
-                <a onClick={setCountTo500} className="ml-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 w-14 h-7 text-center bg-green-100">500</a>
-                <a onClick={setCountTo1000} className="ml-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 w-14 h-7 text-center bg-green-100">1,000</a>
+                {
+                  denominations.map((value) => {
+                    return (
+                      <a onClick={() => setCountValue(value)} key={value} className="ml-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 w-14 h-7 text-center bg-green-100">{value}</a>
+                    )
+                  })
+                }
 
                 <hr className=" bg-gray-200 w-full my-2" />
                 <div className=" flex flex-row justify-between items-center mt-4">
@@ -181,10 +135,6 @@ export default function AProductOrder() {
 
               <button type="submit" className="focus:outline-none focus:ring-2 hover:bg-green-400 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-green-600 w-full py-5 lg:mt-12 mt-6">Add to Cart</button>
             </div>
-
-
-
-
           </div>
         ))}
       </form>

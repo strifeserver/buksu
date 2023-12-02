@@ -1,36 +1,24 @@
 import React, { useState, useEffect } from "react";
-import axiosClient from "../../axios-client";
-import { useStateContext } from "../../context/ContextProvider";
-import { Table, Tabs, Button, Spinner, Alert, Checkbox, Modal, Card } from "flowbite-react";
-import { HiInformationCircle, HiAdjustments } from "react-icons/hi";
-import { MdDashboard } from 'react-icons/md';
+import axiosClient from "../axios-client";
+import { useStateContext } from "../context/ContextProvider";
+import { Table, Tabs, Button, Modal, Card } from "flowbite-react";
 import { IoIosCash } from "react-icons/io";
 import { CiCreditCard1 } from "react-icons/ci";
 import { CiGlobe } from "react-icons/ci";
 import { MdFiberSmartRecord } from "react-icons/md";
-import { HiX } from 'react-icons/hi';
-import { MdAnnouncement } from 'react-icons/md';
 import Swal from 'sweetalert2';
-import DataTable from 'react-data-table-component';
-import TableComponent from '../../components/TableComponent';
+import CartTable from './CartTable';
+import SearchBar from './SearchBar';
 
 export default function Cart() {
     const { currentUserID } = useStateContext();
-    const payload = {
-        user_id: {
-            filter: currentUserID
-        }
-    };
-    const [loading, setLoading] = useState(false);
-    //const [data, setData] = useState([]);
-    const [cartDataId, setCartDataId] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [selectedButton, setSelectedButton] = useState(null);
+    const [searchValue, setSearchValue] = useState('');
     let totalPayment = 0;
-
     const columns = [
+        { name: 'Seller Name', selector: 'sellerName', sortable: true },
         { name: 'Product Name', selector: 'productName', sortable: true },
         { name: 'Type', selector: 'type', sortable: true },
         { name: 'Price', selector: 'price', sortable: true },
@@ -48,8 +36,7 @@ export default function Cart() {
         axiosClient
             .delete(`cart/${rowId}`)
             .then(() => {
-                setTableData((prevData) => prevData.filter((item) => item.id !== rowId));
-
+                getCartData();
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -99,6 +86,7 @@ export default function Cart() {
     };
 
     const onCheckOut = () => {
+        Swal.showLoading();
 
         let combinedString = selectedRows.map(obj => obj.id).join(',');
 
@@ -110,6 +98,7 @@ export default function Cart() {
         axiosClient
             .post("/checkout", formData)
             .then(() => {
+                Swal.close();
                 Swal.fire({
                     title: "Checkout Success!",
                     icon: "success"
@@ -127,11 +116,41 @@ export default function Cart() {
 
     };
 
-    useEffect(() => {
-        axiosClient
-            .get("/cart", payload)
-            .then((response) => {
+    const handleSearchChange = (value) => {
+        setSearchValue(value);
+
+        const apiUrl = '/cart';
+
+        const requestParams = {
+            user_id: currentUserID,
+            filter: JSON.stringify({
+                all: {
+                    filter: value,
+                },
+            }),
+        };
+
+
+        cartAxios(apiUrl, requestParams);
+    };
+
+    const getCartData = () => {
+        const apiUrl = '/cart';
+
+        console.log(currentUserID)
+
+        const requestParams = {
+            user_id: currentUserID,
+        };
+
+        cartAxios(apiUrl, requestParams);
+    }
+
+    const cartAxios = (apiUrl, requestParams) => {
+        axiosClient.get(apiUrl, { params: requestParams })
+            .then(response => {
                 const newData = response.data.data.map((item) => ({
+                    sellerName: item.name,
                     id: item.id,
                     productName: item.product_name,
                     type: item.product_type,
@@ -141,20 +160,16 @@ export default function Cart() {
                     itemDetails: '/buyer/order/products/' + item.product_id,
                 }));
 
-                // Create a Set to ensure unique items based on id
-                const uniqueData = new Set([...tableData, ...newData]);
-
-                // Convert the Set back to an array
-                const uniqueArray = Array.from(uniqueData);
-
-                // Update the state with unique data
-                setTableData(uniqueArray);
-
-
+                setTableData(newData);
+                console.log(newData);
             })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
+    }
+
+    useEffect(() => {
+        getCartData();
     }, []);
 
     return (
@@ -166,8 +181,8 @@ export default function Cart() {
                         Your cart items are shown here
                     </p>
                     <div className="overflow-x-auto">
-
-                        <TableComponent
+                        <SearchBar onSearchChange={handleSearchChange} />
+                        <CartTable
                             data={tableData}
                             columns={columns}
                             onDetailsClick={handleDetailsClick}
@@ -188,17 +203,8 @@ export default function Cart() {
                 <Modal.Body>
                     <div className="overflow-x-auto">
                         <Table>
-                            <Table.Head>
-                                <Table.HeadCell>Product name</Table.HeadCell>
-                                <Table.HeadCell>Type</Table.HeadCell>
-                                <Table.HeadCell>Price</Table.HeadCell>
-                                <Table.HeadCell>TotalAmount</Table.HeadCell>
-                                <Table.HeadCell>kg</Table.HeadCell>
-                            </Table.Head>
                             <Table.Body className="divide-y">
                                 {selectedRows?.map((data) => {
-                                    console.log(data)
-
                                     totalPayment += data.totalAmount;
                                     return (
                                         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={data.id}>
@@ -231,8 +237,6 @@ export default function Cart() {
                             <Tabs.Item icon={CiCreditCard1} title="Credit/Debit Card">
 
                             </Tabs.Item>
-
-
                         </Tabs.Group>
                         <Card className="max-w-sm" imgSrc="/images/blog/image-4.jpg" horizontal>
                             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

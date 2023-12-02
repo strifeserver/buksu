@@ -2,7 +2,7 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 
-const DataTableComponent = ({ data, columns, handleEdit }) => {
+const DataCartTable = ({ data, columns, handleEdit }) => {
   return (
     <DataTable
       title="Product Management"
@@ -14,4 +14,4 @@ const DataTableComponent = ({ data, columns, handleEdit }) => {
   );
 };
 
-export default DataTableComponent;
+export default DataCartTable;

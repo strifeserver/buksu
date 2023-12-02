@@ -47,7 +47,7 @@ export default function ASellerBuyerlayout() {
 
   const goToCart = (ev) => {
     ev.preventDefault();
-    window.location.href = "/buyer/order/cart";
+    window.location.href = "/buyer/cart";
   };
 
   return (

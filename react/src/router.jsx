@@ -1,4 +1,4 @@
-import {createBrowserRouter, Navigate, Route} from "react-router-dom";
+import { createBrowserRouter, Navigate, Route } from "react-router-dom";
 
 //GUESTS NOT LOGGED IN || GENERAL PAGES
 import GuestLayout from "./components/GuestLayout";
@@ -40,7 +40,6 @@ import BarangayUpdate from "./views/Admin/BarangayUpdate.jsx";
 import SellerBuyerDashboard from "./views/SellerBuyer/ABuyerSellerDashboard"
 import ProductAdd from "./views/SellerBuyer/ProductAdd.jsx";
 import FarmListBySeller from "./views/SellerBuyer/FarmsBySeller.jsx"
-import ProductOrder from "./views/SellerBuyer/AProductOrder";
 
 // import FarmProductOrders from "./views/SellerBuyer/FarmProductOrders.jsx";
 import FulfilledOrder from "./views/SellerBuyer/FulfilledOrder.jsx";
@@ -51,10 +50,8 @@ import GenerateReport from "./views/Admin/GenerateReport";
 
 import CropRecords from "./views/Admin/CropRecords.jsx";
 
-// import AddProd from "./views/Seller/AddProd.jsx";
 
 //SELLER BUYER-  PAGES
-import Products from "./views/SellerBuyer/AProducts.jsx";
 import BuyerSellerDashboard from "./views/SellerBuyer/ABuyerSellerDashboard";
 import SellerBuyerlayout from "./views/SellerBuyer/Layout/LayoutSeller";
 import ConfirmOrder from "./views/SellerBuyer/AConfirmOrder.jsx";
@@ -63,24 +60,24 @@ import FarmViewProductsSB from "./views/SellerBuyer/AFarmViewProductsSB.jsx"
 import SellerCenter from "./views/SellerBuyer/ASellerCenter.jsx"
 import AddFarm from "./views/SellerBuyer/AAddFarm.jsx"
 import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
-import CartBuyer from "./views/SellerBuyer/Cart";
-
 import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
 import Orders from "./views/SellerBuyer/AOrders";
 import Home from "./views/Buyers/Home";
-import Cart from "./views/Buyers/Cart";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
-import ListsProduct from "./views/Buyers/AProducts";
-import ProductOrderNow from "./views/Buyers/ProductOrder";
 import OrdersLists from "./views/Buyers/Orders.jsx";
 import LayoutSeller from "./views/SellerBuyer/Layout/LayoutSeller";
 import LayoutBuyer from "./views/SellerBuyer/Layout/LayoutBuyer";
 import CancelOrder from "./views/SellerBuyer/ABuyerSellerCancel";
 import CancelOrderBuyer from "./views/Buyers/Cancel";
+
+//ALL
+import Cart from "./components/Cart";
+import ProductOrder from "./components/ProductOrder";
+import ProductList from "./components/Products";
 
 const router = createBrowserRouter([
   //ADMIN DA
@@ -91,7 +88,7 @@ const router = createBrowserRouter([
 
       {
         path: '/',
-        element: <Navigate to="admin/dashboard"/>
+        element: <Navigate to="admin/dashboard" />
         // element: <ProtectedRoute allowedUserType={3} path='/' element={<PendingUsers />}
       },
       {
@@ -193,30 +190,29 @@ const router = createBrowserRouter([
   },
 
   //BUYERS
-
   {
     path: '/',
     element: <BuyerLayout />,
     children: [
       {
         path: '/',
-        element: <Navigate to="/buyer/home"/>
+        element: <Navigate to="/buyer/home" />
       },
       {
         path: '/buyer/home',
         element: <Home />
       },
       {
-        path: '/buyer/order/cart',
+        path: '/buyer/cart',
         element: <Cart />
       },
       {
         path: '/buyer/order/products',
-        element: <ListsProduct />
+        element: <ProductList />
       },
       {
         path: '/buyer/order/products/:id',
-        element: <ProductOrderNow />
+        element: <ProductOrder />
       },
       {
         path: '/buyer/orders', //orderlists
@@ -235,15 +231,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/buyer-seller/role/buyer"/>
+        element: <Navigate to="/buyer-seller/role/buyer" />
       },
       {
-        path: '/buyer/buyer-seller/cart',
-        element: <CartBuyer />
+        path: '/buyer-seller/cart',
+        element: <Cart />
       },
       {
         path: '/buyer-seller/role/buyer',
-        element: <Products />
+        element: <ProductList />
       },
       {
         path: '/buyer-seller/order/products/:id',
@@ -265,23 +261,18 @@ const router = createBrowserRouter([
 
     ]
   },
-
-
   {
     path: '/',
     element: <LayoutSeller />,
     children: [
       {
         path: '/',
-        element: <Navigate to="/buyer-seller/dashboard"/>
+        element: <Navigate to="/buyer-seller/dashboard" />
       },
       {
         path: '/buyer-seller/dashboard',
         element: <BuyerSellerDashboard />
       },
-
-
-
       {
         path: '/buyer-seller/farmers/product/',
         element: <FarmersProduct />
@@ -310,18 +301,10 @@ const router = createBrowserRouter([
         path: '/buyer-seller/order/delivered/:id',
         element: <ConfirmDelivery />
       },
-      // {
-      //   pa th: '/buyer-seller/products/lists',
-      //   element: <ProductListsSB />
-      // },
-
-
-
       {
         path: '/buyer-seller/farm/product/orders',
         element: <FarmProductOrderLists />
       },
-
       {
         path: '/buyer-seller/order/confirm/:id',
         element: <FulfilledOrderConfirm />
@@ -338,25 +321,23 @@ const router = createBrowserRouter([
 
     ]
   },
-
-
   {
     path: '/',
-    element: <GuestLayout/>,
+    element: <GuestLayout />,
     children: [
       {
         path: '/login',
-        element: <Login/>
+        element: <Login />
       },
       {
         path: '/signup',
-        element: <Signup/>
+        element: <Signup />
       }
     ]
   },
   {
     path: "*",
-    element: <NotFound/>
+    element: <NotFound />
   }
 
 ])
