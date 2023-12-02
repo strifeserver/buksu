@@ -27,6 +27,7 @@ export default function ABuyerSellerDashboard() {
   const columns = [
     { name: 'ID', selector: 'id', sortable: true },
     { name: 'Farm Name', selector: 'farm_name', sortable: true },
+    { name: 'Product Type', selector: 'product_type', sortable: true },
     { name: 'Product Name', selector: 'product_name', sortable: true },
     { name: 'Variety', selector: 'variety', sortable: true },
     { name: 'Price', selector: 'price', sortable: true },
@@ -41,6 +42,7 @@ export default function ABuyerSellerDashboard() {
     },
   ];
   const [formData, setFormData] = useState({
+    farm_name: '',
     product_name: '',
     product_type: '',
     variety: '',
@@ -151,6 +153,7 @@ export default function ABuyerSellerDashboard() {
           id: item.id,
           farm_name: item.farm.farm_name,
           product_name: item.product_name,
+          product_type: item.product_type,
           variety: item.variety,
           price: item.price,
           planted_date: item.planted_date,

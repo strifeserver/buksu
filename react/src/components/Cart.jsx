@@ -19,6 +19,7 @@ export default function Cart() {
     let totalPayment = 0;
     const columns = [
         { name: 'Seller Name', selector: 'sellerName', sortable: true },
+        { name: 'Farm Name', selector: 'farmName', sortable: true },
         { name: 'Product Name', selector: 'productName', sortable: true },
         { name: 'Type', selector: 'type', sortable: true },
         { name: 'Price', selector: 'price', sortable: true },
@@ -152,6 +153,7 @@ export default function Cart() {
                 const newData = response.data.data.map((item) => ({
                     sellerName: item.name,
                     id: item.id,
+                    farmName: item.farm_name,
                     productName: item.product_name,
                     type: item.product_type,
                     price: item.price,
