@@ -190,7 +190,9 @@ class Cart extends Model
                                 $field = $check_alias[0];
                                 $field_values = $tbl_name . '.' . $field;
                             }
-                            $query->orWhere($field_values, 'LIKE', '%' . $search_value . '%');
+                            if($field_values != 'user_id'){
+                                $query->orWhere($field_values, 'LIKE', '%' . $search_value . '%');
+                            }
                         }
                     });
                     break;
