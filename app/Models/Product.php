@@ -41,26 +41,31 @@ class Product extends Model
     {
 
         $fields = [
-            'id',
-            'product_name',
-            'product_type',
-            'variety',
-            'planted_date',
-            'prospect_harvest_in_kg',
-            'prospect_harvest_date',
-            'actual_harvested_in_kg',
-            'actual_sold_kg',
-            'harvested_date',
-            'product_location',
-            'price',
-            'product_picture',
-            'farm_belonged',
-            'is_approved',
+            'products.product_name',
+            'products.product_type',
+            'products.variety',
+            'products.planted_date',
+            'products.prospect_harvest_in_kg',
+            'products.prospect_harvest_date',
+            'products.actual_harvested_in_kg',
+            'products.actual_sold_kg',
+            'products.harvested_date',
+            'products.product_location',
+            'products.price',
+            'products.product_picture',
+            'products.farm_belonged',
+            'products.is_approved',
+            'farms.farm_name',
+            'users.name',
         ];
 
         $amibiguous_fields = [
+            'products.id',
+            'products.created_at',
+            'products.updated_at',
         ];
         $shopify_account_fields = [
+            'farms.farm_name',
 
         ];
         if ($mode == 1) {
@@ -125,6 +130,8 @@ class Product extends Model
         if (!empty($sort)) {
             $query = $this->applySorting($query, $sort);
         }
+        $query->leftJoin('farms', 'farms.id', '=', 'products.farm_belonged');
+        $query->leftJoin('users', 'users.id', '=', 'farms.farm_owner');
         $query->with('farm.user');
         if ($pagination == 1) {
             $result = $query->paginate($items_per_page)->toArray();
