@@ -72,6 +72,9 @@ class Cart extends Model
         $returns = [];
         $items_per_page = @$data['items_per_page'];
         $pagination = @$data['pagination'];
+
+
+        $data['filters'] = str_replace("}}}", "}}", $data['filters']);
         $filter = is_string($data['filters']) ? json_decode($data['filters'], true) : ($data['filters'] ?? []);
  
         if (isset($data['sort']) && gettype(($data['sort'])) == 'string') {
