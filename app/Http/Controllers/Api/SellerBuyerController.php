@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Farm;
-use App\Models\User;
+use App\Models\PriceControl;
 use App\Models\Product;
 use App\Models\Transaction;
-use App\Models\PriceControl;
-use Illuminate\Http\Request;
 use App\Models\TransactionDetail;
-use App\Http\Controllers\Controller;
-use  Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Crypt;
+use App\Models\User;
 use App\Services\MailService;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Date;
 
 class SellerBuyerController extends Controller
 {
@@ -36,7 +35,7 @@ class SellerBuyerController extends Controller
 
     public function getProductToOrder($product)
     {
-        $product =  Product::where('id', $product)
+        $product = Product::where('id', $product)
             ->with('farm', 'farm.user')
             ->get();
 
@@ -60,14 +59,14 @@ class SellerBuyerController extends Controller
         $product = Product::where('id', $request->productID_)->first();
 
         $seller = Farm::where('id', $product->farm_belonged)->first();
-        if($seller){
-            if($seller->email){
+        if ($seller) {
+            if ($seller->email) {
                 $EmailService = app(MailService::class);
                 $body = 'an Order has been created successfully';
                 $execution = $EmailService->send($seller->email, 'Order Created', $body, '', '', '', []);
             }
         }
-        $newTransaction  = Transaction::create([
+        $newTransaction = Transaction::create([
             'seller' => $seller->farm_owner,
             'ordered_on' => now(),
             'price_of_goods' => $product->price * $request->kg_,
@@ -90,7 +89,7 @@ class SellerBuyerController extends Controller
             'transaction_id' => $newTransaction->id,
 
         ]);
-        $kgTotal =  $product->actual_sold_kg + $request->kg_;
+        $kgTotal = $product->actual_sold_kg + $request->kg_;
         $kgTotal2 = $product->actual_harvested_in_kg - $request->kg_;
 
         $product->update([
@@ -102,7 +101,20 @@ class SellerBuyerController extends Controller
 
     public function getOrders(Request $request)
     {
+        $param1 = request('user_Id');
+        $param2 = request()->input('user_Id');
+        $param3 = request()->all();
+
+        return response()->json([
+            'test1' => $param1,
+            'test2' => $param2,
+            'test3' => $param3,
+        ]);
+
+        print_r($params);
+        exit;
         $user_ID = Crypt::decryptString($request->user_ID);
+
         // $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
         // $farmData = [];
         // foreach ($farmsOwnedByUser as $farm) {
@@ -141,9 +153,8 @@ class SellerBuyerController extends Controller
             ->whereHas('transactions')
             ->with(['transactions' => function ($query) {
                 $query->orderBy('seller_prospect_date_todeliver', 'desc');
-            }, 'transactions.TransactionDetail', 'transactions.TransactionDetail.productOrdered' ])
+            }, 'transactions.TransactionDetail', 'transactions.TransactionDetail.productOrdered'])
             ->get();
-
 
         return response()->json([
             'userPendingOrders' => $userPendingOrders,
@@ -185,8 +196,6 @@ class SellerBuyerController extends Controller
         }
     }
 
-
-
     public function getFulfilledOrder($order)
     {
         $transaction = Transaction::where('id', $order)
@@ -200,7 +209,6 @@ class SellerBuyerController extends Controller
     {
         $user_ID = Crypt::decryptString($request->user_ID);
         $owned = Farm::where('farm_owner', $user_ID)->first();
-
 
         $farmOrders = TransactionDetail::where('from_farm', $owned->id)
             ->with('transaction', 'transaction.user')
@@ -230,7 +238,7 @@ class SellerBuyerController extends Controller
         $data['farm_info'] = $validatedData['farm_info'];
         $data['longitude'] = 0;
         $data['latitude'] = 0;
-        $data['farm_owner'] =  Crypt::decryptString($request->user_ID);
+        $data['farm_owner'] = Crypt::decryptString($request->user_ID);
 
         if ($request->hasFile('farm_pic')) {
             $photo = $request->file('farm_pic');
@@ -243,7 +251,6 @@ class SellerBuyerController extends Controller
 
         return response()->json(['success' => 'Product Added Successfully']);
     }
-
 
     public function confirmDelivery(Request $request)
     {
@@ -299,24 +306,23 @@ class SellerBuyerController extends Controller
         }
     }
 
-    public function sellerDashboard(Request $request){
+    public function sellerDashboard(Request $request)
+    {
 
         $user_ID = Crypt::decryptString($request->user_ID);
-        $productCount =Farm::where('farm_owner', $user_ID)->count();
+        $productCount = Farm::where('farm_owner', $user_ID)->count();
         $pendingOrderCount = Transaction::where('seller', $user_ID)
-        ->where('seller_prospect_date_todeliver', null)->count();
+            ->where('seller_prospect_date_todeliver', null)->count();
 
         $totalSolds = Transaction::where('seller', $user_ID)
-        ->where('price_payed','>', 0)->get();
+            ->where('price_payed', '>', 0)->get();
 
         $cost = 0;
-        foreach( $totalSolds as $totalSold)
-        {
+        foreach ($totalSolds as $totalSold) {
             $cost = $cost + $totalSold->price_payed;
         }
 
         $priceRange = PriceControl::all();
-
 
         return response()->json([
             'farmcount' => $productCount,
@@ -326,7 +332,8 @@ class SellerBuyerController extends Controller
         ]);
     }
 
-    public function priceRange(Request $request){
+    public function priceRange(Request $request)
+    {
 
         $validatedData = $request->validate([
             'product_type' => 'required|string',
@@ -335,7 +342,7 @@ class SellerBuyerController extends Controller
         ]);
 
         // Find an existing record by 'product_name' or create a new one
-       PriceControl::updateOrCreate(
+        PriceControl::updateOrCreate(
             ['product_name' => $validatedData['product_type']],
             [
                 'max' => $validatedData['max'],
@@ -343,12 +350,12 @@ class SellerBuyerController extends Controller
             ]
         );
 
-
         return response()->json(['success' => 'Product Added Successfully']);
 
     }
 
-    public function cancelOrder($id){
+    public function cancelOrder($id)
+    {
         $trxn = Transaction::where('id', $id)->first();
         $data['price_of_goods'] = -1;
 
@@ -358,10 +365,10 @@ class SellerBuyerController extends Controller
             $transactionDetails = TransactionDetail::where('transaction_id', $id)->first();
 
             // Delete all retrieved transaction details
-                $product = Product::where('id',  $transactionDetails->product_id)->first();
-                $data1['actual_sold_kg'] = $product->actual_sold_kg - $transactionDetails->kg_purchased;
-                $product->update($data1);
-                $transactionDetails->delete();
+            $product = Product::where('id', $transactionDetails->product_id)->first();
+            $data1['actual_sold_kg'] = $product->actual_sold_kg - $transactionDetails->kg_purchased;
+            $product->update($data1);
+            $transactionDetails->delete();
         }
 
         return response()->json(200);
