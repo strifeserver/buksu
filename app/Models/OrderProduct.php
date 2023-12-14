@@ -21,4 +21,16 @@ class OrderProduct extends Model
         'product_id',
 
     ];
+
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('Y-m-d h:i:s', strtotime($value));
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        $created_date = date('Y-m-d h:i:s', strtotime($value));
+
+        return $created_date;
+    }
 }

@@ -37,6 +37,8 @@ class OrderService
         $execution = $this->repository->index($data);
 
         foreach ($execution['data'] as $Orderkey => $OrderVal) {
+
+            // $execution['data'][$Orderkey]['created_at'] = '';
             $OrderProduct = OrderProduct::where('transaction_id', '=', $OrderVal['id'])->first()->toArray();
             $OrderProduct['transaction_detail_id'] = $OrderProduct['id'];
             unset($OrderProduct['id']);

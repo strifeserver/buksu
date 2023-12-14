@@ -404,7 +404,9 @@ class Order extends Model
     }
     public function getCreatedAtAttribute($value)
     {
-        return date('Y-m-d h:i:s', strtotime($value));
+        $created_date = date('Y-m-d h:i:s', strtotime($value));
+
+        return $created_date;
     }
 
 
