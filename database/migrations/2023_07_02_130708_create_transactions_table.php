@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->text('order_id')->nullable();
             $table->date('ordered_on');
             $table->date('seller_prospect_date_todeliver')->nullable();
             $table->date('date_delivered')->nullable();

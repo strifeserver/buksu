@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\SuperAdminController;
 use App\Http\Controllers\ProductManagementController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrdersController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -104,3 +105,9 @@ Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
 
 Route::get('getOrders1', [SellerBuyerController::class, 'getOrders']);   //ORDERS
+Route::post('/generateReport1', [SuperAdminController::class, 'generateReport']); //dashboard
+
+
+Route::resource('/orders', OrdersController::class, [
+    'except' => ['create'],
+]);

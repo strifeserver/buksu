@@ -2,24 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-
-use App\Models\Farm;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\CropRecord;
-use Illuminate\Http\Request;
-use App\Models\SupportedBarangay;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\CropRecordResource;
-use App\Http\Resources\SupportedProductResource;
-use App\Http\Resources\SupportedBarangayResource;
 use App\Http\Requests\SuperAdmin\StoreBarangayRequest;
 use App\Http\Requests\SuperAdmin\UpdateBarangayRequest;
+use App\Http\Resources\SupportedBarangayResource;
+use App\Models\Farm;
 use App\Models\PriceControl;
-use App\Models\Transaction;
+use App\Models\Product;
+use App\Models\SupportedBarangay;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 // require_once __DIR__ . '/vendor/autoload.php';
 
@@ -69,14 +63,13 @@ class SuperAdminController extends Controller
         //     ->where('product_type', '=', $request->commodity)
         //     ->get();
         $records = Product::
-        // whereBetween('harvested_date', [$request->start_date, $request->end_date])
+            // whereBetween('harvested_date', [$request->start_date, $request->end_date])
             where('product_type', $request->commodity)
             ->get();
 
-
-        if(!$records){
+        if (!$records) {
             return response()->json('none');
-        }else{
+        } else {
             // return response()->json('There is');
             foreach ($records as $record) {
                 if ($record->product_location == 'CAPITAN JUAN') {
@@ -124,7 +117,6 @@ class SuperAdminController extends Controller
                 }
             }
         }
-
 
         // return response([
         //     'capitanJuanSold' => $capitanJuanSold,
@@ -178,7 +170,7 @@ class SuperAdminController extends Controller
 
     public function pendingProducts()
     {
-        $pendingProducts =  Product::where('is_approved', 0)->orderBy('prospect_harvest_date', 'desc')
+        $pendingProducts = Product::where('is_approved', 0)->orderBy('prospect_harvest_date', 'desc')
             ->with('farm')
             ->get();
         return response()->json($pendingProducts);
@@ -190,7 +182,6 @@ class SuperAdminController extends Controller
             ->with('farm')->first();
         return response()->json($productWithFarmOwner);
     }
-
 
     public function getFarmers()
     {
@@ -215,6 +206,92 @@ class SuperAdminController extends Controller
     public function generateReport(Request $request)
     {
 
+        $total_farm_per_user = User::select('users.name', DB::raw('COUNT(farms.id) as total_farms'))
+            ->leftJoin('farms', 'farms.farm_owner', '=', 'users.id')
+            ->groupBy('users.id', 'users.name')
+            ->get();
+
+        $list_of_farmers_by_farm_hectares = DB::table('users')
+            ->join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->select('users.*', 'farms.*')
+            ->where('farms.farm_hectares', '>', 10)
+            ->get();
+
+        $list_of_farmers_by_farm_location = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->select('users.*', 'farms.*')
+            ->where('farms.farm_location', 'like', '%songco%')
+            ->get();
+
+        $usersAndFarms = DB::table('users')
+            ->join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->select('users.*', 'farms.*')
+            ->where('farms.farm_location', 'like', '%songco%')
+            ->where('farms.farm_location', '<', 1)
+            ->get();
+
+        $list_of_products_per_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->select('users.name', 'farms.farm_name', 'products.product_name')
+            ->get();
+
+        $list_of_products_per_farm_where_farm_id = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->where('farms.id', '=', 3)
+            ->select('users.name', 'farms.farm_name', 'products.product_name')
+            ->get();
+
+        $by_location_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->where('farms.farm_location', 'like', '%songco%')
+            ->select('users.name', 'farms.farm_name', 'products.product_name')
+            ->get();
+
+        $products_per_column = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->where('farms.farm_location', 'like', '%songco%')
+            ->select('users.name', 'farms.farm_name', 'products.*')
+            ->get();
+
+        $total_transaction_per_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->join('transactions', 'transactions.seller', '=', 'users.id')
+            ->select('users.name', 'farms.farm_name', DB::raw('COUNT(transactions.id) as total_transactions'))
+            ->groupBy('farms.id', 'users.name') // Include users.name in the GROUP BY clause
+            ->get();
+
+        // $totaltransactionperfarmwithtotalkiloprice = User::join('farms', 'farms.farm_owner', '=', 'users.id')
+        //     ->join('transactions', 'transactions.seller', '=', 'users.id')
+        //     ->join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.id')
+        //     ->join('products', 'products.id', '=', 'transaction_details.product_id')
+        //     ->select(
+        //         'users.name',
+        //         'farms.farm_name',
+        //         'products.product_name',
+        //         DB::raw('COUNT(transactions.id) as total_transactions'),
+        //         DB::raw('SUM(transaction_details.kg_purchased) as total_kg_purchased'),
+        //         DB::raw('SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price')
+        //     )
+        //     ->groupBy('farms.id', 'products.id')
+        //     ->get();
+
+        // $totaltansactionsperbuyer = User::join('transactions', 'transactions.buyers_name', '=', 'users.id')
+        //     ->select('users.name', DB::raw('COUNT(transactions.id) as total_transactions'))
+        //     ->groupBy('users.id')
+        //     ->get();
+
+        // $totaltransactionerpbuyerperproduct = User::join('transactions', 'transactions.buyers_name', '=', 'users.id')
+        //     ->join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.id')
+        //     ->join('products', 'products.id', '=', 'transaction_details.product_id')
+        //     ->select(
+        //         'users.name',
+        //         'products.product_name',
+        //         DB::raw('COUNT(transactions.id) as total_transactions'),
+        //         DB::raw('SUM(transaction_details.kg_purchased) as total_kg_purchased'),
+        //         DB::raw('SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price')
+        //     )
+        //     ->groupBy('users.id')
+        //     ->get();
+
         // $request->end_date
         // $request->product_type
         // $request->starting_date
@@ -224,26 +301,27 @@ class SuperAdminController extends Controller
         // ->with('user', 'TransactionDetail', 'TransactionDetail.productOrdered' => (query::where('product', '==' $request->product_type)))
         // ->get();
 
-        $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
-    ->with([
-        'user',
-        'transactionDetail' => function ($query) use ($request) {
-            $query->whereHas('productOrdered', function ($subquery) use ($request) {
-                $subquery->where('product_type', $request->product_type);
-            });
-        },
-        'transactionDetail.productOrdered'
-    ])
-    ->get();
+        //     $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
+        // ->with([
+        //     'user',
+        //     'transactionDetail' => function ($query) use ($request) {
+        //         $query->whereHas('productOrdered', function ($subquery) use ($request) {
+        //             $subquery->where('product_type', $request->product_type);
+        //         });
+        //     },
+        //     'transactionDetail.productOrdered'
+        // ])
+        // ->get();
+        // $results = User::select('users.name', DB::raw('COUNT(farms.id) as total_farms'))
+        // ->leftJoin('farms', 'farms.farm_owner', '=', 'users.id')
+        // ->groupBy('users.id', 'users.name')
+        // ->get()->toArray();
 
-        return response()->json($transactions);
-
-
-
+        // print_r($results);
+        // exit;
+        // return response()->json($transactions);
 
     }
-
-
 
     /**
      * Display the specified resource.
@@ -256,7 +334,6 @@ class SuperAdminController extends Controller
     {
         return new SupportedBarangayResource($barangay);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -297,26 +374,28 @@ class SuperAdminController extends Controller
         return response()->json($product);
     }
 
-    public function getPriceRange(){
+    public function getPriceRange()
+    {
         $prices = PriceControl::all();
         return response()->json($prices);
     }
 
-    public function getPriceRangeSpecific(){
-        $brocolli =0;
-        $cabbage=0;
-        $carrot=0;
-        $tomato=0;
+    public function getPriceRangeSpecific()
+    {
+        $brocolli = 0;
+        $cabbage = 0;
+        $carrot = 0;
+        $tomato = 0;
         $prices = PriceControl::all();
-        foreach ($prices as $price){
-            if($price->product_name == "Brocollis"){
+        foreach ($prices as $price) {
+            if ($price->product_name == "Brocollis") {
                 $brocolli = $brocolli + $price->max;
-            }else if($price->product_name == "Cabbages"){
+            } else if ($price->product_name == "Cabbages") {
                 $cabbage = $cabbage + $price->max;
-            }else if($price->product_name == "Carrots"){
+            } else if ($price->product_name == "Carrots") {
                 $carrot = $carrot + $price->max;
-            }else if($price->product_name == "Tomatoes"){
-                $tomato =  $tomato + $price->max;
+            } else if ($price->product_name == "Tomatoes") {
+                $tomato = $tomato + $price->max;
             }
         }
 
@@ -324,7 +403,7 @@ class SuperAdminController extends Controller
             'broccoli' => $brocolli,
             'cabbage' => $cabbage,
             'carrot' => $carrot,
-            'tomato' => $tomato
+            'tomato' => $tomato,
         ]);
     }
 
