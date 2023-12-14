@@ -101,7 +101,7 @@ class SellerBuyerController extends Controller
 
     public function getOrders(Request $request)
     {
-        // $params = request()->all();
+        $params = request()->all();
         $user_IDget = $params['user_ID']; 
 
 

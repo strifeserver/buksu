@@ -207,6 +207,8 @@ class SuperAdminController extends Controller
     public function generateReport(Request $request)
     {
 
+        $farmLocation = '%songco%';
+
         // $request->end_date
         // $request->product_type
         // $request->starting_date
@@ -216,17 +218,17 @@ class SuperAdminController extends Controller
         // ->with('user', 'TransactionDetail', 'TransactionDetail.productOrdered' => (query::where('product', '==' $request->product_type)))
         // ->get();
 
-            $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
-        ->with([
-            'user',
-            'transactionDetail' => function ($query) use ($request) {
-                $query->whereHas('productOrdered', function ($subquery) use ($request) {
-                    $subquery->where('product_type', $request->product_type);
-                });
-            },
-            'transactionDetail.productOrdered'
-        ])
-        ->get();
+        $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
+            ->with([
+                'user',
+                'transactionDetail' => function ($query) use ($request) {
+                    $query->whereHas('productOrdered', function ($subquery) use ($request) {
+                        $subquery->where('product_type', $request->product_type);
+                    });
+                },
+                'transactionDetail.productOrdered',
+            ])
+            ->get();
 
         //     return response()->json($transactions);
 
@@ -246,16 +248,12 @@ class SuperAdminController extends Controller
     WHERE farms.farm_hectares > 10
 ");
 
-
-$farmLocation = '%songco%';
-
-$farmers_by_farm_location_a = DB::select("
+        $farmers_by_farm_location_a = DB::select("
     SELECT users.*, farms.*
     FROM users
     INNER JOIN farms ON farms.farm_owner = users.id
     WHERE farms.farm_location LIKE :farmLocation
 ", ['farmLocation' => $farmLocation]);
-
 
         $products_per_farm = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
@@ -263,7 +261,6 @@ $farmers_by_farm_location_a = DB::select("
     INNER JOIN farms ON farms.farm_owner = users.id
     INNER JOIN products ON products.farm_belonged = farms.id
 ");
-
 
         $products_per_farm_with_where = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
@@ -278,17 +275,17 @@ $farmers_by_farm_location_a = DB::select("
     FROM users
     INNER JOIN farms ON farms.farm_owner = users.id
     INNER JOIN products ON products.farm_belonged = farms.id
-    WHERE farms.farm_location LIKE '%songco%'
+    WHERE farms.farm_location LIKE ?
     AND farms.farm_location < 1
-");
+", ["%{$farmLocation}%"]);
+
         $products_per_column = DB::select("
     SELECT users.name, farms.farm_name, products.*
     FROM users
     INNER JOIN farms ON farms.farm_owner = users.id
     INNER JOIN products ON products.farm_belonged = farms.id
-    WHERE farms.farm_location LIKE '%songco%'
-");
-
+    WHERE farms.farm_location LIKE :farmLocation
+", ['farmLocation' => "%{$farmLocation}%"]);
 
         $total_transaction_per_farm = DB::select("
     SELECT users.name, farms.farm_name, COUNT(transactions.id) as total_transactions
@@ -298,7 +295,6 @@ $farmers_by_farm_location_a = DB::select("
     INNER JOIN transactions ON transactions.seller = users.id
     GROUP BY farms.id
 ");
-
 
         $total_transactions_per_farm_per_product_with_total_kilo_and_price = DB::select("
     SELECT users.name, farms.farm_name, products.product_name, COUNT(transactions.id) as total_transactions,
@@ -317,7 +313,6 @@ $farmers_by_farm_location_a = DB::select("
     INNER JOIN transactions ON transactions.buyers_name = users.id
     GROUP BY users.id
 ");
-
 
         $total_transactions_per_buyer_per_product = DB::select("
     SELECT users.name, products.product_name, COUNT(transactions.id) as total_transactions,
@@ -345,7 +340,6 @@ $farmers_by_farm_location_a = DB::select("
             'transactions' => $transactions,
         ];
 
- 
         $pdf = PDF::loadView('pdf', compact('report_generation'));
         return $pdf->download('report.pdf');
 
