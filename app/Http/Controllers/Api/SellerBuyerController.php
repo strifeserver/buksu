@@ -101,19 +101,11 @@ class SellerBuyerController extends Controller
 
     public function getOrders(Request $request)
     {
-        $param1 = request('user_Id');
-        $param2 = request()->input('user_Id');
-        $param3 = request()->all();
+        $params = request()->all();
+        $user_IDget = $params['user_ID']; 
 
-        return response()->json([
-            'test1' => $param1,
-            'test2' => $param2,
-            'test3' => $param3,
-        ]);
 
-        print_r($params);
-        exit;
-        $user_ID = Crypt::decryptString($request->user_ID);
+        $user_ID = Crypt::decryptString($user_IDget);
 
         // $farmsOwnedByUser = Farm::where("farm_owner",  $user_ID)->get();
         // $farmData = [];
