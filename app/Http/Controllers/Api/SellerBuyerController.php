@@ -102,7 +102,7 @@ class SellerBuyerController extends Controller
     public function getOrders(Request $request)
     {
         // $params = request()->all();
-        $user_IDget = 'eyJpdiI6ImZyY0JQSXV3TkRjQ1NJN3AyUW1wU2c9PSIsInZhbHVlIjoiUDQzNkRzL3N6Q2NJYWZqUmFpQ1Y4Zz09IiwibWFjIjoiNDYwZmNmNWZkMWYyOWExYmU2YzRjZDRkODRjZGJkMjkzNDAzZGNkOGY3ZWM1YTk1MjZhN2FhNWZkOTk2NTQyOCIsInRhZyI6IiJ9'; 
+        $user_IDget = $params['user_ID']; 
 
 
         $user_ID = Crypt::decryptString($user_IDget);
