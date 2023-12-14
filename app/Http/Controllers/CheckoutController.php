@@ -21,7 +21,6 @@ class CheckoutController extends Controller
         $code = 400;
         $mailingList = [];
         $mailerInfo = [];
-
         $orderIdBatch = DB::table('transactions')->max('id') + 1;
         // Generate a unique identifier (using uniqid with more_entropy to increase uniqueness)
         $uniqueId = uniqid('', true);
@@ -40,11 +39,14 @@ class CheckoutController extends Controller
                 foreach ($cartItemsCart as $cartItem_id) {
 
                     $product = Product::where('id', $cartItem_id->product_id)->first();
-
+                  
                     $seller = Farm::where('id', $product->farm_belonged)->first();
+                    
                     //Notification
                     $buyer = User::where('id', '=', $user_ID)->first();
                     $sellerAcct = User::where('id', '=', $seller->farm_owner)->first();
+                    // print_r($sellerAcct->id);
+                    // exit;
                     if (!empty($sellerAcct)) {
 
                         if ($sellerAcct->email) {
@@ -89,7 +91,7 @@ class CheckoutController extends Controller
                         'ordered_on' => now(),
                         'price_of_goods' => $product->price * $cartItem_id->kg_added,
                         'buyers_name' => $user_ID,
-                        'seller' => $product->farm_belonged,
+                        'seller' => $sellerAcct->id,
                         'from_farm' => $product->farm_belonged,
                         'order_id' => $OrderIDbatch,
 

@@ -247,26 +247,31 @@ class SellerBuyerController extends Controller
     public function confirmDelivery(Request $request)
     {
         $id = $request->transactionID;
+    
         $validatedData = $request->validate([
-            'imageProof' => 'image|mimes:jpeg,png,jpg,gif',
+            'imageProof.*' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
-
+    
         $data = [];
-
+    
         if ($request->hasFile('imageProof')) {
-            $photo = $request->file('imageProof');
-            $fileName = $photo->getClientOriginalName();
-            // Store the file in the public storage inside the 'product_images' folder
-            $photo->storeAs('public/ProofOfDelivery/', $fileName);
-            $data['proof_of_delivery'] = $fileName;
+            $photos = $request->file('imageProof');
+    
+            foreach ($photos as $key => $photo) {
+                $fileName = $photo->getClientOriginalName();
+                // Store the file in the public storage inside the 'ProofOfDelivery' folder
+                $photo->storeAs('public/ProofOfDelivery/', $fileName);
+                $data['proof_of_delivery'][] = $fileName;
+            }
         }
+    
         $farm = Transaction::where('id', $id)->first();
-        $data['price_payed'] = $farm->price_of_goods;
-
+    
         if ($farm) {
             $farm->update($data);
         }
     }
+    
 
     /**
      * Display the specified resource.
