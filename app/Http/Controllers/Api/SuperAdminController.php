@@ -10,10 +10,10 @@ use App\Models\Farm;
 use App\Models\PriceControl;
 use App\Models\Product;
 use App\Models\SupportedBarangay;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 // require_once __DIR__ . '/vendor/autoload.php';
 
@@ -206,92 +206,6 @@ class SuperAdminController extends Controller
     public function generateReport(Request $request)
     {
 
-        $total_farm_per_user = User::select('users.name', DB::raw('COUNT(farms.id) as total_farms'))
-            ->leftJoin('farms', 'farms.farm_owner', '=', 'users.id')
-            ->groupBy('users.id', 'users.name')
-            ->get();
-
-        $list_of_farmers_by_farm_hectares = DB::table('users')
-            ->join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->select('users.*', 'farms.*')
-            ->where('farms.farm_hectares', '>', 10)
-            ->get();
-
-        $list_of_farmers_by_farm_location = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->select('users.*', 'farms.*')
-            ->where('farms.farm_location', 'like', '%songco%')
-            ->get();
-
-        $usersAndFarms = DB::table('users')
-            ->join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->select('users.*', 'farms.*')
-            ->where('farms.farm_location', 'like', '%songco%')
-            ->where('farms.farm_location', '<', 1)
-            ->get();
-
-        $list_of_products_per_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->join('products', 'products.farm_belonged', '=', 'farms.id')
-            ->select('users.name', 'farms.farm_name', 'products.product_name')
-            ->get();
-
-        $list_of_products_per_farm_where_farm_id = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->join('products', 'products.farm_belonged', '=', 'farms.id')
-            ->where('farms.id', '=', 3)
-            ->select('users.name', 'farms.farm_name', 'products.product_name')
-            ->get();
-
-        $by_location_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->join('products', 'products.farm_belonged', '=', 'farms.id')
-            ->where('farms.farm_location', 'like', '%songco%')
-            ->select('users.name', 'farms.farm_name', 'products.product_name')
-            ->get();
-
-        $products_per_column = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->join('products', 'products.farm_belonged', '=', 'farms.id')
-            ->where('farms.farm_location', 'like', '%songco%')
-            ->select('users.name', 'farms.farm_name', 'products.*')
-            ->get();
-
-        $total_transaction_per_farm = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-            ->join('products', 'products.farm_belonged', '=', 'farms.id')
-            ->join('transactions', 'transactions.seller', '=', 'users.id')
-            ->select('users.name', 'farms.farm_name', DB::raw('COUNT(transactions.id) as total_transactions'))
-            ->groupBy('farms.id', 'users.name') // Include users.name in the GROUP BY clause
-            ->get();
-
-        // $totaltransactionperfarmwithtotalkiloprice = User::join('farms', 'farms.farm_owner', '=', 'users.id')
-        //     ->join('transactions', 'transactions.seller', '=', 'users.id')
-        //     ->join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.id')
-        //     ->join('products', 'products.id', '=', 'transaction_details.product_id')
-        //     ->select(
-        //         'users.name',
-        //         'farms.farm_name',
-        //         'products.product_name',
-        //         DB::raw('COUNT(transactions.id) as total_transactions'),
-        //         DB::raw('SUM(transaction_details.kg_purchased) as total_kg_purchased'),
-        //         DB::raw('SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price')
-        //     )
-        //     ->groupBy('farms.id', 'products.id')
-        //     ->get();
-
-        // $totaltansactionsperbuyer = User::join('transactions', 'transactions.buyers_name', '=', 'users.id')
-        //     ->select('users.name', DB::raw('COUNT(transactions.id) as total_transactions'))
-        //     ->groupBy('users.id')
-        //     ->get();
-
-        // $totaltransactionerpbuyerperproduct = User::join('transactions', 'transactions.buyers_name', '=', 'users.id')
-        //     ->join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.id')
-        //     ->join('products', 'products.id', '=', 'transaction_details.product_id')
-        //     ->select(
-        //         'users.name',
-        //         'products.product_name',
-        //         DB::raw('COUNT(transactions.id) as total_transactions'),
-        //         DB::raw('SUM(transaction_details.kg_purchased) as total_kg_purchased'),
-        //         DB::raw('SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price')
-        //     )
-        //     ->groupBy('users.id')
-        //     ->get();
-
         // $request->end_date
         // $request->product_type
         // $request->starting_date
@@ -312,14 +226,125 @@ class SuperAdminController extends Controller
         //     'transactionDetail.productOrdered'
         // ])
         // ->get();
-        // $results = User::select('users.name', DB::raw('COUNT(farms.id) as total_farms'))
-        // ->leftJoin('farms', 'farms.farm_owner', '=', 'users.id')
-        // ->groupBy('users.id', 'users.name')
-        // ->get()->toArray();
 
-        // print_r($results);
+        //     return response()->json($transactions);
+
+        DB::statement("SET sql_mode = ''");
+        $total_farm_per_user = DB::select("
+    SELECT users.name,
+           COUNT(farms.id) as total_farms
+    FROM users
+    LEFT JOIN farms on farms.farm_owner = users.id
+    GROUP BY users.id
+");
+
+        $farmers_by_farm_hectares = DB::select("
+    SELECT users.*, farms.*
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    WHERE farms.farm_hectares > 10
+");
+
+        $farmers_by_farm_location = DB::select("
+    SELECT users.*, farms.*
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    WHERE farms.farm_location LIKE '%songco%'
+");
+
+        $products_per_farm = DB::select("
+    SELECT users.name, farms.farm_name, products.product_name
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN products ON products.farm_belonged = farms.id
+");
+        $products_per_farm_with_where = DB::select("
+    SELECT users.name, farms.farm_name, products.product_name
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN products ON products.farm_belonged = farms.id
+    WHERE farms.id = 3
+");
+
+        $farmers_by_farm_location = DB::select("
+    SELECT users.name, farms.farm_name, products.product_name
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN products ON products.farm_belonged = farms.id
+    WHERE farms.farm_location LIKE '%songco%'
+    AND farms.farm_location < 1
+");
+        $products_per_column = DB::select("
+    SELECT users.name, farms.farm_name, products.*
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN products ON products.farm_belonged = farms.id
+    WHERE farms.farm_location LIKE '%songco%'
+");
+        $total_transaction_per_farm = DB::select("
+    SELECT users.name, farms.farm_name, COUNT(transactions.id) as total_transactions
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN products ON products.farm_belonged = farms.id
+    INNER JOIN transactions ON transactions.seller = users.id
+    GROUP BY farms.id
+");
+        $total_transactions_per_farm_per_product_with_total_kilo_and_price = DB::select("
+    SELECT users.name, farms.farm_name, products.product_name, COUNT(transactions.id) as total_transactions,
+           SUM(transaction_details.kg_purchased) as total_kg_purchased,
+           SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price
+    FROM users
+    INNER JOIN farms ON farms.farm_owner = users.id
+    INNER JOIN transactions ON transactions.seller = users.id
+    INNER JOIN transaction_details ON transaction_details.transaction_id = transactions.id
+    INNER JOIN products ON products.id = transaction_details.product_id
+    GROUP BY farms.id, products.id
+");
+        $total_transactions_per_buyer = DB::select("
+    SELECT users.name, COUNT(transactions.id) as total_transactions
+    FROM users
+    INNER JOIN transactions ON transactions.buyers_name = users.id
+    GROUP BY users.id
+");
+        $total_transactions_per_buyer_per_product = DB::select("
+    SELECT users.name, products.product_name, COUNT(transactions.id) as total_transactions,
+           SUM(transaction_details.kg_purchased) as total_kg_purchased,
+           SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price
+    FROM users
+    INNER JOIN transactions ON transactions.buyers_name = users.id
+    INNER JOIN transaction_details ON transaction_details.transaction_id = transactions.id
+    INNER JOIN products ON products.id = transaction_details.product_id
+    GROUP BY users.id, products.id
+");
+
+
+
+
+
+
+
+
+        $report_generation = [
+            'total_farm_per_user' => $total_farm_per_user,
+            'farmers_by_farm_hectares' => $farmers_by_farm_hectares,
+            'farmers_by_farm_location' => $farmers_by_farm_location,
+            'products_per_farm' => $products_per_farm,
+            'products_per_farm_with_where' => $products_per_farm_with_where,
+            'farmers_by_farm_location' => $farmers_by_farm_location,
+            'products_per_column' => $products_per_column,
+            'total_transaction_per_farm' => $total_transaction_per_farm,
+            'total_transactions_per_farm_per_product_with_total_kilo_and_price' => $total_transactions_per_farm_per_product_with_total_kilo_and_price,
+            'total_transactions_per_buyer' => $total_transactions_per_buyer,
+            'total_transactions_per_buyer_per_product' => $total_transactions_per_buyer_per_product,
+        ];
+
+        // print_r($report_generation);
         // exit;
-        // return response()->json($transactions);
+        $pdf = PDF::loadView('pdf', compact('report_generation'));
+        return $pdf->download('report.pdf');
+
+        // print_r(json_encode($report_generation));
+        // exit;
 
     }
 
