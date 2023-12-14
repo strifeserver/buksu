@@ -56,6 +56,13 @@ export default function LayoutBuyer() {
             <div className="container mx-auto flex items-center justify-between">
               {/* Left side of the navigation */}
               <div className="relative group">
+              <div
+                aria-label="Etabo. Logo"
+                role="img"
+                className="cursor-pointer"
+              >
+                <img src="/logo.png" alt="" width={200} height={100} />
+              </div>
                 {/* Title */}
                 <p
                   className={`text-white text-md ${isDropdownOpen ? "group-hover:text-gray-200" : ""
@@ -92,7 +99,7 @@ export default function LayoutBuyer() {
                       </svg>
                     )}
                   </button>
-                  <span className="text-center items-center">&nbsp;Role</span>
+                  <span className="text-l text-black">&nbsp;Buyer Mode</span>
                 </p>
                 {/* Dropdown menu */}
                 {isDropdownOpen && (
@@ -107,7 +114,7 @@ export default function LayoutBuyer() {
                       href="/buyer-seller/role/buyer"
                       className="block px-4 py-2 text-gray-800 hover:bg-blue-200"
                     >
-                      Buyer Mode
+         
                     </a>
 
                     {/* Add more dropdown items as needed */}
@@ -116,14 +123,7 @@ export default function LayoutBuyer() {
               </div>
 
               {/* Center logo */}
-              <div className=" items-center ">
-                <p className="text-xl text-white font-bold mt-0 mb-0">
-                  {" "}
-                  E-Tabo
-                  <span className="text-xs text-black">&nbsp;Buyer Mode</span>
-                </p>
-              </div>
-
+    
               {/* Right side of the navigation */}
               <div className="flex items-center space-x-4">
                 {/* Logout button */}
@@ -140,11 +140,14 @@ export default function LayoutBuyer() {
                 >
                   My Orders
                 </a>
+                <span className="text-xl text-center items-center"> {userName}</span>
+                  <span style={{ color: 'black' }}>&nbsp;|&nbsp;</span>
                 &nbsp; | &nbsp;
                 <a href="" onClick={goToCart}>
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
+                
                 </a>
                 &nbsp; | &nbsp;
                 <button

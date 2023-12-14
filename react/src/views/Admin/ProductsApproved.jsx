@@ -29,7 +29,7 @@ function ProductsApproved() {
   return (
     <>
       <div className="bg-gray-100 ">
-        <div className="mx-auto container py-8">
+        <div className="mx-auto container pl-12 pr-12 pt-6  pb-10 md:pb-5  ml-11 mt-1">
           <Tabs.Group aria-label="Tabs with underline" style="underline">
             <Tabs.Item
               active

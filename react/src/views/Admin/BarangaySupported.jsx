@@ -91,8 +91,8 @@ export default function BarangaySupported() {
   };
 
   return (
-    <div class="pl-12 pr-12 pt-6">
-      <div class="grid grid-cols-2 gap-4 mt-4 mb-6">
+    <div class="pl-12 pr-12 pt-6  pb-10 md:pb-5  ml-11 mt-1 ">
+      <div class="grid grid-cols-2 gap-4 mt-4 mb-6 ">
         <div>
           <h1>These Barangays will be used in the form upon Registration</h1>
           {/* <Link className="btn-add" to="/users/new">

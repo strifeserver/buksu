@@ -204,19 +204,19 @@ export default function ABuyerSellerDashboard() {
   return (
     <div>
       <section>
-        <div id="main" class="main-content flex-1 bg-gray-100 mt-11 md:mt-2 pb-24 md:pb-5">
+        <div id="main" class="main-content flex-1 pl-12 pr-12 pt-6  pb-10 md:pb-5  ml-11 mt-1">
 
-          <div class="bg-gray-800 pt-3">
-            <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-              <h1 class="font-bold pl-2">Analytics </h1>
-            </div>
-          </div>
-
+       
+        <div class="rounded-tl-3xl bg-gradient-to-r from-green-400 to-green-600 p-4 shadow text-2xl text-white">
+                        <h1 class="text-black font-bold">Business Insights </h1>
+                        <p className="text-m text-grey-100 text-xs mt-0 mb- text-left italic"> An overview of your account for the confirmed order dimension</p>
+                    </div>
+              
           <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 xl:w-1/3 p-6">
 
-              <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
-                <div class="flex flex-row items-center">
+            <div class="rounded-tl-3xl border-b-4 border-green-600 rounded-lg shadow-xl p-5">
+                            <div class="flex flex-row items-center">
                   <div class="flex-shrink pr-4">
                     <div class="rounded-full p-5 bg-green-600"> <FontAwesomeIcon icon={faUsers} size="lg" inverse /></div>
                   </div>
@@ -231,10 +231,10 @@ export default function ABuyerSellerDashboard() {
 
             <div class="w-full md:w-1/2 xl:w-1/3 p-6">
 
-              <div class="bg-gradient-to-b from-pink-200 to-pink-100 border-b-4 border-pink-500 rounded-lg shadow-xl p-5">
+            <div class="rounded-tl-3xl border-b-4 border-pink-500 rounded-lg shadow-xl p-5">
                 <div class="flex flex-row items-center">
                   <div class="flex-shrink pr-4">
-                    <div class="rounded-full p-5 bg-pink-600"><FontAwesomeIcon icon={faUsersViewfinder} size='lg' inverse /></div>
+                    <div class="rounded-full p-5 bg-green-600"><FontAwesomeIcon icon={faUsersViewfinder} size='lg' inverse /></div>
                   </div>
                   <div class="flex-1 text-right md:text-center">
                     <h2 class="font-bold uppercase text-gray-600">Total Orders</h2>
@@ -247,7 +247,7 @@ export default function ABuyerSellerDashboard() {
 
             <div class="w-full md:w-1/2 xl:w-1/3 p-6">
 
-              <div class="bg-gradient-to-b from-yellow-200 to-yellow-100 border-b-4 border-yellow-600 rounded-lg shadow-xl p-5">
+            <div class="rounded-tl-3xl border-b-4 border-yellow-600 rounded-lg shadow-xl p-5">
                 <div class="flex flex-row items-center">
                   <div class="flex-shrink pr-4">
                     <div class="rounded-full p-5 bg-yellow-600"><FontAwesomeIcon icon={faPersonCircleQuestion} size='lg' inverse /></div>
@@ -267,8 +267,10 @@ export default function ABuyerSellerDashboard() {
 
           </div>
 
+          <h1 class="text-xl font-bold">Suggested Price  </h1>
+
           <div className="2xl:container 2xl:mx-auto md:py-12 py-9">
-            <div className=" bg-gray-50 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-8 md:gap-12 gap-14 lg:px-20 lg:py-12 py-10 md:px-12 px-4">
+            <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-8 md:gap-12 gap-14 lg:px-20 lg:py-12 py-10 md:px-12 px-4">
               {/* customer Grid Card */}
 
               <div>

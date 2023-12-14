@@ -60,7 +60,7 @@ export default function Users() {
   };
 
   return (
-    <div className="row mt-1">
+    <div className="row pl-12 pr-12 pt-6  pb-10 md:pb-5  ml-11 mt-1">
       <div className="card animated fadeInDown">
         <Tabs.Group aria-label="Tabs with underline" style="underline">
           <Tabs.Item active icon={HiUserCircle} title="All Users">

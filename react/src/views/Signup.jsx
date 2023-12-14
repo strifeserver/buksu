@@ -151,7 +151,7 @@ const dataURLtoBlob = (dataURL) => {
             {/* Breadcrumb Start */}
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-title-md2 font-bold text-black dark:text-white">
-                Sign Up
+           
               </h2>
               <nav>
                 <ol className="flex items-center gap-2">
@@ -306,8 +306,7 @@ const dataURLtoBlob = (dataURL) => {
                 <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                   <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                     <span className="mb-1.5 block font-medium">
-                      Etabo is a Capstone Project of The IT students from
-                      Bukidnon State University
+                   
                     </span>
                     <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                       Sign Up to Etabo
@@ -333,7 +332,13 @@ const dataURLtoBlob = (dataURL) => {
                       />
                     )}
                     <p>Please take a Photo with Your ID and Face in one frame.</p>
-                    <button  className="btn my-custom-button-class bg-blue-500 text-white p-3 rounded-lg" onClick={handleOpen}>Take Photo</button>
+                    
+                    <button  className="btn my-custom-button-class bg-blue-500 text-white p-3 
+                    
+                      console.log(imageSrc);rounded-lg"  onClick={handleOpen}>Take Photo</button>
+
+
+                    
                     {open && (
                       <div
                         style={{

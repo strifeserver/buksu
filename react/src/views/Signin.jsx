@@ -49,7 +49,7 @@ export default function Login() {
             {/* Breadcrumb Start */}
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-title-md2 font-bold text-black dark:text-white">
-                Sign In
+                  
               </h2>
               <nav>
                 <ol className="flex items-center gap-2">
@@ -203,8 +203,7 @@ export default function Login() {
                 <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                   <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                     <span className="mb-1.5 block font-medium">
-                      Etabo is a Capstone Project of The IT students from
-                      Bukidnon State University
+                     
                     </span>
                     <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                       Sign In to Etabo
@@ -291,8 +290,9 @@ export default function Login() {
                         {/* <input type="submit" defaultValue="Sign In" className="w-full cursor-pointer rounded-lg border border-blue-500 bg-blue-500 p-4 font-medium text-white transition hover:bg-opacity-90" /> */}
                         <button
                           type="submit"
-                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
+                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${
+                            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
                           disabled={isSubmitting}
                         >
                           Signin

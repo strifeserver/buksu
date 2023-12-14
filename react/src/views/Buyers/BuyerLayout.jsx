@@ -52,39 +52,26 @@ export default function ASellerBuyerlayout() {
 
   return (
     <>
-      <div className="dark:bg-gray-900 bg-green-200">
+
+ <div className="dark:bg-gray-900 bg-green-200">
+        
         <div className="2xl:container 2xl:mx-auto md:py-5 lg:px-20 md:px-6 p-4">
           <div className="flex items-center justify-between">
             <div className="lg:w-3/12">
+              
               <div className="w-7/12 hidden lg:flex items-center space-x-3 border-b border-gray-200 pb-2">
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    <circle
-                      cx="10"
-                      cy="5"
-                      r="4"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    />
-                    <path
-                      d="M10 10C14.4183 10 18 13.4183 18 18H17.5C17.2239 18 17 18.2239 17 18.5V19C17 19.2761 17.2239 19.5 17.5 19.5H18C19.1046 19.5 20 18.6046 20 17.5V5C20 3.89543 19.1046 3 18 3H17.5C17.2239 3 17 3.22386 17 3.5V4H18C19.1046 4 20 4.89543 20 6V17.5C20 18.6046 19.1046 19.5 18 19.5H10C9.44772 19.5 9 19.0523 9 18.5V10Z"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <p className="bg-transparent text-md text-gray-600 focus:outline-none">
-                  {" "}
-                  {userName}
-                </p>
+          
+          
+           
+              <div
+                aria-label="Etabo. Logo"
+                role="img"
+                className="cursor-pointer"
+              >
+                <img src="/logo.png" alt="" width="500" height="400" />
+              </div>
+              
+               
               </div>
               <button
                 onClick={() => setShowMenu(true)}
@@ -153,13 +140,7 @@ export default function ASellerBuyerlayout() {
               </button>
             </div>
             <div className="lg:w-6/12 flex flex-col justify-center items-center space-y-3.5">
-              <div
-                aria-label="Etabo. Logo"
-                role="img"
-                className="cursor-pointer"
-              >
-                <img src="/logo.jpg" alt="" width={150} height={40} />
-              </div>
+             
               <div className="hidden lg:block">
                 <ul className="flex items-center space-x-10">
                   <li>
@@ -191,22 +172,26 @@ export default function ASellerBuyerlayout() {
                 </ul>
               </div>
             </div>
+            
             <div className="lg:w-3/12 flex justify-end items-center space-x-4">
-              <a href="" onClick={goToCart}>
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </a>
               <a href="" onClick={onLogout}>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  height="2em"
-                  width="2em"
-                >
-                  <path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z" />
-                </svg>
+
+              <svg title="logout" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+</svg>
+
               </a>
+              <div>
+                  
+                  <img src="/farmer.png" alt="" width={50} height={20} />
+                  </div>
+               <p className="bg-transparent text-md text-gray-600 focus:outline-none" >
+                    {" "}
+                    {userName}
+                  </p>
+          
+          
+          
               <button
                 onClick={() => setShowMenuSm(true)}
                 aria-label="open menu"
@@ -245,6 +230,7 @@ export default function ASellerBuyerlayout() {
               </button>
             </div>
           </div>
+       
           {/* <div id="md-menu" className={`${showMenu ? "md:block" : ""} hidden lg:hidden absolute z-10 inset-0 h-screen w-full dark:bg-gray-800 bg-gray-800 bg-opacity-70 dark:bg-opacity-70`}>
                     <div className="relative w-full h-screen">
                         <div className="absolute inset-0 w-1/2 bg-white dark:bg-gray-900 p-6 justify-center">
