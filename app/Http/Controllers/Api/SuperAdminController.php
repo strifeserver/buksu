@@ -10,6 +10,7 @@ use App\Models\Farm;
 use App\Models\PriceControl;
 use App\Models\Product;
 use App\Models\SupportedBarangay;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -215,17 +216,17 @@ class SuperAdminController extends Controller
         // ->with('user', 'TransactionDetail', 'TransactionDetail.productOrdered' => (query::where('product', '==' $request->product_type)))
         // ->get();
 
-        //     $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
-        // ->with([
-        //     'user',
-        //     'transactionDetail' => function ($query) use ($request) {
-        //         $query->whereHas('productOrdered', function ($subquery) use ($request) {
-        //             $subquery->where('product_type', $request->product_type);
-        //         });
-        //     },
-        //     'transactionDetail.productOrdered'
-        // ])
-        // ->get();
+            $transactions = Transaction::whereBetween('payed_on', [$request->starting_date, $request->end_date])
+        ->with([
+            'user',
+            'transactionDetail' => function ($query) use ($request) {
+                $query->whereHas('productOrdered', function ($subquery) use ($request) {
+                    $subquery->where('product_type', $request->product_type);
+                });
+            },
+            'transactionDetail.productOrdered'
+        ])
+        ->get();
 
         //     return response()->json($transactions);
 
@@ -245,12 +246,16 @@ class SuperAdminController extends Controller
     WHERE farms.farm_hectares > 10
 ");
 
-        $farmers_by_farm_location = DB::select("
+
+$farmLocation = '%songco%';
+
+$farmers_by_farm_location_a = DB::select("
     SELECT users.*, farms.*
     FROM users
     INNER JOIN farms ON farms.farm_owner = users.id
-    WHERE farms.farm_location LIKE '%songco%'
-");
+    WHERE farms.farm_location LIKE :farmLocation
+", ['farmLocation' => $farmLocation]);
+
 
         $products_per_farm = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
@@ -258,6 +263,8 @@ class SuperAdminController extends Controller
     INNER JOIN farms ON farms.farm_owner = users.id
     INNER JOIN products ON products.farm_belonged = farms.id
 ");
+
+
         $products_per_farm_with_where = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
     FROM users
@@ -266,7 +273,7 @@ class SuperAdminController extends Controller
     WHERE farms.id = 3
 ");
 
-        $farmers_by_farm_location = DB::select("
+        $farmers_by_farm_location_b = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
     FROM users
     INNER JOIN farms ON farms.farm_owner = users.id
@@ -281,6 +288,8 @@ class SuperAdminController extends Controller
     INNER JOIN products ON products.farm_belonged = farms.id
     WHERE farms.farm_location LIKE '%songco%'
 ");
+
+
         $total_transaction_per_farm = DB::select("
     SELECT users.name, farms.farm_name, COUNT(transactions.id) as total_transactions
     FROM users
@@ -289,6 +298,8 @@ class SuperAdminController extends Controller
     INNER JOIN transactions ON transactions.seller = users.id
     GROUP BY farms.id
 ");
+
+
         $total_transactions_per_farm_per_product_with_total_kilo_and_price = DB::select("
     SELECT users.name, farms.farm_name, products.product_name, COUNT(transactions.id) as total_transactions,
            SUM(transaction_details.kg_purchased) as total_kg_purchased,
@@ -306,6 +317,8 @@ class SuperAdminController extends Controller
     INNER JOIN transactions ON transactions.buyers_name = users.id
     GROUP BY users.id
 ");
+
+
         $total_transactions_per_buyer_per_product = DB::select("
     SELECT users.name, products.product_name, COUNT(transactions.id) as total_transactions,
            SUM(transaction_details.kg_purchased) as total_kg_purchased,
@@ -317,29 +330,22 @@ class SuperAdminController extends Controller
     GROUP BY users.id, products.id
 ");
 
-
-
-
-
-
-
-
         $report_generation = [
             'total_farm_per_user' => $total_farm_per_user,
             'farmers_by_farm_hectares' => $farmers_by_farm_hectares,
-            'farmers_by_farm_location' => $farmers_by_farm_location,
+            'farmers_by_farm_location_a' => $farmers_by_farm_location_a,
             'products_per_farm' => $products_per_farm,
             'products_per_farm_with_where' => $products_per_farm_with_where,
-            'farmers_by_farm_location' => $farmers_by_farm_location,
+            'farmers_by_farm_location_b' => $farmers_by_farm_location_b,
             'products_per_column' => $products_per_column,
             'total_transaction_per_farm' => $total_transaction_per_farm,
             'total_transactions_per_farm_per_product_with_total_kilo_and_price' => $total_transactions_per_farm_per_product_with_total_kilo_and_price,
             'total_transactions_per_buyer' => $total_transactions_per_buyer,
             'total_transactions_per_buyer_per_product' => $total_transactions_per_buyer_per_product,
+            'transactions' => $transactions,
         ];
 
-        // print_r($report_generation);
-        // exit;
+ 
         $pdf = PDF::loadView('pdf', compact('report_generation'));
         return $pdf->download('report.pdf');
 
