@@ -32,7 +32,7 @@ class ForgotPasswordaController extends Controller
             'created_at' => now(),
         ]);
         // Send email with password reset link
-        $resetLink = url('/password/reset/' . $token);
+        $resetLink = url('/resetPassword/' . $token);
         $body_message = "Click the following link to reset your password: $resetLink";
 
         $EmailService = app(MailService::class);
