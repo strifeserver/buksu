@@ -94,6 +94,7 @@ class CheckoutController extends Controller
                         'seller' => $sellerAcct->id,
                         'from_farm' => $product->farm_belonged,
                         'order_id' => $OrderIDbatch,
+                        'payed_on' => date('Y-m-d'),
 
                     ];
 
