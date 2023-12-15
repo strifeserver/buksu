@@ -272,7 +272,7 @@ class SellerBuyerController extends Controller
         }
     
         $farm = Transaction::where('id', $id)->first();
-    
+        $data['date_delivered'] = date('Y-m-d');
         if ($farm) {
             $farm->update($data);
         }
