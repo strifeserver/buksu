@@ -24,35 +24,35 @@ class PasswordResetController extends Controller
     {
 
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
+            // 'email' => 'required|email',
+            'password' => 'required|min:8',
             'token' => 'required',
         ]);
 
         $user = DB::table('password_resets')
-            ->where('email', $request->email)
+            // ->where('email', $request->email)
             ->where('token', $request->token)
             ->first();
-
+     
         if (!$user) {
             return response(json_encode(['status' => 0, 'message' => 'Invalid email or token']), 400)->header('Content-Type', 'application/json');
 
         }
 
-        $actualUser = DB::table('users')->where('email', $request->email)->first();
-
+        $actualUser = DB::table('users')->where('email', $user->email)->first();
+   
         if (!$actualUser) {
             return response(json_encode(['status' => 0, 'message' => 'User not found']), 404)->header('Content-Type', 'application/json');
 
         }
 
         DB::table('users')
-            ->where('email', $request->email)
+            ->where('email', $user->email)
             ->update(['password' => Hash::make($request->password)]);
 
         // Optionally, you may delete the password reset record from the password_resets table
         DB::table('password_resets')
-            ->where('email', $request->email)
+            ->where('email', $user->email)
             ->delete();
         return response(json_encode(['status' => 1]), 200)->header('Content-Type', 'application/json');
     }
