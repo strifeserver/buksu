@@ -212,7 +212,7 @@ class SuperAdminController extends Controller
         $product_type = $params['product_type']; 
         $starting_date = $params['starting_date']; 
         $end_date = $params['end_date']; 
-
+   
         $user_ID = Crypt::decryptString($user_IDget);
 
         $farmInfo = Farm::where('farm_owner','=',$user_ID)->first();

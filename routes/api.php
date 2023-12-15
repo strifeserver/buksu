@@ -105,7 +105,7 @@ Route::post('/checkout', [CheckoutController::class, 'checkout']);
 
 
 Route::get('getOrders1', [SellerBuyerController::class, 'getOrders']);   //ORDERS
-Route::post('/generateReportpdf', [SuperAdminController::class, 'generateReport']); //dashboard
+Route::get('/generateReportpdf', [SuperAdminController::class, 'generateReport']); //dashboard
 
 
 Route::resource('/orders', OrdersController::class, [
