@@ -64,11 +64,10 @@ import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 
 //BUYER LAYOUT
 import Sample from "./views/sample.jsx";
-import Orders from "./views/SellerBuyer/AOrders";
 import Home from "./views/Buyers/Home";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
-import OrdersLists from "./views/Buyers/Orders.jsx";
+
 import LayoutSeller from "./views/SellerBuyer/Layout/LayoutSeller";
 import LayoutBuyer from "./views/SellerBuyer/Layout/LayoutBuyer";
 import CancelOrder from "./views/SellerBuyer/ABuyerSellerCancel";
@@ -78,6 +77,12 @@ import CancelOrderBuyer from "./views/Buyers/Cancel";
 import Cart from "./components/Cart";
 import ProductOrder from "./components/ProductOrder";
 import ProductList from "./components/Products";
+
+
+import Orders from "./components/Orders";
+////import OrdersLists from "./views/Buyers/Orders.jsx";
+////import Orders from "./views/SellerBuyer/AOrders";
+/* Pag isahin mo nalang ganito next time please. Naka react js ka naman. */
 
 const router = createBrowserRouter([
   //ADMIN DA
@@ -216,7 +221,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/buyer/orders', //orderlists
-        element: <OrdersLists />
+        element: <Orders />
       },
       {
         path: '/buyer/order/cancel/:id', //confirm Order

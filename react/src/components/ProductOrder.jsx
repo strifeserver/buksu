@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 export default function AProductOrder() {
   const [loading, setLoading] = useState(false);
   const { currentUserID, userType } = useStateContext();
+  console.log(currentUserID)
   const [product, setProduct] = useState([]);
   const [price, setPrice] = useState();
   const navigate = useNavigate();
