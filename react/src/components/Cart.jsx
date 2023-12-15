@@ -9,14 +9,17 @@ import { MdFiberSmartRecord } from "react-icons/md";
 import Swal from 'sweetalert2';
 import CartTable from './CartTable';
 import SearchBar from './SearchBar';
+import DataTable from 'react-data-table-component';
 
 export default function Cart() {
-    const { currentUserID } = useStateContext();
+    const { currentUserID, userType } = useStateContext();
     const [openModal, setOpenModal] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    let totalPayment = 0;
+
+    const [totalPayment, setTotalPayment] = useState(0);
+
     const columns = [
         { name: 'Seller Name', selector: 'sellerName', sortable: true },
         { name: 'Farm Name', selector: 'farmName', sortable: true },
@@ -28,6 +31,48 @@ export default function Cart() {
         { name: 'Item Details', selector: 'itemDetails', sortable: true },
         { name: '', selector: 'blankColumn', sortable: true },
     ];
+
+    const columnsCheckout = [
+        {
+            name: 'Product',
+            selector: 'productName',
+            sortable: true,
+        },
+        {
+            name: 'Variety',
+            selector: 'type',
+            sortable: true,
+        },
+        {
+            name: 'Kilograms',
+            selector: 'kg',
+            sortable: true,
+        },
+        {
+            name: 'Total Price',
+            selector: 'totalAmount',
+            sortable: true,
+        },
+        {
+            name: 'Price',
+            selector: 'price',
+            sortable: true,
+        },
+    ];
+
+    const customStyles = {
+        headCells: {
+            style: {
+                backgroundColor: '#bdf1da',
+                border: '1px solid black',
+            },
+        },
+        cells: {
+            style: {
+                border: '1px solid black',
+            },
+        },
+    };
 
     const handleDetailsClick = (url) => {
         window.open(url, '_blank');
@@ -46,6 +91,13 @@ export default function Cart() {
 
     const handleSelectedRowsChange = ({ selectedRows }) => {
         setSelectedRows(selectedRows);
+
+        let totalPayment = 0;
+        selectedRows?.map((data) => {
+            totalPayment += data.totalAmount;
+        })
+
+        setTotalPayment(totalPayment);
     };
 
     const handleKgChange = (rowId, value) => {
@@ -104,7 +156,12 @@ export default function Cart() {
                     title: "Checkout Success!",
                     icon: "success"
                 }).then(() => {
-                    window.location.href = "/buyer-seller/orders";
+                    switch (userType) {
+                        case "1": window.location.href = "/buyer-seller/orders";
+                            break;
+                        case "0": window.location.href = "/buyer/orders";
+                            break;
+                    }
                 });
             })
             .catch((error) => {
@@ -138,8 +195,6 @@ export default function Cart() {
     const getCartData = () => {
         const apiUrl = '/cart';
 
-        console.log(currentUserID)
-
         const requestParams = {
             user_id: currentUserID,
         };
@@ -148,6 +203,15 @@ export default function Cart() {
     }
 
     const cartAxios = (apiUrl, requestParams) => {
+        let itemDetails = "";
+
+        switch (userType) {
+            case "1": itemDetails = '/buyer-seller/order/products/';
+                break;
+            case "0": itemDetails = '/buyer/order/products/';
+                break;
+        }
+
         axiosClient.get(apiUrl, { params: requestParams })
             .then(response => {
                 const newData = response.data.data.map((item) => ({
@@ -159,11 +223,10 @@ export default function Cart() {
                     price: item.price,
                     totalAmount: item.price * item.kg_added,
                     kg: item.kg_added,
-                    itemDetails: '/buyer/order/products/' + item.product_id,
+                    itemDetails: itemDetails + item.product_id
                 }));
 
                 setTableData(newData);
-                console.log(newData);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -204,24 +267,12 @@ export default function Cart() {
                 <Modal.Header>Checkout Summary</Modal.Header>
                 <Modal.Body>
                     <div className="overflow-x-auto">
-                        <Table>
-                            <Table.Body className="divide-y">
-                                {selectedRows?.map((data) => {
-                                    totalPayment += data.totalAmount;
-                                    return (
-                                        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={data.id}>
-                                            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                {data.productName}
-                                            </Table.Cell>
-                                            <Table.Cell>{data.type}</Table.Cell>
-                                            <Table.Cell>{data.price}</Table.Cell>
-                                            <Table.Cell>{data.totalAmount}</Table.Cell>
-                                            <Table.Cell>{data.kg}</Table.Cell>
-                                        </Table.Row>
-                                    )
-                                })}
-                            </Table.Body>
-                        </Table>
+                        <DataTable
+                            columns={columnsCheckout}
+                            data={selectedRows}
+                            pagination
+                            customStyles={customStyles}
+                        />
                         <Tabs.Group
                             aria-label="Tabs with underline"
                             style="underline"
