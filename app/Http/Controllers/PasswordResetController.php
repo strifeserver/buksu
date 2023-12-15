@@ -10,18 +10,15 @@ class PasswordResetController extends Controller
 {
     //
 
-
     public function showResetForm(Request $request, $token)
     {
         $user = DB::table('password_resets')
-            // ->where('email', $request->email)
+        // ->where('email', $request->email)
             ->where('token', $request->token)
             ->first();
-     
+
         return view('auth.passwords.reset', ['token' => $token, 'email' => $user->email]);
     }
-    
-
 
     public function resetPassword(Request $request)
     {
@@ -31,22 +28,24 @@ class PasswordResetController extends Controller
             'password' => 'required|confirmed|min:8',
             'token' => 'required',
         ]);
-    
+
         $user = DB::table('password_resets')
             ->where('email', $request->email)
             ->where('token', $request->token)
             ->first();
-   
+
         if (!$user) {
-            return response()->json(['message' => 'Invalid email or token'], 400);
+            return response(json_encode(['status' => 0, 'message' => 'Invalid email or token']), 400)->header('Content-Type', 'application/json');
+
         }
-  
+
         $actualUser = DB::table('users')->where('email', $request->email)->first();
-    
+
         if (!$actualUser) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response(json_encode(['status' => 0, 'message' => 'User not found']), 404)->header('Content-Type', 'application/json');
+
         }
-    
+
         DB::table('users')
             ->where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
@@ -55,9 +54,7 @@ class PasswordResetController extends Controller
         DB::table('password_resets')
             ->where('email', $request->email)
             ->delete();
-    
-        return response()->json(['message' => 'Password reset successfully']);
+        return response(json_encode(['status' => 1]), 200)->header('Content-Type', 'application/json');
     }
-
 
 }
