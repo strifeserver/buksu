@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Services\MailService;
 
 class ForgotPasswordaController extends Controller
 {
@@ -32,16 +32,14 @@ class ForgotPasswordaController extends Controller
             'created_at' => now(),
         ]);
         // Send email with password reset link
-        // $resetLink = url('/resetPassword/' . $token);
-        $resetLink = 'localhost:3000/resetPassword/' . $token;
-        $body_message = "Click the following link to reset your password: $resetLink";
+        $resetLink = 'http://localhost:3000/resetPassword/' . $token;
+        $body_message = "Click the following link to reset your password: <a href='$resetLink'>$resetLink</a>";
 
         $EmailService = app(MailService::class);
         $execution = $EmailService->send($request->email, 'Forgot Password', $body_message, '', '', '', []);
 
         return response()->json(['message' => 'Reset link sent successfully']);
     }
-
 
     public function resetPassword(Request $request)
     {
@@ -61,7 +59,7 @@ class ForgotPasswordaController extends Controller
         );
 
         return $response == Password::PASSWORD_RESET
-            ? response()->json(['message' => 'Password reset successfully'])
-            : response()->json(['message' => 'Unable to reset password'], 400);
+        ? response()->json(['message' => 'Password reset successfully'])
+        : response()->json(['message' => 'Unable to reset password'], 400);
     }
 }
