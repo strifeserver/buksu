@@ -1,9 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../axios-client.js";
-import { useStateContext } from "../../context/ContextProvider.jsx";
-
-
 
 export default function AConfirmOrder() {
   const { id } = useParams();
@@ -29,7 +26,7 @@ export default function AConfirmOrder() {
 
   return (
     <div className="text-center">
-    <p className="text-center">Confirming ...</p>
-  </div>
+      <p className="text-center">Confirming ...</p>
+    </div>
   )
 }

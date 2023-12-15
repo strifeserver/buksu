@@ -1,5 +1,5 @@
 import { createRef, useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosClient from "../axios-client.js";
 import Swal from 'sweetalert2';
 
@@ -41,9 +41,8 @@ export default function ResetPassword() {
           timer: 1500
         });
 
-        // Add any additional logic based on the response if needed
+        navigate("/login");
       } catch (error) {
-        // Handle errors
         console.error('Error:', error);
       }
     }
