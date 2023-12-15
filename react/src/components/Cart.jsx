@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../context/ContextProvider";
-import { Table, Tabs, Button, Modal, Card } from "flowbite-react";
+import { Tabs, Button, Modal, Card } from "flowbite-react";
 import { IoIosCash } from "react-icons/io";
 import { CiCreditCard1 } from "react-icons/ci";
 import { CiGlobe } from "react-icons/ci";

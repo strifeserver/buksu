@@ -5,6 +5,8 @@ import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Signin";
 import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
+import ForgotPassword from "./views/ForgotPassword";
+import ResetPassword from "./views/ResetPassword";
 
 //DA ADMIN PAGES
 import AdminLayout from "./views/Admin/AdminLayout.jsx";
@@ -337,6 +339,14 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <Signup />
+      },
+      {
+        path: '/forgotPassword',
+        element: <ForgotPassword />
+      },
+      {
+        path: '/resetPassword/:token',
+        element: <ResetPassword />
       }
     ]
   },

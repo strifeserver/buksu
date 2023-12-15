@@ -612,15 +612,15 @@ export default function ASellerCenter() {
                           name="price"
                           min={
                             formData.product_type === 'Brocollis' ? minBrocolli :
-                            formData.product_type === 'Carrots' ? minCarrot :
-                            formData.product_type === 'Cabbages' ? minCabbage :
-                            formData.product_type === 'Tomatoes' ? minTomato : ''
+                              formData.product_type === 'Carrots' ? minCarrot :
+                                formData.product_type === 'Cabbages' ? minCabbage :
+                                  formData.product_type === 'Tomatoes' ? minTomato : ''
                           } // Set min based on product type
                           max={
                             formData.product_type === 'Brocollis' ? maxBrocolli :
-                            formData.product_type === 'Carrots' ? maxCarrot:
-                            formData.product_type === 'Cabbages' ? maxCabbage :
-                            formData.product_type === 'Tomatoes' ? maxTomato : ''
+                              formData.product_type === 'Carrots' ? maxCarrot :
+                                formData.product_type === 'Cabbages' ? maxCabbage :
+                                  formData.product_type === 'Tomatoes' ? maxTomato : ''
                           } // Set max based on product type
                           required
                           value={formData.price}
@@ -713,7 +713,7 @@ export default function ASellerCenter() {
               <div className="bg-slate-200" key={order.id}>
                 {order.transaction_detail.map(
                   (transaction_detail) =>
-                    order.price_payed === null ? (
+                    order.date_delivered === null ? (
                       <div
                         key={transaction_detail.id}
                         className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto"
@@ -893,7 +893,7 @@ export default function ASellerCenter() {
               <div className="bg-slate-200" key={order.id}>
                 {order.transaction_detail.map(
                   (transaction_detail) =>
-                    order.price_payed != null ? (
+                    order.payed_on != null && order.date_delivered != null ? (
                       <div
                         key={transaction_detail.id}
                         className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto"

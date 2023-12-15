@@ -1,43 +1,67 @@
-import { createRef, useState } from "react";
+import { createRef, useState, useEffect } from "react";
 import axiosClient from "../axios-client.js";
-import { useStateContext } from "../context/ContextProvider.jsx";
+import Swal from 'sweetalert2';
 
-export default function Login() {
-  const mobile_numberRef = createRef();
-  const passwordRef = createRef();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setUserName, setToken, setCurrentUserID, setUserType } =
-    useStateContext();
+export default function ForgotPassword() {
+  const email_Ref = createRef();
   const [errors, setErrors] = useState(null);
+  const [isCooldown, setIsCooldown] = useState(false);
+  const [countdown, setCountdown] = useState(60);
 
-
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
 
-    const payload = {
-      mobile_number: mobile_numberRef.current.value,
-      password: passwordRef.current.value,
-    };
+    Swal.showLoading();
 
-    axiosClient
-      .post("/login", payload)
-      .then(({ data }) => {
-        setIsSubmitting(false);
-        setToken(data.token);
-        setUserType(data.userType);
-        setUserName(data.userName);
-        setCurrentUserID(data.encryptedCurrentUserID);
+    if (!isCooldown) {
+      try {
+        const payload = {
+          email: email_Ref.current.value,
+        };
 
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          const errorMessage = response.data.message; // Get the error message from the response
-          setErrors({ message: errorMessage }); // Set the error state with the error message
-        }
-        setIsSubmitting(false);
-      });
+        const response = await axiosClient.post('/forgot-password', payload);
+
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Password Reset Link has been sent to your email.",
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        // Add any additional logic based on the response if needed
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+      }
+
+      setIsCooldown(true);
+    }
   };
+
+  useEffect(() => {
+    let cooldownTimer;
+
+    if (isCooldown) {
+      // Set a timer to reset the cooldown after 60 seconds
+      cooldownTimer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+
+      // Set another timer to reset the cooldown after 60 seconds
+      setTimeout(() => {
+        setIsCooldown(false);
+        setCountdown(60);
+        clearInterval(cooldownTimer);
+      }, 60000);
+    }
+
+    return () => {
+      // Cleanup the timer if the component unmounts or the cooldown is reset
+      clearInterval(cooldownTimer);
+    };
+  }, [isCooldown]);
 
   return (
     // <!-- ===== Page Wrapper Start ===== -->
@@ -207,7 +231,7 @@ export default function Login() {
 
                     </span>
                     <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                      Sign In to Etabo
+                      Forget Password
                     </h2>
 
                     {errors && errors.message && (
@@ -219,16 +243,16 @@ export default function Login() {
                     <form onSubmit={onSubmit}>
                       <div className="mb-4">
                         <label className="mb-2.5 block font-medium text-black dark:text-white">
-                          Phone Number
+                          Email Address
                         </label>
                         <div className="relative">
                           <input
-                            ref={mobile_numberRef}
-                            id="mobile_number"
-                            name="mobile_number"
+                            ref={email_Ref}
+                            id="email_address"
+                            name="email_address"
                             required
-                            type="number"
-                            placeholder="09xxxxxxxx"
+                            type="email"
+                            placeholder="your_email@test.com"
                             className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                           />
                           <span className="absolute right-4 top-4">
@@ -250,52 +274,15 @@ export default function Login() {
                           </span>
                         </div>
                       </div>
-                      <div className="mb-6">
-                        <label className="mb-2.5 block font-medium text-black dark:text-white">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            ref={passwordRef}
-                            id="password"
-                            type="password"
-                            name="password"
-                            required
-                            placeholder="********"
-                            className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                          />
-                          <span className="absolute right-4 top-4">
-                            <svg
-                              className="fill-current"
-                              width={22}
-                              height={22}
-                              viewBox="0 0 22 22"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g opacity="0.5">
-                                <path
-                                  d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-                                  fill
-                                />
-                                <path
-                                  d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-                                  fill
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
                       <div className="mb-5">
                         {/* <input type="submit" defaultValue="Sign In" className="w-full cursor-pointer rounded-lg border border-blue-500 bg-blue-500 p-4 font-medium text-white transition hover:bg-opacity-90" /> */}
                         <button
                           type="submit"
-                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                          className={`w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-2 ${isCooldown ? "opacity-50 cursor-not-allowed" : ""
                             }`}
-                          disabled={isSubmitting}
+                          disabled={isCooldown}
                         >
-                          Signin
+                          {isCooldown ? `Cooldown (${countdown}s)` : 'Send Reset Password Request'}
                         </button>
                       </div>
 
@@ -304,14 +291,6 @@ export default function Login() {
                           Don’t have any account yet?
                           <a href="/signup" className="text-blue-600 ml-2">
                             Sign Up
-                          </a>
-                        </p>
-                      </div>
-                      <div className="mt-6 text-center text-gray-900">
-                        <p className="font-medium">
-                          Or perhaps did you
-                          <a href="/forgotPassword" className="text-blue-600 ml-2">
-                            forgot password?
                           </a>
                         </p>
                       </div>
