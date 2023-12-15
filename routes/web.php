@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ForgotPasswordaController;
+use App\Http\Controllers\PasswordResetController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,3 +21,14 @@ Route::get('/', function () {
 Route::get('*', function () {
     return view('welcome');
 });
+
+
+Route::get('forgot-password', [ForgotPasswordaController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordaController::class, 'sendPasswordResetLink'])->name('password.email');
+
+
+// Password reset routes
+Route::get('password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+// Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');
+// Route::post('password/reset', [PasswordResetController::class, 'resetPassword']);
+Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');

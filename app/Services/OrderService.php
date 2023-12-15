@@ -38,24 +38,23 @@ class OrderService
 
         foreach ($execution['data'] as $Orderkey => $OrderVal) {
 
-            // $execution['data'][$Orderkey]['created_at'] = '';
             $OrderProduct = OrderProduct::where('transaction_id', '=', $OrderVal['id'])->first()->toArray();
+
             $OrderProduct['transaction_detail_id'] = $OrderProduct['id'];
             unset($OrderProduct['id']);
 
             $execution['data'][$Orderkey] = array_merge($OrderVal, $OrderProduct);
-            if(strlen($execution['data'][$Orderkey]['date_delivered']) == 0){
+            if (strlen($execution['data'][$Orderkey]['date_delivered']) == 0) {
                 $execution['data'][$Orderkey]['date_delivered'] = 'Pending';
             }
-            if(strlen($execution['data'][$Orderkey]['payed_on']) == 0){
+            if (strlen($execution['data'][$Orderkey]['payed_on']) == 0) {
                 $execution['data'][$Orderkey]['payed_on'] = 'Pending';
             }
-            if($execution['data'][$Orderkey]['payed_on'] != 'Pending' || $execution['data'][$Orderkey]['date_delivered'] != 'Pending' ){
+            if ($execution['data'][$Orderkey]['payed_on'] != 'Pending' || $execution['data'][$Orderkey]['date_delivered'] != 'Pending') {
                 $execution['data'][$Orderkey]['order_status'] = 'Success';
-            }else{
+            } else {
                 $execution['data'][$Orderkey]['order_status'] = 'Pending';
             }
-
 
         }
 

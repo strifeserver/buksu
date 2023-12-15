@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Crypt;
 
 // require_once __DIR__ . '/vendor/autoload.php';
 
@@ -206,8 +207,21 @@ class SuperAdminController extends Controller
 
     public function generateReport(Request $request)
     {
+        $params = request()->all();
+        $user_IDget = $params['user_ID']; 
+        $product_type = $params['product_type']; 
+        $starting_date = $params['starting_date']; 
+        $end_date = $params['end_date']; 
 
-        $farmLocation = '%songco%';
+        $user_ID = Crypt::decryptString($user_IDget);
+
+        $farmInfo = Farm::where('farm_owner','=',$user_ID)->first();
+        $farmLocation = '%'.$farmInfo->farm_location.'%';
+     
+        // $farmLocation = $params['farmLocation']; 
+        
+        // $farmLocation = $params['farmLocation'];
+        // $farmLocation = '%songco%';
 
         // $request->end_date
         // $request->product_type
@@ -230,7 +244,6 @@ class SuperAdminController extends Controller
             ])
             ->get();
 
-        //     return response()->json($transactions);
 
         DB::statement("SET sql_mode = ''");
         $total_farm_per_user = DB::select("

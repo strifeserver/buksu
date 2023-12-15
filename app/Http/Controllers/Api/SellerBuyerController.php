@@ -263,6 +263,12 @@ class SellerBuyerController extends Controller
                 $photo->storeAs('public/ProofOfDelivery/', $fileName);
                 $data['proof_of_delivery'][] = $fileName;
             }
+    
+            // Implode the array to create a comma-separated string
+            $proofOfDeliveryString = implode(",", $data['proof_of_delivery']);
+    
+            // Update the $data array with the imploded string
+            $data['proof_of_delivery'] = $proofOfDeliveryString;
         }
     
         $farm = Transaction::where('id', $id)->first();
@@ -271,6 +277,7 @@ class SellerBuyerController extends Controller
             $farm->update($data);
         }
     }
+    
     
 
     /**
