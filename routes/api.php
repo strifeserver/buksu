@@ -111,3 +111,7 @@ Route::get('/generateReportpdf', [SuperAdminController::class, 'generateReport']
 Route::resource('/orders', OrdersController::class, [
     'except' => ['create'],
 ]);
+
+
+Route::post('forgot-password', [ForgotPasswordaController::class, 'sendPasswordResetLink'])->name('password.email');
+Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');
