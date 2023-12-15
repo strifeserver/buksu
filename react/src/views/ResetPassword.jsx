@@ -8,6 +8,7 @@ export default function ResetPassword() {
   const confirm_Ref = createRef();
   const [errors, setErrors] = useState(null);
   const { token } = useParams();
+  const navigate = useNavigate();
 
   const onSubmit = async (ev) => {
     ev.preventDefault();
