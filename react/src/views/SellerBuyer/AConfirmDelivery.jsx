@@ -4,6 +4,7 @@ import { useStateContext } from "../../context/ContextProvider.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { Tabs } from "flowbite-react";
 import { HiUserCircle } from "react-icons/hi";
+import Swal from 'sweetalert2';
 
 export default function AProductOrder() {
   const { currentUserID } = useStateContext();
@@ -16,51 +17,8 @@ export default function AProductOrder() {
     user_ID: currentUserID,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    const newValue = type === "file" ? files[0] : value;
-
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
-  };
-
-  const confirmOrder = (event) => {
-    event.preventDefault();
-
-    const dataToSend = new FormData();
-    for (const key in formData) {
-      dataToSend.append(key, formData[key]);
-    }
-
-    axiosClient
-      .post("/confirmDelivery", dataToSend)
-      .then((response) => {
-        // Handle successful response if needed
-
-        // Reset the form after successful submission
-        setFormData({
-          transactionID: id,
-          imageProof: null,
-          user_ID: currentUserID,
-        });
-
-        // Redirect or perform other actions as needed
-        navigate("/seller/center"); // Example: Redirect to the homepage
-      })
-      .catch((error) => {
-        // Handle errors if they occur
-        console.error(error);
-      });
-  };
-
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    console.log('Selected Files:', files);
     setFormData({
       ...formData,
       imageProof: [...formData.imageProof, ...files],
@@ -78,6 +36,7 @@ export default function AProductOrder() {
   };
 
   const handleUpload = async () => {
+    Swal.showLoading();
 
     try {
       const response = await axiosClient.post('/confirmDelivery', formData, {
@@ -86,7 +45,20 @@ export default function AProductOrder() {
         },
       });
 
-      console.log('Upload successful', response.data);
+      Swal.close();
+
+      if (response.status == 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Order has been marked delivered",
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        navigate("/seller/center");
+      }
+
     } catch (error) {
       console.error('Error uploading files', error);
     }
