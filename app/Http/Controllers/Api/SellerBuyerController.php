@@ -273,6 +273,7 @@ class SellerBuyerController extends Controller
     
         $farm = Transaction::where('id', $id)->first();
         $data['date_delivered'] = date('Y-m-d');
+        $data['price_payed'] = $farm['price_of_goods'];
         if ($farm) {
             $farm->update($data);
         }
