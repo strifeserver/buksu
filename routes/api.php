@@ -14,6 +14,8 @@ use App\Http\Controllers\ProductManagementController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ForgotPasswordaController;
+use App\Http\Controllers\PasswordResetController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
