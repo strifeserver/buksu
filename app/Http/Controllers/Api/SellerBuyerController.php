@@ -276,6 +276,7 @@ class SellerBuyerController extends Controller
         if ($farm) {
             $farm->update($data);
         }
+        return response(json_encode(['status' => 1]), 200)->header('Content-Type', 'application/json');
     }
     
     
