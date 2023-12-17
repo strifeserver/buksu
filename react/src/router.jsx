@@ -65,7 +65,7 @@ import ConfirmDelivery from "./views/SellerBuyer/AConfirmDelivery.jsx"
 import BuyerMode from "./views/SellerBuyer/Layout/LayoutBuyer";
 
 //BUYER LAYOUT
-import Sample from "./views/sample.jsx";
+// import Sample from "./views/sample.jsx";
 import Home from "./views/Buyers/Home";
 
 import BuyerLayout from "./views/Buyers/BuyerLayout";
@@ -321,10 +321,10 @@ const router = createBrowserRouter([
         path: '/seller/center/addFarm',
         element: <AddFarm />
       },
-      {
-        path: '/sample',
-        element: <Sample />
-      },
+      // {
+      //   path: '/sample',
+      //   element: <Sample />
+      // },
 
     ]
   },
