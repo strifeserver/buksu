@@ -189,8 +189,10 @@ class SellerBuyerController extends Controller
         //     ]);
 
         $transactions = Transaction::where('seller', $user_ID)
-            ->with('TransactionDetail', 'user', 'TransactionDetail.productOrdered')
-            ->get()->toArray();
+        ->with('TransactionDetail', 'user', 'TransactionDetail.productOrdered')
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->toArray();
 
         $pendingOrders = [];
         $fulfilledOrders = [];
