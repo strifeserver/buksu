@@ -833,7 +833,7 @@ export default function ASellerCenter() {
         <div className="bg-gray-100 w-full">
               <p className="text-center mt-3">Pending Orders</p>
               <p className="text-xs mt-0 mb-6 text-center italic">
-                Orders that are to be delivered are shown here:
+              These are the orders to your farm.:
               </p>
               {data.userPendingOrders.length != 0 ?
                 <DataTable
@@ -851,7 +851,7 @@ export default function ASellerCenter() {
 
 
 
-          <div className="bg-gray-100 w-full">
+          <div className="bg-gray-100 w-full" hidden>
             <p className="text-center mt-3">Pending Orders</p>
             <p className="text-xs mt-0 mb-6 text-center italic">
               These are the orders to your farm.
