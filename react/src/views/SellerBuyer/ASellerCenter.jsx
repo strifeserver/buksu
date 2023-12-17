@@ -6,6 +6,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import Swal from "sweetalert2";
 import { Tabs } from "flowbite-react";
 import { HiUserCircle } from "react-icons/hi";
+import DataTable from 'react-data-table-component';
+
 
 export default function ASellerCenter() {
   const { currentUserID } = useStateContext();
@@ -159,6 +161,127 @@ export default function ASellerCenter() {
   if (data.userPendingOrders === undefined) {
     return <div>Loading ...</div>;
   }
+
+
+
+
+
+
+
+
+
+  const pendingColumns = [
+    {
+      name: 'Transaction No.',
+      selector: 'transaction_id',
+      sortable: true,
+    },
+    {
+      name: 'Product',
+      selector: 'product_name',
+      sortable: true,
+    },
+    {
+      name: 'Variety',
+      selector: 'variety',
+      sortable: true,
+    },
+    {
+      name: 'Planted',
+      selector: 'planted_date',
+      sortable: true,
+    },
+    {
+      name: 'Harvested',
+      selector: 'harvested_date',
+      sortable: true,
+    },
+
+    {
+      name: 'Price Per Kilo',
+      selector: 'price_per_kilo',
+      sortable: true,
+      cell: (row) => (
+        <span>
+          ₱ {row.price_per_kilo} / KL
+        </span>
+      ),
+    },
+    {
+      name: 'KG Purchased',
+      selector: 'kg_purchased',
+      sortable: true,
+      cell: (row) => (
+        <span>
+           {row.kg_purchased} KL
+        </span>
+      ),
+    },
+
+    {
+      name: 'Total Price',
+      selector: 'total_price',
+      sortable: true,
+    },
+    {
+      name: 'Sub Total',
+      selector: 'sub_total',
+      sortable: true,
+    },
+    {
+      name: 'Customer Name',
+      selector: 'customer_name',
+      sortable: true,
+    },
+    {
+      name: 'Customer Name',
+      selector: 'mobile_number',
+      sortable: true,
+    },
+    {
+      name: 'Customer Address',
+      selector: 'address',
+      sortable: true,
+    },
+    {
+      name: 'Order Status',
+      selector: 'order_status',
+      sortable: true,
+    },
+
+    {
+      name: '',
+      selector: 'blank',
+      sortable: true,
+      cell: (row) => (
+        
+        <a
+          href={`/buyer-seller/order/delivered/${row.id}`}
+        >
+          <button className="rounded-lg focus:outline-none focus:ring-2 hover:bg-green focus:ring-offset-2 focus:ring-green-800 font-medium text-base leading-4 text-white bg-green-800 w-full py-4 lg:mt-4 mt-2 p-2">
+            Order Delivered
+          </button>
+        </a>
+      ),
+    },
+  ];
+
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: '#bdf1da',
+        border: '1px solid black',
+      },
+    },
+    cells: {
+      style: {
+        border: '1px solid black',
+      },
+    },
+  };
+
+
+
 
   return (
     <div className="mt-3 mx-6">
@@ -704,6 +827,30 @@ export default function ASellerCenter() {
           </div>
         </Tabs.Item>
         <Tabs.Item active icon={HiUserCircle} title="Farms Pending Order">
+
+
+
+        <div className="bg-gray-100 w-full">
+              <p className="text-center mt-3">Pending Orders</p>
+              <p className="text-xs mt-0 mb-6 text-center italic">
+                Orders that are to be delivered are shown here:
+              </p>
+              {data.userPendingOrders.length != 0 ?
+                <DataTable
+                  columns={pendingColumns}
+                  data={data.pendingOrders}
+                  pagination
+                  customStyles={customStyles}
+                />
+                :
+                <></>
+              }
+            </div>
+
+
+
+
+
           <div className="bg-gray-100 w-full">
             <p className="text-center mt-3">Pending Orders</p>
             <p className="text-xs mt-0 mb-6 text-center italic">

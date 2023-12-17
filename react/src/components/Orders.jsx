@@ -137,6 +137,21 @@ export default function Orders() {
       selector: 'orderStatus',
       sortable: true,
     },
+    {
+      cell: (row) => (
+        row.review_status === false ? (
+          <button
+            style={{ backgroundColor: 'green', color: 'white', padding: '8px' }}
+            onClick={() => {
+              console.log('Clicked row:', row);
+              handleRateOrder(row);
+            }}
+          >
+            Rate Order
+          </button>
+        ) : null
+      ),
+    },
   ];
   const customStyles = {
     headCells: {
@@ -209,6 +224,8 @@ export default function Orders() {
               });
             } else if (transaction.date_delivered != null && transaction.payed_on != null) {
               transaction?.transaction_detail?.map((detail) => {
+                console.log('transaction')
+
                 newSuccessData = [...newSuccessData, {
                   id: detail.id,
                   transactionNumber: detail.id,
@@ -223,6 +240,8 @@ export default function Orders() {
                   totalPrice: detail.price_per_kilo * detail.kg_purchased,
                   orderStatus: 'Success',
                   dateToReceive: dateToReceive,
+                  review_status: transaction?.review_status,
+                  product_id: transaction?.transaction_detail[0].product_id,
                 }];
               });
             }
@@ -232,7 +251,7 @@ export default function Orders() {
         setPendingData(newPendingData);
         setDeliveredData(newDeliveredData);
         setSuccessData(newSuccessData);
-
+        console.log(newSuccessData)
         Swal.close();
       })
       .catch((error) => {
@@ -260,6 +279,81 @@ export default function Orders() {
             break;
           case "0": window.location.href = `/buyer/order/cancel/${transactionId.id}`;
             break;
+        }
+      }
+    });
+  };
+
+
+  const handleRateOrder = (transactionId) => {
+    console.log(transactionId)
+    Swal.fire({
+      title: 'Rate Order',
+      html: `
+        <form id="ratingForm">
+          <label>
+            <input type="radio" name="rating" value="1" /> 1
+          </label>
+          <label>
+            <input type="radio" name="rating" value="2" /> 2
+          </label>
+          <label>
+            <input type="radio" name="rating" value="3" /> 3
+          </label>
+          <label>
+            <input type="radio" name="rating" value="4" /> 4
+          </label>
+          <label>
+            <input type="radio" name="rating" value="5" /> 5
+          </label>
+        </form>
+      `,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Submit',
+    }).then(result => {
+      if (result.isConfirmed) {
+        const selectedRating = document.querySelector('input[name="rating"]:checked');
+
+        if (selectedRating) {
+          const ratingValue = selectedRating.value;
+          
+          // Use Axios to handle the submission
+          axiosClient.post('/reviews', { product_id: transactionId.product_id, transaction_id: transactionId.id, rating: ratingValue, user_ID: currentUserID })
+            .then(response => {
+              console.log(response)
+              Swal.fire({
+                title: 'Rating Set',
+                icon: 'success',
+                text: `You have rated ${ratingValue}/5`,
+              });
+
+            // Update successData state
+            const updatedSuccessData = successData.map((item) => {
+              if (item.transactionNumber === transactionId.id) {
+                return { ...item, review_status: true };
+              }
+              return item;
+            });
+
+            setSuccessData(updatedSuccessData);
+
+
+            })
+            .catch(error => {
+              Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                text: 'Failed to submit rating. Please try again.',
+              });
+            });
+        } else {
+          Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            text: 'Please select a rating before submitting.',
+          });
         }
       }
     });

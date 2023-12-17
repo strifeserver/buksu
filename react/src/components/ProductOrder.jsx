@@ -39,6 +39,41 @@ export default function AProductOrder() {
       });
   };
 
+  const [reviews, setReviews] = useState({
+    average_rating: 0,
+    total_reviews: 0,
+    reviews: [],
+  });
+  
+  const getProductRating = () => {
+    setLoading(true);
+  
+    // Assuming 'id' is a prop or state variable
+    const filterParams = encodeURIComponent(JSON.stringify({ product_id: { filter: id } }));
+  
+    axiosClient
+      .get(`/reviews?filter=${filterParams}`)
+      .then(({ data }) => {
+        const { average_rating, total_reviews, reviews } = data.data;
+        setReviews({
+          average_rating,
+          total_reviews,
+          reviews,
+        });
+      })
+      .catch(() => {
+        // Handle errors
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  
+  useEffect(() => {
+    getProductRating();
+  }, []); // Call getProductRating when the component mounts
+
+  
   const submitToCart = (event) => {
     event.preventDefault();
 
@@ -74,6 +109,7 @@ export default function AProductOrder() {
     setCount(value + count);
   }
 
+  console.log(reviews)
   return (
     <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
       <form onSubmit={submitToCart}>
@@ -132,9 +168,38 @@ export default function AProductOrder() {
                 </div>
                 <hr className=" bg-gray-200 w-full mt-4" />
               </div>
+
+
+
+
               <input type="text" name="product_ID" value={u.id} hidden />
 
               <button type="submit" className="focus:outline-none focus:ring-2 hover:bg-green-400 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-green-600 w-full py-5 lg:mt-12 mt-6">Add to Cart</button>
+
+
+              <div className="mt-6">
+    <h4>Product Ratings:</h4>
+    {reviews ? (
+      <>
+        <span className="green-text ratingTextSize">{reviews.average_rating}</span> <span>out of 5</span>
+        <hr className=" bg-gray-200 w-full mt-4" />
+        <div className="2xl:container 2xl:mx-auto lg:py-7 lg:px-6 md:py-5 md:px-6 py-9 px-4 ratingDivSize">
+          {reviews.reviews.map((review, index) => (
+            <div key={index} className="lg:mt-5">
+              <p>{review.display_name}</p>
+              <p><img src={`/${review.rating}_star_rating.png`} alt="" width="80" /></p>
+              <p>{review.created_at}</p>
+            </div>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p>Loading...</p>
+    )}
+  </div>
+
+
+
             </div>
           </div>
         ))}

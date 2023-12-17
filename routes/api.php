@@ -16,6 +16,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ForgotPasswordaController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ReviewController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -100,6 +101,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::resource('/product_management', ProductManagementController::class, [
     'except' => ['create'],
 ]);
+
 Route::resource('/cart', CartController::class, [
     'except' => ['create'],
 ]);
@@ -117,3 +119,12 @@ Route::resource('/orders', OrdersController::class, [
 
 Route::post('forgot-password', [ForgotPasswordaController::class, 'sendPasswordResetLink'])->name('password.email');
 Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');
+
+
+
+Route::resource('/reviews', ReviewController::class, [
+    'except' => ['create'],
+]);
+
+
+Route::get('/getOrdersSeller1', [SellerBuyerController::class, 'getOrdersSeller']);   //ORDERS

@@ -70,6 +70,28 @@
     </table>
 
     
+    <h2>Products Per Column</h2>
+    <table id="products_per_column" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+                <th style="border: 1px solid #dddddd; padding: 8px;"><b>Product Name</b></th>
+                <th style="border: 1px solid #dddddd; padding: 8px;"><b>Variety</b></th>
+                <th style="border: 1px solid #dddddd; padding: 8px;"><b>Planted Date</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($report_generation['products_per_column'] as $products_per_column)
+                <tr style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $products_per_column->product_name }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $products_per_column->variety }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $products_per_column->planted_date }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+
+
     <h2>Products Per Farm</h2>
     <table id="products_per_farm" style="border-collapse: collapse; width: 100%;">
         <thead>

@@ -11,11 +11,11 @@ use App\Models\PriceControl;
 use App\Models\Product;
 use App\Models\SupportedBarangay;
 use App\Models\Transaction;
+use Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PDF;
-use Crypt;
 
 // require_once __DIR__ . '/vendor/autoload.php';
 
@@ -208,18 +208,23 @@ class SuperAdminController extends Controller
     public function generateReport(Request $request)
     {
         $params = request()->all();
-        $user_IDget = $params['user_ID']; 
-        $product_type = $params['product_type']; 
-        $starting_date = $params['starting_date']; 
-        $end_date = $params['end_date']; 
-   
+        $user_IDget = $params['user_ID'];
+        $product_type = $params['product_type'];
+        $starting_date = $params['starting_date'];
+        $end_date = $params['end_date'];
+
         $user_ID = Crypt::decryptString($user_IDget);
 
-        $farmInfo = Farm::where('farm_owner','=',$user_ID)->first();
-        $farmLocation = '%'.$farmInfo->farm_location.'%';
-     
-        // $farmLocation = $params['farmLocation']; 
-        
+        $farmInfo = Farm::where('farm_owner', '=', $user_ID)->first();
+        if (!empty($farmInfo)) {
+            $farmLocation = '%' . $farmInfo->farm_location . '%';
+
+        } else {
+            $farmLocation = null;
+        }
+
+        // $farmLocation = $params['farmLocation'];
+
         // $farmLocation = $params['farmLocation'];
         // $farmLocation = '%songco%';
 
@@ -244,7 +249,6 @@ class SuperAdminController extends Controller
             ])
             ->get();
 
-
         DB::statement("SET sql_mode = ''");
         $total_farm_per_user = DB::select("
     SELECT users.name,
@@ -261,12 +265,21 @@ class SuperAdminController extends Controller
     WHERE farms.farm_hectares > 10
 ");
 
-        $farmers_by_farm_location_a = DB::select("
-    SELECT users.*, farms.*
-    FROM users
-    INNER JOIN farms ON farms.farm_owner = users.id
-    WHERE farms.farm_location LIKE :farmLocation
-", ['farmLocation' => $farmLocation]);
+//         $farmers_by_farm_location_a = DB::select("
+//     SELECT users.*, farms.*
+//     FROM users
+//     INNER JOIN farms ON farms.farm_owner = users.id
+//     WHERE farms.farm_location LIKE :farmLocation
+// ", ['farmLocation' => $farmLocation]);
+
+        $query = DB::table('users')
+            ->join('farms', 'farms.farm_owner', '=', 'users.id');
+
+        if (!empty($farmLocation)) {
+            $query->where('farms.farm_location', 'LIKE', $farmLocation);
+        }
+
+        $farmers_by_farm_location_a = $query->get(['users.*', 'farms.*'])->toArray();
 
         $products_per_farm = DB::select("
     SELECT users.name, farms.farm_name, products.product_name
@@ -283,22 +296,44 @@ class SuperAdminController extends Controller
     WHERE farms.id = 3
 ");
 
-        $farmers_by_farm_location_b = DB::select("
-    SELECT users.name, farms.farm_name, products.product_name
-    FROM users
-    INNER JOIN farms ON farms.farm_owner = users.id
-    INNER JOIN products ON products.farm_belonged = farms.id
-    WHERE farms.farm_location LIKE ?
-    AND farms.farm_location < 1
-", ["%{$farmLocation}%"]);
+//         $farmers_by_farm_location_b = DB::select("
+//     SELECT users.name, farms.farm_name, products.product_name
+//     FROM users
+//     INNER JOIN farms ON farms.farm_owner = users.id
+//     INNER JOIN products ON products.farm_belonged = farms.id
+//     WHERE farms.farm_location LIKE ?
+//     AND farms.farm_location < 1
+// ", ["%{$farmLocation}%"]);
 
-        $products_per_column = DB::select("
-    SELECT users.name, farms.farm_name, products.*
-    FROM users
-    INNER JOIN farms ON farms.farm_owner = users.id
-    INNER JOIN products ON products.farm_belonged = farms.id
-    WHERE farms.farm_location LIKE :farmLocation
-", ['farmLocation' => "%{$farmLocation}%"]);
+        $querya = DB::table('users')
+            ->join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->select('users.name', 'farms.farm_name', 'products.product_name');
+
+        if (!empty($farmLocation)) {
+            $querya->where('farms.farm_location', 'LIKE', "%{$farmLocation}%");
+            $querya->where('farms.farm_location', '<', 1);
+        }
+
+        $farmers_by_farm_location_b = $querya->get();
+
+//         $products_per_column = DB::select("
+//     SELECT users.name, farms.farm_name, products.*
+//     FROM users
+//     INNER JOIN farms ON farms.farm_owner = users.id
+//     INNER JOIN products ON products.farm_belonged = farms.id
+//     WHERE farms.farm_location LIKE :farmLocation
+// ", ['farmLocation' => "%{$farmLocation}%"]);
+        $queryc = DB::table('users')
+            ->join('farms', 'farms.farm_owner', '=', 'users.id')
+            ->join('products', 'products.farm_belonged', '=', 'farms.id')
+            ->select('users.name', 'farms.farm_name', 'products.*');
+
+        if (!empty($farmLocation)) {
+            $queryc->where('farms.farm_location', 'LIKE', "%{$farmLocation}%");
+        }
+
+        $products_per_column = $queryc->get();
 
         $total_transaction_per_farm = DB::select("
     SELECT users.name, farms.farm_name, COUNT(transactions.id) as total_transactions
@@ -320,23 +355,52 @@ class SuperAdminController extends Controller
     INNER JOIN products ON products.id = transaction_details.product_id
     GROUP BY farms.id, products.id
 ");
-        $total_transactions_per_buyer = DB::select("
-    SELECT users.name, COUNT(transactions.id) as total_transactions
-    FROM users
-    INNER JOIN transactions ON transactions.buyers_name = users.id
-    GROUP BY users.id
-");
+//         $total_transactions_per_buyer = DB::select("
+//     SELECT users.name, COUNT(transactions.id) as total_transactions
+//     FROM users
+//     INNER JOIN transactions ON transactions.buyers_name = users.id
+//     GROUP BY users.id
+// ");
 
-        $total_transactions_per_buyer_per_product = DB::select("
-    SELECT users.name, products.product_name, COUNT(transactions.id) as total_transactions,
-           SUM(transaction_details.kg_purchased) as total_kg_purchased,
-           SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price
-    FROM users
-    INNER JOIN transactions ON transactions.buyers_name = users.id
-    INNER JOIN transaction_details ON transaction_details.transaction_id = transactions.id
-    INNER JOIN products ON products.id = transaction_details.product_id
-    GROUP BY users.id, products.id
-");
+        $queryd = DB::table('users')
+            ->join('transactions', 'transactions.buyers_name', '=', 'users.id')
+            ->select('users.name', DB::raw('COUNT(transactions.id) as total_transactions'));
+
+        if (!empty($starting_date) && !empty($end_date)) {
+            $queryd->whereBetween('transactions.created_at', [$starting_date, $end_date]);
+        }
+
+        $total_transactions_per_buyer = $queryd->groupBy('users.id')->get();
+
+//         $total_transactions_per_buyer_per_product = DB::select("
+//     SELECT users.name, products.product_name, COUNT(transactions.id) as total_transactions,
+//            SUM(transaction_details.kg_purchased) as total_kg_purchased,
+//            SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price
+//     FROM users
+//     INNER JOIN transactions ON transactions.buyers_name = users.id
+//     INNER JOIN transaction_details ON transaction_details.transaction_id = transactions.id
+//     INNER JOIN products ON products.id = transaction_details.product_id
+//     GROUP BY users.id, products.id
+// ");
+
+        $querye = DB::table('users')
+            ->join('transactions', 'transactions.buyers_name', '=', 'users.id')
+            ->join('transaction_details', 'transaction_details.transaction_id', '=', 'transactions.id')
+            ->join('products', 'products.id', '=', 'transaction_details.product_id')
+            ->select(
+                'users.name',
+                'products.product_name',
+                DB::raw('COUNT(transactions.id) as total_transactions'),
+                DB::raw('SUM(transaction_details.kg_purchased) as total_kg_purchased'),
+                DB::raw('SUM(transaction_details.price_per_kilo * transaction_details.kg_purchased) as total_price')
+            );
+
+        if (!empty($startDate) && !empty($endDate)) {
+            $querye->whereBetween('transactions.created_at', [$startDate, $endDate]);
+        }
+
+        $total_transactions_per_buyer_per_product = $querye->groupBy('users.id', 'products.id')->get();
+
 
         $report_generation = [
             'total_farm_per_user' => $total_farm_per_user,

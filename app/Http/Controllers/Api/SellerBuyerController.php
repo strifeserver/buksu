@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Farm;
 use App\Models\PriceControl;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\User;
@@ -102,8 +103,7 @@ class SellerBuyerController extends Controller
     public function getOrders(Request $request)
     {
         $params = request()->all();
-        $user_IDget = $params['user_ID']; 
-
+        $user_IDget = $params['user_ID'];
 
         $user_ID = Crypt::decryptString($user_IDget);
 
@@ -144,9 +144,32 @@ class SellerBuyerController extends Controller
         $userPendingOrders = User::where('id', $user_ID)
             ->whereHas('transactions')
             ->with(['transactions' => function ($query) {
-                $query->orderBy('seller_prospect_date_todeliver', 'desc');
+                $query->orderBy('seller_prospect_date_todeliver', 'desc')
+                    ->orderBy('created_at', 'desc'); // Add this line to sort by created_at in descending order
             }, 'transactions.TransactionDetail', 'transactions.TransactionDetail.productOrdered'])
             ->get();
+
+        foreach ($userPendingOrders as $keya => $value) {
+            // $Review = Review::where('product_id');
+            // print_r($value->toArray());
+            foreach ($value->transactions as $keyb => $value1) {
+
+                foreach ($value1->toArray()['transaction_detail'] as $keyc => $value3) {
+
+                    $productId = $value3['product_id'];
+                    $Review = Review::where('product_id', $productId, )->where('user_id', '=', $user_ID)->where('transaction_id', '=', $value3['transaction_id'])->first();
+
+                    if (!empty($Review)) {
+
+                        $value->transactions[$keyb]['review_status'] = true;
+                    } else {
+                        $value->transactions[$keyb]['review_status'] = false;
+                    }
+
+                }
+            }
+
+        }
 
         return response()->json([
             'userPendingOrders' => $userPendingOrders,
@@ -167,12 +190,53 @@ class SellerBuyerController extends Controller
 
         $transactions = Transaction::where('seller', $user_ID)
             ->with('TransactionDetail', 'user', 'TransactionDetail.productOrdered')
-            ->get();
+            ->get()->toArray();
+
+        $pendingOrders = [];
+        $fulfilledOrders = [];
+        foreach ($transactions as $key => $order) {
+
+            if ($order['date_delivered'] === null) {
+                $TransactionDetail = TransactionDetail::where('transaction_id', '=', $order['id'])->first();
+                if (!empty($TransactionDetail)) {
+                    
+                    if($order['date_delivered'] === null){
+                        $order_status = 'Pending';
+                    }else{
+                        $order_status = 'Delivered '.$order['date_delivered'];
+                    }
+                    $structurePendingOrder = [
+                        'transaction_id' => $order['id'],
+                        'product_name' => $TransactionDetail['product_name'],
+                        'variety' => $TransactionDetail['variety'],
+                        'planted_date' => $TransactionDetail['planted_date'],
+                        'harvested_date' => $TransactionDetail['harvested_date'],
+                        'kg_purchased' => $TransactionDetail['kg_purchased'],
+                        'price_per_kilo' => $TransactionDetail['price_per_kilo'],
+                        'product_id' => $TransactionDetail['product_id'],
+                        'total_price' => $TransactionDetail['price_per_kilo'] * $TransactionDetail['kg_purchased'],
+                        'sub_total' => $TransactionDetail['price_per_kilo'] * $TransactionDetail['kg_purchased'],
+                        'order_status' => $order_status,
+                    ];
+                    $getCustomer = User::where('id','=',$order['buyers_name'])->first();
+                    if(!empty($getCustomer)){
+                        $structurePendingOrder['customer_name'] =$getCustomer->name;
+                        $structurePendingOrder['mobile_number'] =$getCustomer->mobile_number;
+                        $structurePendingOrder['address'] =$getCustomer->address;
+                    }
+                    $structurePendingOrder = array_merge($order, $structurePendingOrder);
+                    $pendingOrders[] = $structurePendingOrder;
+
+                }
+            }
+
+        }
 
         // return response()->json($farm);
 
         return response()->json([
             'userPendingOrders' => $transactions,
+            'pendingOrders' => $pendingOrders,
         ]);
     }
 
@@ -247,30 +311,30 @@ class SellerBuyerController extends Controller
     public function confirmDelivery(Request $request)
     {
         $id = $request->transactionID;
-    
+
         $validatedData = $request->validate([
             'imageProof.*' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
-    
+
         $data = [];
-    
+
         if ($request->hasFile('imageProof')) {
             $photos = $request->file('imageProof');
-    
+
             foreach ($photos as $key => $photo) {
                 $fileName = $photo->getClientOriginalName();
                 // Store the file in the public storage inside the 'ProofOfDelivery' folder
                 $photo->storeAs('public/ProofOfDelivery/', $fileName);
                 $data['proof_of_delivery'][] = $fileName;
             }
-    
+
             // Implode the array to create a comma-separated string
             $proofOfDeliveryString = implode(",", $data['proof_of_delivery']);
-    
+
             // Update the $data array with the imploded string
             $data['proof_of_delivery'] = $proofOfDeliveryString;
         }
-    
+
         $farm = Transaction::where('id', $id)->first();
         $data['date_delivered'] = date('Y-m-d');
         $data['price_payed'] = $farm['price_of_goods'];
@@ -279,8 +343,6 @@ class SellerBuyerController extends Controller
         }
         return response(json_encode(['status' => 1]), 200)->header('Content-Type', 'application/json');
     }
-    
-    
 
     /**
      * Display the specified resource.

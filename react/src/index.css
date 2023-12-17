@@ -3,3 +3,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.green-text{
+    color : green;
+}
+
+.ratingTextSize{
+    font-size:18px;
+    font-weight: bold;
+}
+
+.ratingDivSize {
+    height: 400px;
+    overflow-x: auto; 
+    white-space: nowrap; 
+}
